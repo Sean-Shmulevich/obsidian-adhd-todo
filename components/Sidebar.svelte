@@ -40,7 +40,7 @@
   <div class="brand">
     <div class="logo">✓</div>
     <div>
-      <strong>Todo Dashboard</strong>
+      <strong>Tasks Dashboard</strong>
       <small>Vault-backed task board</small>
     </div>
   </div>

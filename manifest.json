@@ -1,6 +1,6 @@
 {
-  "id": "todo-dashboard",
-  "name": "Todo Dashboard",
+  "id": "tasks-dashboard",
+  "name": "Tasks Dashboard",
   "version": "0.1.0",
   "minAppVersion": "1.5.0",
   "description": "Discord-style task manager that reads #todo tags from your vault",

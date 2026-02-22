@@ -1,4 +1,4 @@
-# Todo Dashboard
+# Tasks Dashboard
 
 An Obsidian plugin that turns your vault's `#todo` tags into a visual task planner with a Discord-style sidebar, category grouping, and two-way sync.
 
@@ -6,7 +6,7 @@ An Obsidian plugin that turns your vault's `#todo` tags into a visual task plann
 
 ## How It Works
 
-Todo Dashboard scans your vault for `#todo` tags and renders them in an interactive UI. Completing a task in the UI checks it off in the source `.md` file. Adding a task writes it to your vault. No external database — your vault is the source of truth.
+Tasks Dashboard scans your vault for `#todo` tags and renders them in an interactive UI. Completing a task in the UI checks it off in the source `.md` file. Adding a task writes it to your vault. No external database — your vault is the source of truth.
 
 ## Tag Convention
 
@@ -60,11 +60,11 @@ Symlink into your vault:
 ln -s /path/to/obsidian-adhd-todo /path/to/vault/.obsidian/plugins/todo-planner
 ```
 
-In Obsidian: Settings → Community Plugins → enable **Todo Dashboard**.
+In Obsidian: Settings → Community Plugins → enable **Tasks Dashboard**.
 
 ### Usage
 
-- Click the ✅ ribbon icon or Cmd/Ctrl+P → "Open Todo Dashboard"
+- Click the ✅ ribbon icon or Cmd/Ctrl+P → "Open Tasks Dashboard"
 - Opens as a tab in the main editor area
 - Click groups/categories in the sidebar to filter
 - Check off tasks — updates the source file
