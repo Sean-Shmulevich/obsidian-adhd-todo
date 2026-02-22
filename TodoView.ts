@@ -3,7 +3,7 @@ import { mount, unmount } from 'svelte';
 import App from './components/App.svelte';
 import type TodoPlugin from './main';
 
-export const VIEW_TYPE_TODO = 'todo-planner-view';
+export const VIEW_TYPE_TODO = 'tasks-dashboard-view';
 
 export class TodoView extends ItemView {
   plugin: TodoPlugin;
@@ -19,7 +19,7 @@ export class TodoView extends ItemView {
   }
 
   getDisplayText() {
-    return 'Todo Planner';
+    return 'Tasks Dashboard';
   }
 
   getIcon() {
@@ -28,7 +28,7 @@ export class TodoView extends ItemView {
 
   async onOpen() {
     this.contentEl.empty();
-    this.contentEl.addClass('todo-planner-root');
+    this.contentEl.addClass('tasks-dashboard-root');
     this.component = mount(App, {
       target: this.contentEl,
       props: { plugin: this.plugin }
@@ -40,6 +40,6 @@ export class TodoView extends ItemView {
       unmount(this.component);
       this.component = null;
     }
-    this.contentEl.removeClass('todo-planner-root');
+    this.contentEl.removeClass('tasks-dashboard-root');
   }
 }

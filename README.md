@@ -48,8 +48,8 @@ Both checkbox (`- [ ]`) and plain list (`- #todo/...`) formats are supported.
 ### From source (recommended for now)
 
 ```bash
-git clone https://github.com/Sean-Shmulevich/obsidian-adhd-todo.git
-cd obsidian-adhd-todo
+git clone https://github.com/Sean-Shmulevich/obsidian-tasks-dashboard.git
+cd obsidian-tasks-dashboard
 npm install
 npm run build
 ```
@@ -57,7 +57,7 @@ npm run build
 Symlink into your vault:
 
 ```bash
-ln -s /path/to/obsidian-adhd-todo /path/to/vault/.obsidian/plugins/todo-planner
+ln -s /path/to/obsidian-tasks-dashboard /path/to/vault/.obsidian/plugins/tasks-dashboard
 ```
 
 In Obsidian: Settings → Community Plugins → enable **Tasks Dashboard**.

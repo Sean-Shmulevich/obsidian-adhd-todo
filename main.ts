@@ -20,13 +20,13 @@ export default class TodoPlugin extends Plugin {
 
     this.registerView(VIEW_TYPE_TODO, (leaf: WorkspaceLeaf) => new TodoView(leaf, this));
 
-    this.addRibbonIcon('check-square', 'Todo Planner', () => {
+    this.addRibbonIcon('check-square', 'Tasks Dashboard', () => {
       void this.activateView();
     });
 
     this.addCommand({
       id: 'open-tasks-dashboard',
-      name: 'Open Todo Planner',
+      name: 'Open Tasks Dashboard',
       callback: () => {
         void this.activateView();
       }
@@ -34,7 +34,7 @@ export default class TodoPlugin extends Plugin {
 
     this.addCommand({
       id: 'rescan-tasks-dashboard-vault',
-      name: 'Rescan Todo Planner tasks',
+      name: 'Rescan Tasks Dashboard tasks',
       callback: () => {
         void this.refreshTodoState();
       }

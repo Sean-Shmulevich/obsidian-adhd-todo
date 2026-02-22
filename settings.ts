@@ -27,7 +27,7 @@ export class TodoSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
-    containerEl.createEl('h2', { text: 'Todo Planner Settings' });
+    containerEl.createEl('h2', { text: 'Tasks Dashboard Settings' });
 
     new Setting(containerEl)
       .setName('Tag prefix')

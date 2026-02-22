@@ -6452,7 +6452,7 @@ function Sidebar($$anchor, $$props) {
   reset(div_1);
   reset(nav_1);
   template_effect(() => {
-    classes = set_class(nav_1, 1, "sidebar todo-planner-sidebar svelte-1b12cm3", null, classes, { mobile: mobile() });
+    classes = set_class(nav_1, 1, "sidebar tasks-dashboard-sidebar svelte-1b12cm3", null, classes, { mobile: mobile() });
     classes_1 = set_class(button, 1, "pinned-item svelte-1b12cm3", null, classes_1, { active: !!nav.uncategorizedOnly });
     classes_2 = set_class(button_1, 1, "pinned-item svelte-1b12cm3", null, classes_2, {
       active: !nav.groupId && !nav.categoryId && !nav.uncategorizedOnly
@@ -7308,9 +7308,9 @@ function TaskBoard($$anchor, $$props) {
 delegate(["click"]);
 
 // components/App.svelte
-var root_17 = from_html(`<button type="button" class="todo-planner-sidebar-backdrop" aria-label="Close sidebar"></button>`);
+var root_17 = from_html(`<button type="button" class="tasks-dashboard-sidebar-backdrop" aria-label="Close sidebar"></button>`);
 var root_26 = from_html(`<div class="error-banner"> </div>`);
-var root5 = from_html(`<div><aside class="todo-planner-sidebar-pane" id="todo-planner-sidebar"><!></aside> <!> <main class="todo-planner-main"><button type="button" class="todo-planner-sidebar-toggle" aria-controls="todo-planner-sidebar">\u2630 Menu</button> <!> <!></main></div>`);
+var root5 = from_html(`<div><aside class="tasks-dashboard-sidebar-pane" id="tasks-dashboard-sidebar"><!></aside> <!> <main class="tasks-dashboard-main"><button type="button" class="tasks-dashboard-sidebar-toggle" aria-controls="tasks-dashboard-sidebar">\u2630 Menu</button> <!> <!></main></div>`);
 function App($$anchor, $$props) {
   push($$props, true);
   let containerEl = state(null);
@@ -7420,7 +7420,7 @@ function App($$anchor, $$props) {
   reset(div);
   bind_this(div, ($$value) => set(containerEl, $$value), () => get(containerEl));
   template_effect(() => {
-    classes = set_class(div, 1, "todo-planner-container", null, classes, {
+    classes = set_class(div, 1, "tasks-dashboard-container", null, classes, {
       "is-narrow": get(isNarrowViewport),
       "sidebar-open": get(sidebarOpen)
     });
@@ -7433,7 +7433,7 @@ function App($$anchor, $$props) {
 delegate(["click"]);
 
 // TodoView.ts
-var VIEW_TYPE_TODO = "todo-planner-view";
+var VIEW_TYPE_TODO = "tasks-dashboard-view";
 var TodoView = class extends import_obsidian3.ItemView {
   plugin;
   component = null;
@@ -7445,14 +7445,14 @@ var TodoView = class extends import_obsidian3.ItemView {
     return VIEW_TYPE_TODO;
   }
   getDisplayText() {
-    return "Todo Planner";
+    return "Tasks Dashboard";
   }
   getIcon() {
     return "check-square";
   }
   async onOpen() {
     this.contentEl.empty();
-    this.contentEl.addClass("todo-planner-root");
+    this.contentEl.addClass("tasks-dashboard-root");
     this.component = mount(App, {
       target: this.contentEl,
       props: { plugin: this.plugin }
@@ -7463,7 +7463,7 @@ var TodoView = class extends import_obsidian3.ItemView {
       unmount(this.component);
       this.component = null;
     }
-    this.contentEl.removeClass("todo-planner-root");
+    this.contentEl.removeClass("tasks-dashboard-root");
   }
 };
 
@@ -7484,7 +7484,7 @@ var TodoSettingTab = class extends import_obsidian4.PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Todo Planner Settings" });
+    containerEl.createEl("h2", { text: "Tasks Dashboard Settings" });
     new import_obsidian4.Setting(containerEl).setName("Tag prefix").setDesc("Tag used to discover tasks in your vault").addText(
       (text2) => text2.setPlaceholder("#todo").setValue(this.plugin.settings.tagPrefix).onChange(async (value) => {
         this.plugin.settings.tagPrefix = value.trim() || "#todo";
@@ -7514,19 +7514,19 @@ var TodoPlugin = class extends import_obsidian5.Plugin {
   async onload() {
     await this.loadPluginData();
     this.registerView(VIEW_TYPE_TODO, (leaf) => new TodoView(leaf, this));
-    this.addRibbonIcon("check-square", "Todo Planner", () => {
+    this.addRibbonIcon("check-square", "Tasks Dashboard", () => {
       void this.activateView();
     });
     this.addCommand({
       id: "open-tasks-dashboard",
-      name: "Open Todo Planner",
+      name: "Open Tasks Dashboard",
       callback: () => {
         void this.activateView();
       }
     });
     this.addCommand({
       id: "rescan-tasks-dashboard-vault",
-      name: "Rescan Todo Planner tasks",
+      name: "Rescan Tasks Dashboard tasks",
       callback: () => {
         void this.refreshTodoState();
       }

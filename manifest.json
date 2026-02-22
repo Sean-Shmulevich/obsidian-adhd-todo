@@ -3,7 +3,7 @@
   "name": "Tasks Dashboard",
   "version": "0.1.0",
   "minAppVersion": "1.5.0",
-  "description": "Discord-style task manager that reads #todo tags from your vault",
+  "description": "Visual task dashboard that reads #todo tags from your vault. Discord-style sidebar with groups, categories, two-way sync, and quick capture.",
   "author": "Sean Shmulevich",
   "authorUrl": "https://github.com/Sean-Shmulevich",
   "isDesktopOnly": false

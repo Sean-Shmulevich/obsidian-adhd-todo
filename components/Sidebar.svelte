@@ -36,7 +36,7 @@
   }
 </script>
 
-<nav class="sidebar todo-planner-sidebar" class:mobile aria-label="Sidebar navigation">
+<nav class="sidebar tasks-dashboard-sidebar" class:mobile aria-label="Sidebar navigation">
   <div class="brand">
     <div class="logo">✓</div>
     <div>

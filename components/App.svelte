@@ -68,29 +68,29 @@
 </script>
 
 <div
-  class="todo-planner-container"
+  class="tasks-dashboard-container"
   class:is-narrow={isNarrowViewport}
   class:sidebar-open={sidebarOpen}
   bind:this={containerEl}
 >
-  <aside class="todo-planner-sidebar-pane" id="todo-planner-sidebar">
+  <aside class="tasks-dashboard-sidebar-pane" id="tasks-dashboard-sidebar">
     <Sidebar mobile={isNarrowViewport} onNavigate={closeSidebarOnMobileNavigate} />
   </aside>
 
   {#if isNarrowViewport && sidebarOpen}
     <button
       type="button"
-      class="todo-planner-sidebar-backdrop"
+      class="tasks-dashboard-sidebar-backdrop"
       aria-label="Close sidebar"
       onclick={() => (sidebarOpen = false)}
     ></button>
   {/if}
 
-  <main class="todo-planner-main">
+  <main class="tasks-dashboard-main">
     <button
       type="button"
-      class="todo-planner-sidebar-toggle"
-      aria-controls="todo-planner-sidebar"
+      class="tasks-dashboard-sidebar-toggle"
+      aria-controls="tasks-dashboard-sidebar"
       aria-expanded={sidebarOpen}
       onclick={toggleSidebar}
     >
