@@ -13,9 +13,13 @@
   --sidebar-active-bg: color-mix(in srgb, var(--interactive-accent) 12%, var(--background-secondary));
 
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: clamp(260px, 24vw, 320px) minmax(0, 1fr);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 100%;
   min-height: 0;
+  overflow: hidden;
   background:
     radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--interactive-accent) 10%, transparent), transparent 35%),
     radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--interactive-accent) 7%, transparent), transparent 45%),
@@ -35,6 +39,16 @@
   display: grid;
   gap: 1rem;
   align-content: start;
+}
+
+.adhd-todo-container .adhd-todo-sidebar-pane {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.adhd-todo-container .adhd-todo-sidebar {
+  height: 100%;
 }
 
 .adhd-todo-container .topbar {
@@ -122,6 +136,11 @@
 @media (max-width: 980px) {
   .adhd-todo-container {
     grid-template-columns: 1fr;
+    overflow: auto;
+  }
+
+  .adhd-todo-container .adhd-todo-sidebar-pane {
+    overflow: visible;
   }
 
   .adhd-todo-container .focus-layout {

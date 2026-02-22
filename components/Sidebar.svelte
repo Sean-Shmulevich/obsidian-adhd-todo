@@ -36,7 +36,7 @@
   }
 </script>
 
-<nav class="sidebar" class:mobile aria-label="Sidebar navigation">
+<nav class="sidebar adhd-todo-sidebar" class:mobile aria-label="Sidebar navigation">
   <div class="brand">
     <div class="logo">✓</div>
     <div>
@@ -153,15 +153,21 @@
   .group-list {
     overflow: auto;
     display: grid;
-    gap: 0.4rem;
+    gap: 0.75rem;
     align-content: start;
-    padding-right: 0.1rem;
+    padding: 0.1rem 0.15rem 0.2rem 0.1rem;
+  }
+
+  .group-block {
+    display: grid;
+    gap: 0.2rem;
   }
 
   .group-header-row {
     display: flex;
-    gap: 0.15rem;
+    gap: 0.25rem;
     align-items: center;
+    padding-inline: 0.15rem;
   }
 
   .group-collapse {
@@ -186,24 +192,25 @@
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 0.1rem 0.15rem;
+    padding: 0.15rem 0.5rem;
   }
 
   .group-header-static {
-    padding-inline: 0.35rem;
+    padding: 0.15rem 0.65rem;
   }
 
   .items {
     display: grid;
-    gap: 0.05rem;
+    gap: 0.12rem;
+    padding-left: 0.85rem;
   }
 
   .category-item {
     display: grid;
     grid-template-columns: 3px 1.1rem 1fr;
-    gap: 0.4rem;
+    gap: 0.5rem;
     align-items: center;
-    padding: 0.3rem 0.5rem;
+    padding: 0.38rem 0.75rem 0.38rem 0.7rem;
     border-radius: 0.4rem;
     border: 1px solid transparent;
     font-size: 0.85rem;

@@ -48,7 +48,7 @@ export default class ADHDTodoPlugin extends Plugin {
     let leaf = workspace.getLeavesOfType(VIEW_TYPE_TODO)[0];
 
     if (!leaf) {
-      leaf = workspace.getRightLeaf(false) ?? workspace.getLeaf(true);
+      leaf = workspace.getLeaf('tab');
       await leaf.setViewState({ type: VIEW_TYPE_TODO, active: true });
     }
 

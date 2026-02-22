@@ -1,4 +1,4 @@
-import type { App } from 'obsidian';
+import { TFile, type App } from 'obsidian';
 import type { TodoSettings } from './settings';
 import type { Category, CategoryGroup, Priority, Recurrence, ScanResult, Task } from './types';
 
@@ -98,104 +98,160 @@ function displayNameFromSlug(value: string) {
 }
 
 export async function scanVaultTodos(app: App, settings: TodoSettings): Promise<ScanResult> {
-  const files = app.vault.getMarkdownFiles();
+  const scans: ScanResult[] = [];
+  for (const file of app.vault.getMarkdownFiles()) {
+    scans.push(await scanSingleFile(app, settings, file));
+  }
+  return combineScanResults(scans);
+}
+
+export async function scanSingleFile(app: App, settings: TodoSettings, file: TFile): Promise<ScanResult> {
   const tagPrefix = settings.tagPrefix || '#todo';
+  const content = await app.vault.cachedRead(file);
+  const lines = content.split(/\r?\n/);
 
   const groupsByKey = new Map<string, CategoryGroup>();
   const categoriesByKey = new Map<string, Category>();
   const tasks: Task[] = [];
 
-  let taskSort = 0;
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    if (!trimmed || !trimmed.includes(tagPrefix)) continue;
 
-  for (const file of files) {
-    const content = await app.vault.cachedRead(file);
-    const lines = content.split(/\r?\n/);
+    const hasCheckbox = CHECKBOX_RE.test(trimmed);
+    const isPlainListItem = /^[-*+]\s+#/.test(trimmed);
+    if (!hasCheckbox && !isPlainListItem) continue;
 
-    for (let i = 0; i < lines.length; i += 1) {
-      const line = lines[i];
-      const trimmed = line.trim();
-      if (!trimmed || !trimmed.includes(tagPrefix)) continue;
+    const tag = extractTag(trimmed, tagPrefix);
+    if (!tag) continue;
 
-      const hasCheckbox = CHECKBOX_RE.test(trimmed);
-      const isPlainListItem = /^[-*+]\s+#/.test(trimmed);
-      if (!hasCheckbox && !isPlainListItem) continue;
+    const title = parseTaskTitle(trimmed, tagPrefix);
+    if (!title) continue;
 
-      const tag = extractTag(trimmed, tagPrefix);
-      if (!tag) continue;
+    const parts = parseTagParts(tag, tagPrefix);
+    const groupKey = parts[0]?.toLowerCase();
+    const categoryKey = parts[1]?.toLowerCase();
 
-      const title = parseTaskTitle(trimmed, tagPrefix);
-      if (!title) continue;
-
-      const parts = parseTagParts(tag, tagPrefix);
-      const groupKey = parts[0]?.toLowerCase();
-      const categoryKey = parts[1]?.toLowerCase();
-
-      let groupId: string | undefined;
-      if (groupKey) {
-        let group = groupsByKey.get(groupKey);
-        if (!group) {
-          group = {
-            id: makeId(),
-            name: displayNameFromSlug(parts[0]),
-            sortOrder: groupsByKey.size,
-            collapsed: settings.archivedGroups.includes(groupKey),
-            archived: settings.archivedGroups.includes(groupKey),
-            sourceGroupKey: groupKey
-          };
-          groupsByKey.set(groupKey, group);
-        }
-        groupId = group.id;
+    let groupId: string | undefined;
+    if (groupKey) {
+      let group = groupsByKey.get(groupKey);
+      if (!group) {
+        group = {
+          id: makeId(),
+          name: displayNameFromSlug(parts[0]),
+          sortOrder: groupsByKey.size,
+          collapsed: settings.archivedGroups.includes(groupKey),
+          archived: settings.archivedGroups.includes(groupKey),
+          sourceGroupKey: groupKey
+        };
+        groupsByKey.set(groupKey, group);
       }
+      groupId = group.id;
+    }
 
-      let categoryId: string | undefined;
-      if (groupKey && categoryKey) {
-        const catMapKey = `${groupKey}/${categoryKey}`;
-        let category = categoriesByKey.get(catMapKey);
-        if (!category) {
-          category = {
-            id: makeId(),
-            name: displayNameFromSlug(parts[1]),
-            emoji: DEFAULT_EMOJI_MAP[categoryKey],
-            sortOrder: [...categoriesByKey.values()].filter((c) => c.sourceGroupKey === groupKey).length,
-            groupId,
-            sourceGroupKey: groupKey,
-            sourceCategoryKey: categoryKey
-          };
-          categoriesByKey.set(catMapKey, category);
-        }
-        categoryId = category.id;
+    let categoryId: string | undefined;
+    if (groupKey && categoryKey) {
+      const catMapKey = `${groupKey}/${categoryKey}`;
+      let category = categoriesByKey.get(catMapKey);
+      if (!category) {
+        const groupLocalCategoryCount = [...categoriesByKey.values()].filter((c) => c.sourceGroupKey === groupKey).length;
+        category = {
+          id: makeId(),
+          name: displayNameFromSlug(parts[1]),
+          emoji: DEFAULT_EMOJI_MAP[categoryKey],
+          sortOrder: groupLocalCategoryCount,
+          groupId,
+          sourceGroupKey: groupKey,
+          sourceCategoryKey: categoryKey
+        };
+        categoriesByKey.set(catMapKey, category);
       }
+      categoryId = category.id;
+    }
 
-      const completion = parseCompleted(trimmed);
-      const createdAt = file.stat?.ctime ? new Date(file.stat.ctime).toISOString() : new Date().toISOString();
-      const updatedAt = file.stat?.mtime ? new Date(file.stat.mtime).toISOString() : createdAt;
+    const completion = parseCompleted(trimmed);
+    const createdAt = file.stat?.ctime ? new Date(file.stat.ctime).toISOString() : new Date().toISOString();
+    const updatedAt = file.stat?.mtime ? new Date(file.stat.mtime).toISOString() : createdAt;
+    const dueDate = parseDueDate(trimmed);
 
-      const task: Task = {
-        id: makeId(),
-        title,
-        priority: parsePriority(trimmed),
-        completed: completion.completed,
-        createdAt,
-        updatedAt,
-        completedAt: completion.completedAt ? `${completion.completedAt}T00:00:00.000Z` : undefined,
-        sortOrder: taskSort++,
-        categoryId,
-        recurrence: parseRecurrence(trimmed),
-        nextDueAt: parseDueDate(trimmed) ? `${parseDueDate(trimmed)}T00:00:00.000Z` : undefined,
-        source: `obsidian:${file.path}`,
-        sourceTag: tag,
-        sourceFile: file.path,
-        sourceLine: i + 1,
-        groupTag: !categoryId && groupKey ? groupKey : undefined,
-        subTag: parts.length >= 3 ? parts.slice(2).join('/') : undefined
-      };
+    tasks.push({
+      id: makeId(),
+      title,
+      priority: parsePriority(trimmed),
+      completed: completion.completed,
+      createdAt,
+      updatedAt,
+      completedAt: completion.completedAt ? `${completion.completedAt}T00:00:00.000Z` : undefined,
+      sortOrder: tasks.length,
+      categoryId,
+      recurrence: parseRecurrence(trimmed),
+      nextDueAt: dueDate ? `${dueDate}T00:00:00.000Z` : undefined,
+      source: `obsidian:${file.path}`,
+      sourceTag: tag,
+      sourceFile: file.path,
+      sourceLine: i + 1,
+      groupTag: !categoryId && groupKey ? groupKey : undefined,
+      subTag: parts.length >= 3 ? parts.slice(2).join('/') : undefined
+    });
+  }
 
-      tasks.push(task);
+  return {
+    tasks,
+    categories: [...categoriesByKey.values()].sort((a, b) => a.sortOrder - b.sortOrder),
+    categoryGroups: [...groupsByKey.values()].sort((a, b) => a.sortOrder - b.sortOrder)
+  };
+}
+
+export function combineScanResults(scans: Iterable<ScanResult>): ScanResult {
+  const groupsByKey = new Map<string, CategoryGroup>();
+  const categoriesByKey = new Map<string, Category>();
+  const tasks: Task[] = [];
+
+  for (const scan of scans) {
+    const localGroupIdToGlobalId = new Map<string, string>();
+    for (const group of [...scan.categoryGroups].sort((a, b) => a.sortOrder - b.sortOrder)) {
+      const groupKey = group.sourceGroupKey ?? group.name.toLowerCase();
+      let existing = groupsByKey.get(groupKey);
+      if (!existing) {
+        existing = {
+          ...group,
+          id: group.id ?? makeId(),
+          sortOrder: groupsByKey.size
+        };
+        groupsByKey.set(groupKey, existing);
+      }
+      localGroupIdToGlobalId.set(group.id, existing.id);
+    }
+
+    const localCategoryIdToGlobalId = new Map<string, string>();
+    for (const category of [...scan.categories].sort((a, b) => a.sortOrder - b.sortOrder)) {
+      const categoryKey = `${category.sourceGroupKey ?? ''}/${category.sourceCategoryKey ?? category.name.toLowerCase()}`;
+      let existing = categoriesByKey.get(categoryKey);
+      if (!existing) {
+        existing = {
+          ...category,
+          id: category.id ?? makeId(),
+          groupId: category.groupId ? (localGroupIdToGlobalId.get(category.groupId) ?? category.groupId) : undefined,
+          sortOrder: categoriesByKey.size
+        };
+        categoriesByKey.set(categoryKey, existing);
+      }
+      localCategoryIdToGlobalId.set(category.id, existing.id);
+    }
+
+    for (const task of [...scan.tasks].sort((a, b) => a.sortOrder - b.sortOrder)) {
+      tasks.push({
+        ...task,
+        categoryId: task.categoryId ? (localCategoryIdToGlobalId.get(task.categoryId) ?? task.categoryId) : undefined,
+        sortOrder: tasks.length
+      });
     }
   }
 
-  const categoryGroups = [...groupsByKey.values()].sort((a, b) => a.sortOrder - b.sortOrder);
-  const categories = [...categoriesByKey.values()].sort((a, b) => a.sortOrder - b.sortOrder);
-
-  return { tasks, categories, categoryGroups };
+  return {
+    tasks,
+    categories: [...categoriesByKey.values()],
+    categoryGroups: [...groupsByKey.values()]
+  };
 }

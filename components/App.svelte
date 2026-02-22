@@ -35,7 +35,9 @@
 </script>
 
 <div class="adhd-todo-container">
-  <Sidebar />
+  <aside class="adhd-todo-sidebar-pane">
+    <Sidebar />
+  </aside>
 
   <main class="adhd-todo-main">
     <header class="topbar">

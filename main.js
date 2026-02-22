@@ -23,10 +23,10 @@ __export(main_exports, {
   default: () => ADHDTodoPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian4 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 
 // TodoView.ts
-var import_obsidian2 = require("obsidian");
+var import_obsidian3 = require("obsidian");
 
 // ../adhd-todo/node_modules/esm-env/dev-fallback.js
 var node_env = globalThis.process?.env?.NODE_ENV;
@@ -5610,9 +5610,10 @@ if (typeof window !== "undefined") {
 }
 
 // state.svelte.ts
-var import_obsidian = require("obsidian");
+var import_obsidian2 = require("obsidian");
 
 // vault-scanner.ts
+var import_obsidian = require("obsidian");
 var CHECKBOX_RE = /^\s*[-*+]\s*\[(.)\]\s*/;
 var LIST_ITEM_RE = /^\s*[-*+]\s+/;
 var DATE_RE = /\b(\d{4}-\d{2}-\d{2})\b/;
@@ -5683,92 +5684,139 @@ function parseTaskTitle(line, tagPrefix) {
 function displayNameFromSlug(value) {
   return value.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
-async function scanVaultTodos(app, settings) {
-  const files = app.vault.getMarkdownFiles();
+async function scanSingleFile(app, settings, file) {
   const tagPrefix = settings.tagPrefix || "#todo";
+  const content = await app.vault.cachedRead(file);
+  const lines = content.split(/\r?\n/);
   const groupsByKey = /* @__PURE__ */ new Map();
   const categoriesByKey = /* @__PURE__ */ new Map();
   const tasks2 = [];
-  let taskSort = 0;
-  for (const file of files) {
-    const content = await app.vault.cachedRead(file);
-    const lines = content.split(/\r?\n/);
-    for (let i = 0; i < lines.length; i += 1) {
-      const line = lines[i];
-      const trimmed = line.trim();
-      if (!trimmed || !trimmed.includes(tagPrefix)) continue;
-      const hasCheckbox = CHECKBOX_RE.test(trimmed);
-      const isPlainListItem = /^[-*+]\s+#/.test(trimmed);
-      if (!hasCheckbox && !isPlainListItem) continue;
-      const tag2 = extractTag(trimmed, tagPrefix);
-      if (!tag2) continue;
-      const title = parseTaskTitle(trimmed, tagPrefix);
-      if (!title) continue;
-      const parts = parseTagParts(tag2, tagPrefix);
-      const groupKey = parts[0]?.toLowerCase();
-      const categoryKey = parts[1]?.toLowerCase();
-      let groupId;
-      if (groupKey) {
-        let group = groupsByKey.get(groupKey);
-        if (!group) {
-          group = {
-            id: makeId(),
-            name: displayNameFromSlug(parts[0]),
-            sortOrder: groupsByKey.size,
-            collapsed: settings.archivedGroups.includes(groupKey),
-            archived: settings.archivedGroups.includes(groupKey),
-            sourceGroupKey: groupKey
-          };
-          groupsByKey.set(groupKey, group);
-        }
-        groupId = group.id;
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    if (!trimmed || !trimmed.includes(tagPrefix)) continue;
+    const hasCheckbox = CHECKBOX_RE.test(trimmed);
+    const isPlainListItem = /^[-*+]\s+#/.test(trimmed);
+    if (!hasCheckbox && !isPlainListItem) continue;
+    const tag2 = extractTag(trimmed, tagPrefix);
+    if (!tag2) continue;
+    const title = parseTaskTitle(trimmed, tagPrefix);
+    if (!title) continue;
+    const parts = parseTagParts(tag2, tagPrefix);
+    const groupKey = parts[0]?.toLowerCase();
+    const categoryKey = parts[1]?.toLowerCase();
+    let groupId;
+    if (groupKey) {
+      let group = groupsByKey.get(groupKey);
+      if (!group) {
+        group = {
+          id: makeId(),
+          name: displayNameFromSlug(parts[0]),
+          sortOrder: groupsByKey.size,
+          collapsed: settings.archivedGroups.includes(groupKey),
+          archived: settings.archivedGroups.includes(groupKey),
+          sourceGroupKey: groupKey
+        };
+        groupsByKey.set(groupKey, group);
       }
-      let categoryId;
-      if (groupKey && categoryKey) {
-        const catMapKey = `${groupKey}/${categoryKey}`;
-        let category = categoriesByKey.get(catMapKey);
-        if (!category) {
-          category = {
-            id: makeId(),
-            name: displayNameFromSlug(parts[1]),
-            emoji: DEFAULT_EMOJI_MAP[categoryKey],
-            sortOrder: [...categoriesByKey.values()].filter((c) => c.sourceGroupKey === groupKey).length,
-            groupId,
-            sourceGroupKey: groupKey,
-            sourceCategoryKey: categoryKey
-          };
-          categoriesByKey.set(catMapKey, category);
-        }
-        categoryId = category.id;
+      groupId = group.id;
+    }
+    let categoryId;
+    if (groupKey && categoryKey) {
+      const catMapKey = `${groupKey}/${categoryKey}`;
+      let category = categoriesByKey.get(catMapKey);
+      if (!category) {
+        const groupLocalCategoryCount = [...categoriesByKey.values()].filter((c) => c.sourceGroupKey === groupKey).length;
+        category = {
+          id: makeId(),
+          name: displayNameFromSlug(parts[1]),
+          emoji: DEFAULT_EMOJI_MAP[categoryKey],
+          sortOrder: groupLocalCategoryCount,
+          groupId,
+          sourceGroupKey: groupKey,
+          sourceCategoryKey: categoryKey
+        };
+        categoriesByKey.set(catMapKey, category);
       }
-      const completion = parseCompleted(trimmed);
-      const createdAt = file.stat?.ctime ? new Date(file.stat.ctime).toISOString() : (/* @__PURE__ */ new Date()).toISOString();
-      const updatedAt = file.stat?.mtime ? new Date(file.stat.mtime).toISOString() : createdAt;
-      const task = {
-        id: makeId(),
-        title,
-        priority: parsePriority(trimmed),
-        completed: completion.completed,
-        createdAt,
-        updatedAt,
-        completedAt: completion.completedAt ? `${completion.completedAt}T00:00:00.000Z` : void 0,
-        sortOrder: taskSort++,
-        categoryId,
-        recurrence: parseRecurrence(trimmed),
-        nextDueAt: parseDueDate(trimmed) ? `${parseDueDate(trimmed)}T00:00:00.000Z` : void 0,
-        source: `obsidian:${file.path}`,
-        sourceTag: tag2,
-        sourceFile: file.path,
-        sourceLine: i + 1,
-        groupTag: !categoryId && groupKey ? groupKey : void 0,
-        subTag: parts.length >= 3 ? parts.slice(2).join("/") : void 0
-      };
-      tasks2.push(task);
+      categoryId = category.id;
+    }
+    const completion = parseCompleted(trimmed);
+    const createdAt = file.stat?.ctime ? new Date(file.stat.ctime).toISOString() : (/* @__PURE__ */ new Date()).toISOString();
+    const updatedAt = file.stat?.mtime ? new Date(file.stat.mtime).toISOString() : createdAt;
+    const dueDate = parseDueDate(trimmed);
+    tasks2.push({
+      id: makeId(),
+      title,
+      priority: parsePriority(trimmed),
+      completed: completion.completed,
+      createdAt,
+      updatedAt,
+      completedAt: completion.completedAt ? `${completion.completedAt}T00:00:00.000Z` : void 0,
+      sortOrder: tasks2.length,
+      categoryId,
+      recurrence: parseRecurrence(trimmed),
+      nextDueAt: dueDate ? `${dueDate}T00:00:00.000Z` : void 0,
+      source: `obsidian:${file.path}`,
+      sourceTag: tag2,
+      sourceFile: file.path,
+      sourceLine: i + 1,
+      groupTag: !categoryId && groupKey ? groupKey : void 0,
+      subTag: parts.length >= 3 ? parts.slice(2).join("/") : void 0
+    });
+  }
+  return {
+    tasks: tasks2,
+    categories: [...categoriesByKey.values()].sort((a, b) => a.sortOrder - b.sortOrder),
+    categoryGroups: [...groupsByKey.values()].sort((a, b) => a.sortOrder - b.sortOrder)
+  };
+}
+function combineScanResults(scans) {
+  const groupsByKey = /* @__PURE__ */ new Map();
+  const categoriesByKey = /* @__PURE__ */ new Map();
+  const tasks2 = [];
+  for (const scan of scans) {
+    const localGroupIdToGlobalId = /* @__PURE__ */ new Map();
+    for (const group of [...scan.categoryGroups].sort((a, b) => a.sortOrder - b.sortOrder)) {
+      const groupKey = group.sourceGroupKey ?? group.name.toLowerCase();
+      let existing = groupsByKey.get(groupKey);
+      if (!existing) {
+        existing = {
+          ...group,
+          id: group.id ?? makeId(),
+          sortOrder: groupsByKey.size
+        };
+        groupsByKey.set(groupKey, existing);
+      }
+      localGroupIdToGlobalId.set(group.id, existing.id);
+    }
+    const localCategoryIdToGlobalId = /* @__PURE__ */ new Map();
+    for (const category of [...scan.categories].sort((a, b) => a.sortOrder - b.sortOrder)) {
+      const categoryKey = `${category.sourceGroupKey ?? ""}/${category.sourceCategoryKey ?? category.name.toLowerCase()}`;
+      let existing = categoriesByKey.get(categoryKey);
+      if (!existing) {
+        existing = {
+          ...category,
+          id: category.id ?? makeId(),
+          groupId: category.groupId ? localGroupIdToGlobalId.get(category.groupId) ?? category.groupId : void 0,
+          sortOrder: categoriesByKey.size
+        };
+        categoriesByKey.set(categoryKey, existing);
+      }
+      localCategoryIdToGlobalId.set(category.id, existing.id);
+    }
+    for (const task of [...scan.tasks].sort((a, b) => a.sortOrder - b.sortOrder)) {
+      tasks2.push({
+        ...task,
+        categoryId: task.categoryId ? localCategoryIdToGlobalId.get(task.categoryId) ?? task.categoryId : void 0,
+        sortOrder: tasks2.length
+      });
     }
   }
-  const categoryGroups2 = [...groupsByKey.values()].sort((a, b) => a.sortOrder - b.sortOrder);
-  const categories2 = [...categoriesByKey.values()].sort((a, b) => a.sortOrder - b.sortOrder);
-  return { tasks: tasks2, categories: categories2, categoryGroups: categoryGroups2 };
+  return {
+    tasks: tasks2,
+    categories: [...categoriesByKey.values()],
+    categoryGroups: [...groupsByKey.values()]
+  };
 }
 
 // vault-writer.ts
@@ -5905,6 +5953,10 @@ var pluginRef = null;
 var writerRef = null;
 var initialized = false;
 var refreshTimer = null;
+var scanQueue = Promise.resolve();
+var fileScanCache = /* @__PURE__ */ new Map();
+var queuedChangedPaths = /* @__PURE__ */ new Set();
+var queuedDeletedPaths = /* @__PURE__ */ new Set();
 var categoriesByGroupValue = user_derived(() => {
   const groups = [...categoryGroups].sort((a, b) => a.sortOrder - b.sortOrder);
   const cats = [...categories].sort((a, b) => a.sortOrder - b.sortOrder);
@@ -5944,44 +5996,112 @@ function initializeTodoState(plugin) {
   writerRef = new VaultTodoWriter(plugin.app, plugin.settings, () => categories);
   if (initialized) return;
   initialized = true;
-  const queueRefresh = () => {
+  const queueRefresh = (path) => {
+    if (path) {
+      queuedDeletedPaths.delete(path);
+      queuedChangedPaths.add(path);
+    }
     if (refreshTimer != null) window.clearTimeout(refreshTimer);
     refreshTimer = window.setTimeout(
       () => {
         refreshTimer = null;
-        void refreshVaultState();
+        void flushQueuedVaultChanges();
       },
-      120
+      300
+    );
+  };
+  const queueDelete = (path) => {
+    queuedChangedPaths.delete(path);
+    queuedDeletedPaths.add(path);
+    if (refreshTimer != null) window.clearTimeout(refreshTimer);
+    refreshTimer = window.setTimeout(
+      () => {
+        refreshTimer = null;
+        void flushQueuedVaultChanges();
+      },
+      300
     );
   };
   plugin.registerEvent(plugin.app.vault.on("modify", (file) => {
-    if (file instanceof import_obsidian.TFile && file.extension === "md") queueRefresh();
+    if (file instanceof import_obsidian2.TFile && file.extension === "md") queueRefresh(file.path);
   }));
   plugin.registerEvent(plugin.app.vault.on("create", (file) => {
-    if (file instanceof import_obsidian.TFile && file.extension === "md") queueRefresh();
+    if (file instanceof import_obsidian2.TFile && file.extension === "md") queueRefresh(file.path);
   }));
   plugin.registerEvent(plugin.app.vault.on("delete", (file) => {
-    if (file instanceof import_obsidian.TFile && file.extension === "md") queueRefresh();
+    if (file instanceof import_obsidian2.TFile && file.extension === "md") queueDelete(file.path);
   }));
-  plugin.registerEvent(plugin.app.vault.on("rename", (file) => {
-    if (file instanceof import_obsidian.TFile && file.extension === "md") queueRefresh();
+  plugin.registerEvent(plugin.app.vault.on("rename", (file, oldPath) => {
+    if (typeof oldPath === "string" && oldPath.endsWith(".md")) queueDelete(oldPath);
+    if (file instanceof import_obsidian2.TFile && file.extension === "md") queueRefresh(file.path);
   }));
 }
 async function refreshVaultState() {
+  return queueScanWork(performFullRefresh);
+}
+async function flushQueuedVaultChanges() {
+  return queueScanWork(async () => {
+    if (!pluginRef) return;
+    const changedPaths = [...queuedChangedPaths];
+    const deletedPaths = [...queuedDeletedPaths];
+    queuedChangedPaths.clear();
+    queuedDeletedPaths.clear();
+    if (changedPaths.length === 0 && deletedPaths.length === 0) return;
+    if (fileScanCache.size === 0) {
+      await performFullRefresh();
+      return;
+    }
+    ui.loading = true;
+    ui.errorMessage = null;
+    try {
+      for (const path of deletedPaths) fileScanCache.delete(path);
+      for (const path of changedPaths) {
+        const file = pluginRef.app.vault.getAbstractFileByPath(path);
+        if (!(file instanceof import_obsidian2.TFile) || file.extension !== "md") {
+          fileScanCache.delete(path);
+          continue;
+        }
+        const scan = await scanSingleFile(pluginRef.app, pluginRef.settings, file);
+        fileScanCache.set(path, scan);
+      }
+      const scans = [...fileScanCache.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, scan]) => scan);
+      applyScanResult(combineScanResults(scans));
+      ui.lastScanAt = /* @__PURE__ */ (/* @__PURE__ */ new Date()).toISOString();
+    } catch (error) {
+      ui.errorMessage = error instanceof Error ? error.message : String(error);
+      await performFullRefresh();
+    } finally {
+      ui.loading = false;
+    }
+  });
+}
+async function performFullRefresh() {
   if (!pluginRef) return;
   ui.loading = true;
   ui.errorMessage = null;
   try {
-    const scanned = await scanVaultTodos(pluginRef.app, pluginRef.settings);
-    reconcileGroups(scanned.categoryGroups);
-    reconcileCategories(scanned.categories);
-    reconcileTasks(scanned.tasks);
+    const files = pluginRef.app.vault.getMarkdownFiles();
+    const scans = await Promise.all(files.map((file) => scanSingleFile(pluginRef.app, pluginRef.settings, file)));
+    fileScanCache.clear();
+    files.forEach((file, idx) => {
+      fileScanCache.set(file.path, scans[idx]);
+    });
+    applyScanResult(combineScanResults(scans));
     ui.lastScanAt = /* @__PURE__ */ (/* @__PURE__ */ new Date()).toISOString();
   } catch (error) {
     ui.errorMessage = error instanceof Error ? error.message : String(error);
   } finally {
     ui.loading = false;
   }
+}
+function queueScanWork(work) {
+  scanQueue = scanQueue.then(work, work);
+  return scanQueue;
+}
+function applyScanResult(scanned) {
+  reconcileGroups(scanned.categoryGroups);
+  reconcileCategories(scanned.categories);
+  reconcileTasks(scanned.tasks);
 }
 function reconcileGroups(nextGroups) {
   const prevByKey = new Map(categoryGroups.map((g) => [g.sourceGroupKey ?? g.name.toLowerCase(), g]));
@@ -6017,6 +6137,10 @@ function reconcileCategories(nextCategories) {
   categories.splice(0, categories.length, ...merged);
 }
 function reconcileTasks(nextTasks) {
+  const categoryIdBySourceKey = new Map(categories.map((category) => [
+    `${category.sourceGroupKey ?? ""}/${category.sourceCategoryKey ?? category.name.toLowerCase()}`,
+    category.id
+  ]));
   const prevByKey = new Map(tasks.map((task) => [
     `${task.sourceFile ?? ""}:${task.sourceLine ?? ""}:${task.title.toLowerCase()}`,
     task
@@ -6024,9 +6148,23 @@ function reconcileTasks(nextTasks) {
   const merged = nextTasks.map((task, idx) => {
     const key2 = `${task.sourceFile ?? ""}:${task.sourceLine ?? ""}:${task.title.toLowerCase()}`;
     const prev = prevByKey.get(key2);
-    return { ...task, id: prev?.id ?? task.id ?? makeId2(), sortOrder: idx };
+    const sourceKey = taskCategorySourceKey(task);
+    return {
+      ...task,
+      id: prev?.id ?? task.id ?? makeId2(),
+      categoryId: sourceKey ? categoryIdBySourceKey.get(sourceKey) : void 0,
+      sortOrder: idx
+    };
   });
   tasks.splice(0, tasks.length, ...merged);
+}
+function taskCategorySourceKey(task) {
+  if (!task.sourceTag) return void 0;
+  const tagPrefix = pluginRef?.settings.tagPrefix || "#todo";
+  if (!task.sourceTag.startsWith(`${tagPrefix}/`)) return void 0;
+  const parts = task.sourceTag.slice(tagPrefix.length).split("/").filter(Boolean);
+  if (parts.length < 2) return void 0;
+  return `${parts[0].toLowerCase()}/${parts[1].toLowerCase()}`;
 }
 function setNavDashboard() {
   nav.view = "dashboard";
@@ -6101,13 +6239,13 @@ async function openTaskInObsidian(taskId) {
 // components/Sidebar.svelte
 var root_3 = from_html(`<button type="button"><span class="accent svelte-1b12cm3"></span> <span class="emoji"> </span> <span> </span></button>`);
 var root_2 = from_html(`<div class="items svelte-1b12cm3"></div>`);
-var root_1 = from_html(`<div class="group-block"><div class="group-header-row svelte-1b12cm3"><button type="button" class="group-collapse svelte-1b12cm3"><span>\u25B8</span></button> <button type="button" class="group-label svelte-1b12cm3"> </button></div> <!></div>`);
+var root_1 = from_html(`<div class="group-block svelte-1b12cm3"><div class="group-header-row svelte-1b12cm3"><button type="button" class="group-collapse svelte-1b12cm3"><span>\u25B8</span></button> <button type="button" class="group-label svelte-1b12cm3"> </button></div> <!></div>`);
 var root_5 = from_html(`<button type="button"><span class="accent svelte-1b12cm3"></span> <span class="emoji"> </span> <span> </span></button>`);
-var root_4 = from_html(`<div class="group-block"><div class="group-header-static svelte-1b12cm3">UNGROUPED</div> <div class="items svelte-1b12cm3"></div></div>`);
+var root_4 = from_html(`<div class="group-block svelte-1b12cm3"><div class="group-header-static svelte-1b12cm3">UNGROUPED</div> <div class="items svelte-1b12cm3"></div></div>`);
 var root = from_html(`<nav aria-label="Sidebar navigation"><div class="brand svelte-1b12cm3"><div class="logo svelte-1b12cm3">\u2713</div> <div><strong>ADHD Todo</strong> <small class="svelte-1b12cm3">Vault-backed task board</small></div></div> <button type="button">\u{1F3E1} Dashboard</button> <button type="button">\u{1F345} Focus Mode</button> <div class="group-list svelte-1b12cm3"><!> <!></div></nav>`);
 var $$css = {
   hash: "svelte-1b12cm3",
-  code: ".sidebar.svelte-1b12cm3 {display:grid;grid-template-rows:auto auto auto 1fr;gap:0.35rem;height:100%;min-height:0;padding:0.5rem;background:var(--sidebar-bg);color:var(--sidebar-text);border-right:1px solid var(--sidebar-border);}.brand.svelte-1b12cm3 {display:flex;gap:0.5rem;align-items:center;padding:0.25rem 0.25rem 0.35rem;}.logo.svelte-1b12cm3 {width:2rem;height:2rem;display:grid;place-items:center;border-radius:0.6rem;background:color-mix(in srgb, var(--accent) 20%, transparent);border:1px solid color-mix(in srgb, var(--accent) 50%, var(--sidebar-border));font-weight:800;}.brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {color:var(--sidebar-muted);}.sidebar.svelte-1b12cm3 button:where(.svelte-1b12cm3) {text-align:left;background:transparent;border:1px solid transparent;color:inherit;border-radius:0.5rem;padding:0.35rem 0.5rem;font:inherit;}.sidebar.svelte-1b12cm3 > button.active:where(.svelte-1b12cm3) {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.group-list.svelte-1b12cm3 {overflow:auto;display:grid;gap:0.4rem;align-content:start;padding-right:0.1rem;}.group-header-row.svelte-1b12cm3 {display:flex;gap:0.15rem;align-items:center;}.group-collapse.svelte-1b12cm3 {border:0;color:var(--sidebar-muted);padding:0.05rem 0.2rem;}.group-collapse.svelte-1b12cm3 span:where(.svelte-1b12cm3) {display:inline-block;transition:transform 120ms ease;}.group-collapse.svelte-1b12cm3 span.rotated:where(.svelte-1b12cm3) {transform:rotate(90deg);}.group-label.svelte-1b12cm3,\n  .group-header-static.svelte-1b12cm3 {color:var(--sidebar-muted);font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:0.1rem 0.15rem;}.group-header-static.svelte-1b12cm3 {padding-inline:0.35rem;}.items.svelte-1b12cm3 {display:grid;gap:0.05rem;}.category-item.svelte-1b12cm3 {display:grid;grid-template-columns:3px 1.1rem 1fr;gap:0.4rem;align-items:center;padding:0.3rem 0.5rem;border-radius:0.4rem;border:1px solid transparent;font-size:0.85rem;}.category-item.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {width:3px;height:1.2rem;border-radius:999px;opacity:0.7;}.category-item.active.svelte-1b12cm3 {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.category-item.active.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {opacity:1;}"
+  code: ".sidebar.svelte-1b12cm3 {display:grid;grid-template-rows:auto auto auto 1fr;gap:0.35rem;height:100%;min-height:0;padding:0.5rem;background:var(--sidebar-bg);color:var(--sidebar-text);border-right:1px solid var(--sidebar-border);}.brand.svelte-1b12cm3 {display:flex;gap:0.5rem;align-items:center;padding:0.25rem 0.25rem 0.35rem;}.logo.svelte-1b12cm3 {width:2rem;height:2rem;display:grid;place-items:center;border-radius:0.6rem;background:color-mix(in srgb, var(--accent) 20%, transparent);border:1px solid color-mix(in srgb, var(--accent) 50%, var(--sidebar-border));font-weight:800;}.brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {color:var(--sidebar-muted);}.sidebar.svelte-1b12cm3 button:where(.svelte-1b12cm3) {text-align:left;background:transparent;border:1px solid transparent;color:inherit;border-radius:0.5rem;padding:0.35rem 0.5rem;font:inherit;}.sidebar.svelte-1b12cm3 > button.active:where(.svelte-1b12cm3) {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.group-list.svelte-1b12cm3 {overflow:auto;display:grid;gap:0.75rem;align-content:start;padding:0.1rem 0.15rem 0.2rem 0.1rem;}.group-block.svelte-1b12cm3 {display:grid;gap:0.2rem;}.group-header-row.svelte-1b12cm3 {display:flex;gap:0.25rem;align-items:center;padding-inline:0.15rem;}.group-collapse.svelte-1b12cm3 {border:0;color:var(--sidebar-muted);padding:0.05rem 0.2rem;}.group-collapse.svelte-1b12cm3 span:where(.svelte-1b12cm3) {display:inline-block;transition:transform 120ms ease;}.group-collapse.svelte-1b12cm3 span.rotated:where(.svelte-1b12cm3) {transform:rotate(90deg);}.group-label.svelte-1b12cm3,\n  .group-header-static.svelte-1b12cm3 {color:var(--sidebar-muted);font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;}.group-header-static.svelte-1b12cm3 {padding:0.15rem 0.65rem;}.items.svelte-1b12cm3 {display:grid;gap:0.12rem;padding-left:0.85rem;}.category-item.svelte-1b12cm3 {display:grid;grid-template-columns:3px 1.1rem 1fr;gap:0.5rem;align-items:center;padding:0.38rem 0.75rem 0.38rem 0.7rem;border-radius:0.4rem;border:1px solid transparent;font-size:0.85rem;}.category-item.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {width:3px;height:1.2rem;border-radius:999px;opacity:0.7;}.category-item.active.svelte-1b12cm3 {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.category-item.active.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {opacity:1;}"
 };
 function Sidebar($$anchor, $$props) {
   push($$props, true);
@@ -6226,7 +6364,7 @@ function Sidebar($$anchor, $$props) {
   reset(div);
   reset(nav_1);
   template_effect(() => {
-    classes = set_class(nav_1, 1, "sidebar svelte-1b12cm3", null, classes, { mobile: mobile() });
+    classes = set_class(nav_1, 1, "sidebar adhd-todo-sidebar svelte-1b12cm3", null, classes, { mobile: mobile() });
     classes_1 = set_class(button, 1, "svelte-1b12cm3", null, classes_1, {
       active: nav.view !== "focus" && !nav.groupId && !nav.categoryId
     });
@@ -6866,7 +7004,7 @@ function TaskBoard($$anchor, $$props) {
 // components/App.svelte
 var root_54 = from_html(`<div class="error-banner"> </div>`);
 var root_62 = from_html(`<div class="focus-layout"><!> <section class="panel"><h3>Plugin Status</h3> <p>Tag prefix: <code> </code></p> <p>Inbox file: <code> </code></p> <p> </p> <p> </p></section></div>`);
-var root7 = from_html(`<div class="adhd-todo-container"><!> <main class="adhd-todo-main"><header class="topbar"><div><h1> </h1> <p><!></p></div> <div class="topbar-actions"><button type="button">Board</button> <button type="button">Focus</button> <button type="button"> </button></div></header> <!> <!></main></div>`);
+var root7 = from_html(`<div class="adhd-todo-container"><aside class="adhd-todo-sidebar-pane"><!></aside> <main class="adhd-todo-main"><header class="topbar"><div><h1> </h1> <p><!></p></div> <div class="topbar-actions"><button type="button">Board</button> <button type="button">Focus</button> <button type="button"> </button></div></header> <!> <!></main></div>`);
 function App($$anchor, $$props) {
   push($$props, true);
   user_effect(() => {
@@ -6876,9 +7014,11 @@ function App($$anchor, $$props) {
   const activeCategory = user_derived(() => nav.categoryId ? getCategory(nav.categoryId) : void 0);
   const pageTitle = user_derived(() => nav.view === "focus" ? "Focus Mode" : get(activeCategory) ? `${get(activeCategory).emoji ? `${get(activeCategory).emoji} ` : ""}${get(activeCategory).name}` : get(activeGroup) ? get(activeGroup).name : "Dashboard");
   var div = root7();
-  var node = child(div);
+  var aside = child(div);
+  var node = child(aside);
   Sidebar(node, {});
-  var main = sibling(node, 2);
+  reset(aside);
+  var main = sibling(aside, 2);
   var header = child(main);
   var div_1 = child(header);
   var h1 = child(div_1);
@@ -7018,7 +7158,7 @@ delegate(["click"]);
 
 // TodoView.ts
 var VIEW_TYPE_TODO = "adhd-todo-view";
-var TodoView = class extends import_obsidian2.ItemView {
+var TodoView = class extends import_obsidian3.ItemView {
   plugin;
   component = null;
   constructor(leaf, plugin) {
@@ -7052,7 +7192,7 @@ var TodoView = class extends import_obsidian2.ItemView {
 };
 
 // settings.ts
-var import_obsidian3 = require("obsidian");
+var import_obsidian4 = require("obsidian");
 var DEFAULT_SETTINGS = {
   tagPrefix: "#todo",
   inboxFile: "Todo Inbox.md",
@@ -7061,7 +7201,7 @@ var DEFAULT_SETTINGS = {
   focusDuration: 25,
   breakDuration: 5
 };
-var TodoSettingTab = class extends import_obsidian3.PluginSettingTab {
+var TodoSettingTab = class extends import_obsidian4.PluginSettingTab {
   plugin;
   constructor(app, plugin) {
     super(app, plugin);
@@ -7071,32 +7211,32 @@ var TodoSettingTab = class extends import_obsidian3.PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     containerEl.createEl("h2", { text: "ADHD Todo Settings" });
-    new import_obsidian3.Setting(containerEl).setName("Tag prefix").setDesc("Tag used to discover tasks in your vault").addText(
+    new import_obsidian4.Setting(containerEl).setName("Tag prefix").setDesc("Tag used to discover tasks in your vault").addText(
       (text2) => text2.setPlaceholder("#todo").setValue(this.plugin.settings.tagPrefix).onChange(async (value) => {
         this.plugin.settings.tagPrefix = value.trim() || "#todo";
         await this.plugin.saveSettings();
         await this.plugin.refreshTodoState();
       })
     );
-    new import_obsidian3.Setting(containerEl).setName("Inbox file").setDesc("File used by Quick Capture for new tasks").addText(
+    new import_obsidian4.Setting(containerEl).setName("Inbox file").setDesc("File used by Quick Capture for new tasks").addText(
       (text2) => text2.setPlaceholder("Todo Inbox.md").setValue(this.plugin.settings.inboxFile).onChange(async (value) => {
         this.plugin.settings.inboxFile = value.trim() || DEFAULT_SETTINGS.inboxFile;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian3.Setting(containerEl).setName("Show completed").setDesc("Show completed tasks in the task board").addToggle(
+    new import_obsidian4.Setting(containerEl).setName("Show completed").setDesc("Show completed tasks in the task board").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.showCompleted).onChange(async (value) => {
         this.plugin.settings.showCompleted = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian3.Setting(containerEl).setName("Focus duration (minutes)").addSlider(
+    new import_obsidian4.Setting(containerEl).setName("Focus duration (minutes)").addSlider(
       (slider) => slider.setLimits(5, 90, 1).setValue(this.plugin.settings.focusDuration).setDynamicTooltip().onChange(async (value) => {
         this.plugin.settings.focusDuration = value;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian3.Setting(containerEl).setName("Break duration (minutes)").addSlider(
+    new import_obsidian4.Setting(containerEl).setName("Break duration (minutes)").addSlider(
       (slider) => slider.setLimits(1, 30, 1).setValue(this.plugin.settings.breakDuration).setDynamicTooltip().onChange(async (value) => {
         this.plugin.settings.breakDuration = value;
         await this.plugin.saveSettings();
@@ -7106,7 +7246,7 @@ var TodoSettingTab = class extends import_obsidian3.PluginSettingTab {
 };
 
 // main.ts
-var ADHDTodoPlugin = class extends import_obsidian4.Plugin {
+var ADHDTodoPlugin = class extends import_obsidian5.Plugin {
   settings = DEFAULT_SETTINGS;
   async onload() {
     await this.loadSettings();
@@ -7141,7 +7281,7 @@ var ADHDTodoPlugin = class extends import_obsidian4.Plugin {
     const { workspace } = this.app;
     let leaf = workspace.getLeavesOfType(VIEW_TYPE_TODO)[0];
     if (!leaf) {
-      leaf = workspace.getRightLeaf(false) ?? workspace.getLeaf(true);
+      leaf = workspace.getLeaf("tab");
       await leaf.setViewState({ type: VIEW_TYPE_TODO, active: true });
     }
     workspace.revealLeaf(leaf);

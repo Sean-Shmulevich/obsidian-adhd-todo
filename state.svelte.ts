@@ -1,8 +1,8 @@
 import { TFile } from 'obsidian';
 import type ADHDTodoPlugin from './main';
-import { scanVaultTodos } from './vault-scanner';
+import { combineScanResults, scanSingleFile } from './vault-scanner';
 import { VaultTodoWriter } from './vault-writer';
-import type { Category, CategoryGroup, Task } from './types';
+import type { Category, CategoryGroup, ScanResult, Task } from './types';
 
 type NavView = 'dashboard' | 'focus';
 
@@ -30,6 +30,10 @@ let pluginRef: ADHDTodoPlugin | null = null;
 let writerRef: VaultTodoWriter | null = null;
 let initialized = false;
 let refreshTimer: number | null = null;
+let scanQueue = Promise.resolve();
+const fileScanCache = new Map<string, ScanResult>();
+const queuedChangedPaths = new Set<string>();
+const queuedDeletedPaths = new Set<string>();
 
 const categoriesByGroupValue = $derived.by(() => {
   const groups = [...categoryGroups].sort((a, b) => a.sortOrder - b.sortOrder);
@@ -82,43 +86,122 @@ export function initializeTodoState(plugin: ADHDTodoPlugin) {
   if (initialized) return;
   initialized = true;
 
-  const queueRefresh = () => {
+  const queueRefresh = (path?: string) => {
+    if (path) {
+      queuedDeletedPaths.delete(path);
+      queuedChangedPaths.add(path);
+    }
     if (refreshTimer != null) window.clearTimeout(refreshTimer);
     refreshTimer = window.setTimeout(() => {
       refreshTimer = null;
-      void refreshVaultState();
-    }, 120);
+      void flushQueuedVaultChanges();
+    }, 300);
+  };
+
+  const queueDelete = (path: string) => {
+    queuedChangedPaths.delete(path);
+    queuedDeletedPaths.add(path);
+    if (refreshTimer != null) window.clearTimeout(refreshTimer);
+    refreshTimer = window.setTimeout(() => {
+      refreshTimer = null;
+      void flushQueuedVaultChanges();
+    }, 300);
   };
 
   plugin.registerEvent(plugin.app.vault.on('modify', (file) => {
-    if (file instanceof TFile && file.extension === 'md') queueRefresh();
+    if (file instanceof TFile && file.extension === 'md') queueRefresh(file.path);
   }));
   plugin.registerEvent(plugin.app.vault.on('create', (file) => {
-    if (file instanceof TFile && file.extension === 'md') queueRefresh();
+    if (file instanceof TFile && file.extension === 'md') queueRefresh(file.path);
   }));
   plugin.registerEvent(plugin.app.vault.on('delete', (file) => {
-    if (file instanceof TFile && file.extension === 'md') queueRefresh();
+    if (file instanceof TFile && file.extension === 'md') queueDelete(file.path);
   }));
-  plugin.registerEvent(plugin.app.vault.on('rename', (file) => {
-    if (file instanceof TFile && file.extension === 'md') queueRefresh();
+  plugin.registerEvent(plugin.app.vault.on('rename', (file, oldPath) => {
+    if (typeof oldPath === 'string' && oldPath.endsWith('.md')) queueDelete(oldPath);
+    if (file instanceof TFile && file.extension === 'md') queueRefresh(file.path);
   }));
 }
 
 export async function refreshVaultState() {
+  return queueScanWork(performFullRefresh);
+}
+
+async function flushQueuedVaultChanges() {
+  return queueScanWork(async () => {
+    if (!pluginRef) return;
+
+    const changedPaths = [...queuedChangedPaths];
+    const deletedPaths = [...queuedDeletedPaths];
+    queuedChangedPaths.clear();
+    queuedDeletedPaths.clear();
+
+    if (changedPaths.length === 0 && deletedPaths.length === 0) return;
+    if (fileScanCache.size === 0) {
+      await performFullRefresh();
+      return;
+    }
+
+    ui.loading = true;
+    ui.errorMessage = null;
+    try {
+      for (const path of deletedPaths) fileScanCache.delete(path);
+
+      for (const path of changedPaths) {
+        const file = pluginRef.app.vault.getAbstractFileByPath(path);
+        if (!(file instanceof TFile) || file.extension !== 'md') {
+          fileScanCache.delete(path);
+          continue;
+        }
+        const scan = await scanSingleFile(pluginRef.app, pluginRef.settings, file);
+        fileScanCache.set(path, scan);
+      }
+
+      const scans = [...fileScanCache.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([, scan]) => scan);
+      applyScanResult(combineScanResults(scans));
+      ui.lastScanAt = new Date().toISOString();
+    } catch (error) {
+      ui.errorMessage = error instanceof Error ? error.message : String(error);
+      await performFullRefresh();
+    } finally {
+      ui.loading = false;
+    }
+  });
+}
+
+async function performFullRefresh() {
   if (!pluginRef) return;
   ui.loading = true;
   ui.errorMessage = null;
   try {
-    const scanned = await scanVaultTodos(pluginRef.app, pluginRef.settings);
-    reconcileGroups(scanned.categoryGroups);
-    reconcileCategories(scanned.categories);
-    reconcileTasks(scanned.tasks);
+    const files = pluginRef.app.vault.getMarkdownFiles();
+    const scans = await Promise.all(files.map((file) => scanSingleFile(pluginRef.app, pluginRef.settings, file)));
+
+    fileScanCache.clear();
+    files.forEach((file, idx) => {
+      fileScanCache.set(file.path, scans[idx]);
+    });
+
+    applyScanResult(combineScanResults(scans));
     ui.lastScanAt = new Date().toISOString();
   } catch (error) {
     ui.errorMessage = error instanceof Error ? error.message : String(error);
   } finally {
     ui.loading = false;
   }
+}
+
+function queueScanWork(work: () => Promise<void>) {
+  scanQueue = scanQueue.then(work, work);
+  return scanQueue;
+}
+
+function applyScanResult(scanned: ScanResult) {
+  reconcileGroups(scanned.categoryGroups);
+  reconcileCategories(scanned.categories);
+  reconcileTasks(scanned.tasks);
 }
 
 function reconcileGroups(nextGroups: CategoryGroup[]) {
@@ -156,6 +239,12 @@ function reconcileCategories(nextCategories: Category[]) {
 }
 
 function reconcileTasks(nextTasks: Task[]) {
+  const categoryIdBySourceKey = new Map(
+    categories.map((category) => [
+      `${category.sourceGroupKey ?? ''}/${category.sourceCategoryKey ?? category.name.toLowerCase()}`,
+      category.id
+    ])
+  );
   const prevByKey = new Map(
     tasks.map((task) => [`${task.sourceFile ?? ''}:${task.sourceLine ?? ''}:${task.title.toLowerCase()}`, task])
   );
@@ -163,14 +252,25 @@ function reconcileTasks(nextTasks: Task[]) {
   const merged = nextTasks.map((task, idx) => {
     const key = `${task.sourceFile ?? ''}:${task.sourceLine ?? ''}:${task.title.toLowerCase()}`;
     const prev = prevByKey.get(key);
+    const sourceKey = taskCategorySourceKey(task);
     return {
       ...task,
       id: prev?.id ?? task.id ?? makeId(),
+      categoryId: sourceKey ? categoryIdBySourceKey.get(sourceKey) : undefined,
       sortOrder: idx
     } satisfies Task;
   });
 
   tasks.splice(0, tasks.length, ...merged);
+}
+
+function taskCategorySourceKey(task: Task): string | undefined {
+  if (!task.sourceTag) return undefined;
+  const tagPrefix = pluginRef?.settings.tagPrefix || '#todo';
+  if (!task.sourceTag.startsWith(`${tagPrefix}/`)) return undefined;
+  const parts = task.sourceTag.slice(tagPrefix.length).split('/').filter(Boolean);
+  if (parts.length < 2) return undefined;
+  return `${parts[0].toLowerCase()}/${parts[1].toLowerCase()}`;
 }
 
 export function setNavDashboard() {
