@@ -40,29 +40,6 @@
   </aside>
 
   <main class="adhd-todo-main">
-    <header class="topbar">
-      <div>
-        <h1>{pageTitle}</h1>
-        <p>
-          {#if activeCategory}
-            Tasks from this category sourced from `#todo` tags in your vault.
-          {:else if nav.uncategorizedOnly}
-            Tasks without a mapped category, including group-level items.
-          {:else if activeGroup}
-            Group view across categories and group-level tagged tasks.
-          {:else}
-            All scanned tasks from your vault.
-          {/if}
-        </p>
-      </div>
-      <div class="topbar-actions">
-        <button type="button" class:active={isDashboardView} onclick={setNavDashboard}>Board</button>
-        <button type="button" onclick={() => refreshVaultState()} disabled={ui.loading}>
-          {ui.loading ? 'Scanning…' : 'Rescan'}
-        </button>
-      </div>
-    </header>
-
     {#if ui.errorMessage}
       <div class="error-banner">Scan failed: {ui.errorMessage}</div>
     {/if}
@@ -73,8 +50,12 @@
       filterGroupId={nav.groupId}
       filterUncategorized={nav.uncategorizedOnly}
       showCategoriesCard={isDashboardView}
+      boardActive={isDashboardView}
+      rescanLoading={ui.loading}
       onSelectCategory={(categoryId) => setNavCategory(categoryId)}
       onSelectUncategorized={setNavUncategorized}
+      onBoard={setNavDashboard}
+      onRescan={() => refreshVaultState()}
     />
   </main>
 </div>

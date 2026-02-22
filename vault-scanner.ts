@@ -1,10 +1,9 @@
 import { TFile, type App } from 'obsidian';
 import type { TodoSettings } from './settings';
-import type { Category, CategoryGroup, Priority, Recurrence, ScanResult, Task } from './types';
+import type { Category, CategoryGroup, Priority, ScanResult, Task } from './types';
 
 const CHECKBOX_RE = /^\s*[-*+]\s*\[(.)\]\s*/;
 const LIST_ITEM_RE = /^\s*[-*+]\s+/;
-const DATE_RE = /\b(\d{4}-\d{2}-\d{2})\b/;
 
 const DEFAULT_EMOJI_MAP: Record<string, string> = {
   school: '🎓',
@@ -60,24 +59,6 @@ function parseCompleted(line: string): { completed: boolean; completedAt?: strin
   };
 }
 
-function parseRecurrence(line: string): Recurrence | undefined {
-  const match = line.match(/🔁\s*every\s+(\d+\s+)?(\w+)/i);
-  if (!match) return undefined;
-  const interval = Math.max(1, Number.parseInt(match[1]?.trim() ?? '1', 10) || 1);
-  const unit = match[2].toLowerCase();
-  if (['day', 'days', 'daily'].includes(unit)) return { type: 'daily', interval };
-  if (['week', 'weeks', 'weekly'].includes(unit)) return { type: 'weekly', interval };
-  if (['month', 'months', 'monthly'].includes(unit)) return { type: 'monthly', interval };
-  return undefined;
-}
-
-function parseDueDate(line: string): string | undefined {
-  const idx = line.indexOf('📅');
-  if (idx < 0) return undefined;
-  const tail = line.slice(idx);
-  return tail.match(DATE_RE)?.[1];
-}
-
 function parseTaskTitle(line: string, tagPrefix: string): string {
   return line
     .replace(CHECKBOX_RE, '')
@@ -85,7 +66,6 @@ function parseTaskTitle(line: string, tagPrefix: string): string {
     .replace(new RegExp(`${escapeRegex(tagPrefix)}(?:\\/[\\w-]+)*`, 'g'), '')
     .replace(/✅\s*\d{4}-\d{2}-\d{2}/g, '')
     .replace(/📅\s*\d{4}-\d{2}-\d{2}/g, '')
-    .replace(/🔁\s*every\s+(\d+\s+)?\w+/gi, '')
     .replace(/[⏫🔺🔼🔽]/g, '')
     .replace(/\[\[([^\]]+)\]\]/g, '$1')
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
@@ -173,8 +153,6 @@ export async function scanSingleFile(app: App, settings: TodoSettings, file: TFi
     const completion = parseCompleted(trimmed);
     const createdAt = file.stat?.ctime ? new Date(file.stat.ctime).toISOString() : new Date().toISOString();
     const updatedAt = file.stat?.mtime ? new Date(file.stat.mtime).toISOString() : createdAt;
-    const dueDate = parseDueDate(trimmed);
-
     tasks.push({
       id: makeId(),
       title,
@@ -185,8 +163,6 @@ export async function scanSingleFile(app: App, settings: TodoSettings, file: TFi
       completedAt: completion.completedAt ? `${completion.completedAt}T00:00:00.000Z` : undefined,
       sortOrder: tasks.length,
       categoryId,
-      recurrence: parseRecurrence(trimmed),
-      nextDueAt: dueDate ? `${dueDate}T00:00:00.000Z` : undefined,
       source: `obsidian:${file.path}`,
       sourceTag: tag,
       sourceFile: file.path,

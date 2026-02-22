@@ -812,8 +812,8 @@ var Batch = class _Batch {
     this.apply();
     var effects = [];
     var render_effects = [];
-    for (const root7 of root_effects) {
-      this.#traverse_effect_tree(root7, effects, render_effects);
+    for (const root6 of root_effects) {
+      this.#traverse_effect_tree(root6, effects, render_effects);
     }
     if (this.is_deferred()) {
       this.#defer_effects(render_effects);
@@ -843,9 +843,9 @@ var Batch = class _Batch {
    * @param {Effect[]} effects
    * @param {Effect[]} render_effects
    */
-  #traverse_effect_tree(root7, effects, render_effects) {
-    root7.f ^= CLEAN;
-    var effect2 = root7.first;
+  #traverse_effect_tree(root6, effects, render_effects) {
+    root6.f ^= CLEAN;
+    var effect2 = root6.first;
     var pending_boundary = null;
     while (effect2 !== null) {
       var flags2 = effect2.f;
@@ -971,8 +971,8 @@ var Batch = class _Batch {
           if (queued_root_effects.length > 0) {
             current_batch = batch;
             batch.apply();
-            for (const root7 of queued_root_effects) {
-              batch.#traverse_effect_tree(root7, [], []);
+            for (const root6 of queued_root_effects) {
+              batch.#traverse_effect_tree(root6, [], []);
             }
             batch.deactivate();
           }
@@ -3109,7 +3109,7 @@ function is_dirty(reaction) {
   }
   return false;
 }
-function schedule_possible_effect_self_invalidation(signal, effect2, root7 = true) {
+function schedule_possible_effect_self_invalidation(signal, effect2, root6 = true) {
   var reactions = signal.reactions;
   if (reactions === null) return;
   if (!async_mode_flag && current_sources !== null && includes.call(current_sources, signal)) {
@@ -3125,7 +3125,7 @@ function schedule_possible_effect_self_invalidation(signal, effect2, root7 = tru
         false
       );
     } else if (effect2 === reaction) {
-      if (root7) {
+      if (root6) {
         set_signal_status(reaction, DIRTY);
       } else if ((reaction.f & CLEAN) !== 0) {
         set_signal_status(reaction, MAYBE_DIRTY);
@@ -3763,24 +3763,17 @@ function from_html(content, flags2) {
     return clone;
   };
 }
-function text(value = "") {
-  if (!hydrating) {
-    var t = create_text(value + "");
-    assign_nodes(t, t);
-    return t;
+function comment() {
+  if (hydrating) {
+    assign_nodes(hydrate_node, null);
+    return hydrate_node;
   }
-  var node = hydrate_node;
-  if (node.nodeType !== TEXT_NODE) {
-    node.before(node = create_text());
-    set_hydrate_node(node);
-  } else {
-    merge_text_nodes(
-      /** @type {Text} */
-      node
-    );
-  }
-  assign_nodes(node, node);
-  return node;
+  var frag = document.createDocumentFragment();
+  var start = document.createComment("");
+  var anchor = create_text();
+  frag.append(start, anchor);
+  assign_nodes(start, anchor);
+  return frag;
 }
 function append(anchor, dom) {
   if (hydrating) {
@@ -4630,16 +4623,16 @@ function validate_each_keys(array, key_fn) {
 // ../adhd-todo/node_modules/svelte/src/internal/client/dom/css.js
 function append_styles(anchor, css) {
   effect(() => {
-    var root7 = anchor.getRootNode();
+    var root6 = anchor.getRootNode();
     var target = (
       /** @type {ShadowRoot} */
-      root7.host ? (
+      root6.host ? (
         /** @type {ShadowRoot} */
-        root7
+        root6
       ) : (
         /** @type {Document} */
-        root7.head ?? /** @type {Document} */
-        root7.ownerDocument.head
+        root6.head ?? /** @type {Document} */
+        root6.ownerDocument.head
       )
     );
     if (!target.querySelector("#" + css.hash)) {
@@ -5616,7 +5609,6 @@ var import_obsidian2 = require("obsidian");
 var import_obsidian = require("obsidian");
 var CHECKBOX_RE = /^\s*[-*+]\s*\[(.)\]\s*/;
 var LIST_ITEM_RE = /^\s*[-*+]\s+/;
-var DATE_RE = /\b(\d{4}-\d{2}-\d{2})\b/;
 var DEFAULT_EMOJI_MAP = {
   school: "\u{1F393}",
   programming: "\u{1F4BB}",
@@ -5662,24 +5654,8 @@ function parseCompleted(line) {
     completedAt: doneDateMatch?.[1]
   };
 }
-function parseRecurrence(line) {
-  const match = line.match(/🔁\s*every\s+(\d+\s+)?(\w+)/i);
-  if (!match) return void 0;
-  const interval = Math.max(1, Number.parseInt(match[1]?.trim() ?? "1", 10) || 1);
-  const unit = match[2].toLowerCase();
-  if (["day", "days", "daily"].includes(unit)) return { type: "daily", interval };
-  if (["week", "weeks", "weekly"].includes(unit)) return { type: "weekly", interval };
-  if (["month", "months", "monthly"].includes(unit)) return { type: "monthly", interval };
-  return void 0;
-}
-function parseDueDate(line) {
-  const idx = line.indexOf("\u{1F4C5}");
-  if (idx < 0) return void 0;
-  const tail = line.slice(idx);
-  return tail.match(DATE_RE)?.[1];
-}
 function parseTaskTitle(line, tagPrefix) {
-  return line.replace(CHECKBOX_RE, "").replace(LIST_ITEM_RE, "").replace(new RegExp(`${escapeRegex(tagPrefix)}(?:\\/[\\w-]+)*`, "g"), "").replace(/✅\s*\d{4}-\d{2}-\d{2}/g, "").replace(/📅\s*\d{4}-\d{2}-\d{2}/g, "").replace(/🔁\s*every\s+(\d+\s+)?\w+/gi, "").replace(/[⏫🔺🔼🔽]/g, "").replace(/\[\[([^\]]+)\]\]/g, "$1").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/\s+/g, " ").trim();
+  return line.replace(CHECKBOX_RE, "").replace(LIST_ITEM_RE, "").replace(new RegExp(`${escapeRegex(tagPrefix)}(?:\\/[\\w-]+)*`, "g"), "").replace(/✅\s*\d{4}-\d{2}-\d{2}/g, "").replace(/📅\s*\d{4}-\d{2}-\d{2}/g, "").replace(/[⏫🔺🔼🔽]/g, "").replace(/\[\[([^\]]+)\]\]/g, "$1").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/\s+/g, " ").trim();
 }
 function displayNameFromSlug(value) {
   return value.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -5743,7 +5719,6 @@ async function scanSingleFile(app, settings, file) {
     const completion = parseCompleted(trimmed);
     const createdAt = file.stat?.ctime ? new Date(file.stat.ctime).toISOString() : (/* @__PURE__ */ new Date()).toISOString();
     const updatedAt = file.stat?.mtime ? new Date(file.stat.mtime).toISOString() : createdAt;
-    const dueDate = parseDueDate(trimmed);
     tasks2.push({
       id: makeId(),
       title,
@@ -5754,8 +5729,6 @@ async function scanSingleFile(app, settings, file) {
       completedAt: completion.completedAt ? `${completion.completedAt}T00:00:00.000Z` : void 0,
       sortOrder: tasks2.length,
       categoryId,
-      recurrence: parseRecurrence(trimmed),
-      nextDueAt: dueDate ? `${dueDate}T00:00:00.000Z` : void 0,
       source: `obsidian:${file.path}`,
       sourceTag: tag2,
       sourceFile: file.path,
@@ -6375,141 +6348,19 @@ function Sidebar($$anchor, $$props) {
 }
 delegate(["click"]);
 
-// components/RecurrencePicker.svelte
-var root_32 = from_html(`<button type="button"> </button>`);
-var root_22 = from_html(`<div class="dow-row svelte-mcqnzv" aria-label="days of week"></div>`);
-var root_12 = from_html(`<div class="recurrence-fields svelte-mcqnzv"><select class="svelte-mcqnzv"><option>Daily</option><option>Weekly</option><option>Monthly</option></select> <label class="svelte-mcqnzv"><span>Every</span> <input type="number" min="1" class="svelte-mcqnzv"/> <span> </span></label></div> <!>`, 1);
-var root2 = from_html(`<div><label class="inline-toggle svelte-mcqnzv"><input type="checkbox"/> <span>Recurring</span></label> <!></div>`);
-var $$css2 = {
-  hash: "svelte-mcqnzv",
-  code: ".recurrence-picker.svelte-mcqnzv {display:grid;gap:0.5rem;padding:0.5rem;border:1px solid var(--border-color);border-radius:0.65rem;background:var(--surface-2);}.recurrence-picker.compact.svelte-mcqnzv {padding:0.4rem;gap:0.35rem;}.inline-toggle.svelte-mcqnzv {display:inline-flex;align-items:center;gap:0.5rem;font-size:0.9rem;}.recurrence-fields.svelte-mcqnzv {display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;}.recurrence-fields.svelte-mcqnzv label:where(.svelte-mcqnzv) {display:inline-flex;gap:0.35rem;align-items:center;font-size:0.85rem;}select.svelte-mcqnzv,\n  input[type='number'].svelte-mcqnzv {background:var(--surface-1);border:1px solid var(--border-color);color:inherit;border-radius:0.45rem;padding:0.35rem 0.5rem;}input[type='number'].svelte-mcqnzv {width:4rem;}.dow-row.svelte-mcqnzv {display:flex;gap:0.35rem;}.dow-row.svelte-mcqnzv button:where(.svelte-mcqnzv) {width:1.9rem;height:1.9rem;border-radius:999px;border:1px solid var(--border-color);background:var(--surface-1);color:inherit;}.dow-row.svelte-mcqnzv button.selected:where(.svelte-mcqnzv) {background:var(--accent);border-color:var(--accent);color:white;}"
-};
-function RecurrencePicker($$anchor, $$props) {
-  push($$props, true);
-  append_styles($$anchor, $$css2);
-  let compact = prop($$props, "compact", 3, false);
-  let enabled = state(false);
-  let type = state("daily");
-  let interval = state(1);
-  let daysOfWeek = state(proxy([]));
-  user_effect(() => {
-    set(enabled, Boolean($$props.value), true);
-    set(type, $$props.value?.type ?? "daily", true);
-    set(interval, $$props.value?.interval ?? 1, true);
-    set(daysOfWeek, $$props.value?.daysOfWeek ? [...$$props.value.daysOfWeek] : [], true);
-  });
-  function emit() {
-    if (!get(enabled)) {
-      $$props.onChange(void 0);
-      return;
-    }
-    $$props.onChange({
-      type: get(type),
-      interval: Math.max(1, Number(get(interval)) || 1),
-      ...get(type) === "weekly" && get(daysOfWeek).length ? { daysOfWeek: [...get(daysOfWeek)].sort((a, b) => a - b) } : {}
-    });
-  }
-  function toggleDay(day) {
-    set(
-      daysOfWeek,
-      get(daysOfWeek).includes(day) ? get(daysOfWeek).filter((value) => value !== day) : [...get(daysOfWeek), day],
-      true
-    );
-    emit();
-  }
-  var div = root2();
-  let classes;
-  var label_1 = child(div);
-  var input = child(label_1);
-  remove_input_defaults(input);
-  next(2);
-  reset(label_1);
-  var node = sibling(label_1, 2);
-  {
-    var consequent_1 = ($$anchor2) => {
-      var fragment = root_12();
-      var div_1 = first_child(fragment);
-      var select = child(div_1);
-      var option = child(select);
-      option.value = option.__value = "daily";
-      var option_1 = sibling(option);
-      option_1.value = option_1.__value = "weekly";
-      var option_2 = sibling(option_1);
-      option_2.value = option_2.__value = "monthly";
-      reset(select);
-      var label_2 = sibling(select, 2);
-      var input_1 = sibling(child(label_2), 2);
-      remove_input_defaults(input_1);
-      var span = sibling(input_1, 2);
-      var text2 = child(span, true);
-      reset(span);
-      reset(label_2);
-      reset(div_1);
-      var node_1 = sibling(div_1, 2);
-      {
-        var consequent = ($$anchor3) => {
-          var div_2 = root_22();
-          each(div_2, 20, () => ["S", "M", "T", "W", "T", "F", "S"], index, ($$anchor4, label, day) => {
-            var button = root_32();
-            let classes_1;
-            var text_1 = child(button, true);
-            reset(button);
-            template_effect(
-              ($0) => {
-                classes_1 = set_class(button, 1, "svelte-mcqnzv", null, classes_1, $0);
-                set_text(text_1, label);
-              },
-              [() => ({ selected: get(daysOfWeek).includes(day) })]
-            );
-            delegated("click", button, () => toggleDay(day));
-            append($$anchor4, button);
-          });
-          reset(div_2);
-          append($$anchor3, div_2);
-        };
-        if_block(node_1, ($$render) => {
-          if (get(type) === "weekly") $$render(consequent);
-        });
-      }
-      template_effect(() => set_text(text2, get(type) === "daily" ? "day(s)" : get(type) === "weekly" ? "week(s)" : "month(s)"));
-      delegated("change", select, () => emit());
-      bind_select_value(select, () => get(type), ($$value) => set(type, $$value));
-      delegated("change", input_1, () => emit());
-      bind_value(input_1, () => get(interval), ($$value) => set(interval, $$value));
-      append($$anchor2, fragment);
-    };
-    if_block(node, ($$render) => {
-      if (get(enabled)) $$render(consequent_1);
-    });
-  }
-  reset(div);
-  template_effect(() => {
-    classes = set_class(div, 1, "recurrence-picker svelte-mcqnzv", null, classes, { compact: compact() });
-    set_checked(input, get(enabled));
-  });
-  delegated("change", input, (event2) => {
-    set(enabled, event2.currentTarget.checked, true);
-    emit();
-  });
-  append($$anchor, div);
-  pop();
-}
-delegate(["change", "click"]);
-
 // components/QuickCapture.svelte
-var root_13 = from_html(`<option> </option>`);
-var root3 = from_html(`<section class="quick-capture svelte-149ph0u"><div class="header svelte-149ph0u"><h2 class="svelte-149ph0u">Quick Capture</h2> <p class="svelte-149ph0u">Fast task entry into your vault inbox file.</p></div> <form class="svelte-149ph0u"><input type="text" placeholder="What needs to happen next?" maxlength="140" class="svelte-149ph0u"/> <div class="row svelte-149ph0u"><label class="svelte-149ph0u"><span>Priority</span> <select class="svelte-149ph0u"><option>Low</option><option>Medium</option><option>High</option></select></label> <label class="svelte-149ph0u"><span>Category</span> <select class="svelte-149ph0u"><option>Uncategorized (uses #todo)</option><!></select></label> <button type="submit" class="svelte-149ph0u"> </button></div> <!> <p class="note svelte-149ph0u">Recurrence is UI-only for now; vault writeback stores title, category tag, and priority marker.</p></form></section>`);
-var $$css3 = {
+var root_12 = from_html(`<option> </option>`);
+var root2 = from_html(`<section class="quick-capture svelte-149ph0u"><div class="header svelte-149ph0u"><h2 class="svelte-149ph0u">Quick Capture</h2> <p class="svelte-149ph0u">Fast task entry into your vault inbox file.</p></div> <form class="svelte-149ph0u"><input type="text" placeholder="What needs to happen next?" maxlength="140" class="svelte-149ph0u"/> <div class="row svelte-149ph0u"><label class="svelte-149ph0u"><span>Priority</span> <select class="svelte-149ph0u"><option>Low</option><option>Medium</option><option>High</option></select></label> <label class="svelte-149ph0u"><span>Category</span> <select class="svelte-149ph0u"><option>Uncategorized (uses #todo)</option><!></select></label> <button type="submit" class="svelte-149ph0u"> </button></div></form></section>`);
+var $$css2 = {
   hash: "svelte-149ph0u",
-  code: ".quick-capture.svelte-149ph0u {display:grid;gap:0.75rem;padding:1rem;border-radius:1rem;border:1px solid var(--border-color);background:var(--surface-1);}.header.svelte-149ph0u h2:where(.svelte-149ph0u) {margin:0;font-size:1.05rem;}.header.svelte-149ph0u p:where(.svelte-149ph0u) {margin:0.2rem 0 0;font-size:0.85rem;color:var(--text-muted);}form.svelte-149ph0u {display:grid;gap:0.75rem;}input[type='text'].svelte-149ph0u {width:100%;background:var(--surface-2);border:1px solid var(--border-color);border-radius:0.7rem;padding:0.7rem 0.85rem;color:inherit;}.row.svelte-149ph0u {display:flex;flex-wrap:wrap;gap:0.75rem;align-items:end;}label.svelte-149ph0u {display:grid;gap:0.25rem;font-size:0.8rem;}select.svelte-149ph0u,\n  button.svelte-149ph0u {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.6rem;padding:0.5rem 0.65rem;}button[type='submit'].svelte-149ph0u {background:var(--accent);border-color:var(--accent);color:white;font-weight:700;}.note.svelte-149ph0u {margin:0;color:var(--text-muted);font-size:0.75rem;}\n\n  @media (max-width: 700px) {.row.svelte-149ph0u > :where(.svelte-149ph0u) {flex:1 1 100%;}\n  }"
+  code: ".quick-capture.svelte-149ph0u {display:grid;gap:0.75rem;padding:1rem;border-radius:1rem;border:1px solid var(--border-color);background:var(--surface-1);}.header.svelte-149ph0u h2:where(.svelte-149ph0u) {margin:0;font-size:1.05rem;}.header.svelte-149ph0u p:where(.svelte-149ph0u) {margin:0.2rem 0 0;font-size:0.85rem;color:var(--text-muted);}form.svelte-149ph0u {display:grid;gap:0.75rem;}input[type='text'].svelte-149ph0u {width:100%;background:var(--surface-2);border:1px solid var(--border-color);border-radius:0.7rem;padding:0.7rem 0.85rem;color:inherit;}.row.svelte-149ph0u {display:flex;flex-wrap:wrap;gap:0.75rem;align-items:end;}label.svelte-149ph0u {display:grid;gap:0.25rem;font-size:0.8rem;}select.svelte-149ph0u,\n  button.svelte-149ph0u {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.6rem;padding:0.5rem 0.65rem;}button[type='submit'].svelte-149ph0u {background:var(--accent);border-color:var(--accent);color:white;font-weight:700;}\n\n  @media (max-width: 700px) {.row.svelte-149ph0u > :where(.svelte-149ph0u) {flex:1 1 100%;}\n  }"
 };
 function QuickCapture($$anchor, $$props) {
   push($$props, true);
-  append_styles($$anchor, $$css3);
+  append_styles($$anchor, $$css2);
   let title = state("");
   let priority = state("medium");
   let categoryId = state("");
-  let recurrence = state(void 0);
   let submitting = state(false);
   user_effect(() => {
     set(categoryId, $$props.defaultCategoryId ?? "", true);
@@ -6525,12 +6376,11 @@ function QuickCapture($$anchor, $$props) {
       });
       set(title, "");
       set(priority, "medium");
-      set(recurrence, void 0);
     } finally {
       set(submitting, false);
     }
   }
-  var section = root3();
+  var section = root2();
   var form = sibling(child(section), 2);
   var input = child(form);
   remove_input_defaults(input);
@@ -6551,7 +6401,7 @@ function QuickCapture($$anchor, $$props) {
   option_3.value = option_3.__value = "";
   var node = sibling(option_3);
   each(node, 17, () => [...categories].sort((a, b) => a.sortOrder - b.sortOrder), index, ($$anchor2, category) => {
-    var option_4 = root_13();
+    var option_4 = root_12();
     var text2 = child(option_4);
     reset(option_4);
     var option_4_value = {};
@@ -6569,14 +6419,6 @@ function QuickCapture($$anchor, $$props) {
   var text_1 = child(button, true);
   reset(button);
   reset(div);
-  var node_1 = sibling(div, 2);
-  RecurrencePicker(node_1, {
-    get value() {
-      return get(recurrence);
-    },
-    onChange: (value) => set(recurrence, value, true)
-  });
-  next(2);
   reset(form);
   reset(section);
   template_effect(() => {
@@ -6595,42 +6437,36 @@ function QuickCapture($$anchor, $$props) {
 }
 
 // components/TaskCard.svelte
-var root_14 = from_html(`<span class="badge recur svelte-1j8piq" title="Recurring task">\u{1F504}</span>`);
-var root_23 = from_html(`<span> </span>`);
-var root_33 = from_html(`<span> </span>`);
-var root_52 = from_html(`<option> </option>`);
-var root_42 = from_html(`<div class="editor svelte-1j8piq"><input type="text" maxlength="140" class="svelte-1j8piq"/> <div class="grid2 svelte-1j8piq"><select class="svelte-1j8piq"><option>Low</option><option>Medium</option><option>High</option></select> <select disabled="" class="svelte-1j8piq"><option>Vault category (read from tags)</option><!></select></div> <!> <div class="actions svelte-1j8piq"><button type="button" class="svelte-1j8piq">Save</button> <button type="button" class="ghost svelte-1j8piq">Cancel</button></div> <p class="note svelte-1j8piq">Only title and completion state are written back to vault in Phase 1 migration.</p></div>`);
-var root_6 = from_html(`<div class="actions svelte-1j8piq"><button type="button" class="ghost svelte-1j8piq">Open in Obsidian</button> <button type="button" class="ghost svelte-1j8piq">Edit</button> <button type="button" class="danger svelte-1j8piq">Delete</button></div>`);
-var root4 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><label class="checkbox-row svelte-1j8piq"><input type="checkbox"/> <span class="title svelte-1j8piq"> </span></label> <div class="badges svelte-1j8piq"><!> <span> </span></div></div> <div class="meta svelte-1j8piq"><span> </span> <!> <!></div> <!></article>`);
-var $$css4 = {
+var root_13 = from_html(`<span> </span>`);
+var root_32 = from_html(`<option> </option>`);
+var root_22 = from_html(`<div class="editor svelte-1j8piq"><input type="text" maxlength="140" class="svelte-1j8piq"/> <div class="grid2 svelte-1j8piq"><select class="svelte-1j8piq"><option>Low</option><option>Medium</option><option>High</option></select> <select disabled="" class="svelte-1j8piq"><option>Vault category (read from tags)</option><!></select></div> <div class="actions svelte-1j8piq"><button type="button" class="svelte-1j8piq">Save</button> <button type="button" class="ghost svelte-1j8piq">Cancel</button></div> <p class="note svelte-1j8piq">Only title and completion state are written back to vault in Phase 1 migration.</p></div>`);
+var root_42 = from_html(`<div class="actions svelte-1j8piq"><button type="button" class="ghost svelte-1j8piq">Open in Obsidian</button> <button type="button" class="ghost svelte-1j8piq">Edit</button> <button type="button" class="danger svelte-1j8piq">Delete</button></div>`);
+var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><label class="checkbox-row svelte-1j8piq"><input type="checkbox"/> <span class="title svelte-1j8piq"> </span></label> <div class="badges svelte-1j8piq"><span> </span></div></div> <div class="meta svelte-1j8piq"><span> </span> <!></div> <!></article>`);
+var $$css3 = {
   hash: "svelte-1j8piq",
-  code: ".task-card.svelte-1j8piq {display:grid;gap:0.6rem;padding:0.85rem;border-radius:0.9rem;border:1px solid var(--border-color);background:var(--surface-1);}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.5rem;}.checkbox-row.svelte-1j8piq {display:flex;gap:0.6rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {line-height:1.35;word-break:break-word;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.badges.svelte-1j8piq {display:flex;gap:0.35rem;align-items:center;}.badge.svelte-1j8piq {padding:0.2rem 0.5rem;border-radius:999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;border:1px solid var(--border-color);background:var(--surface-2);}.badge.low.svelte-1j8piq {background:color-mix(in srgb, #58d68d 16%, var(--surface-2));}.badge.medium.svelte-1j8piq {background:color-mix(in srgb, #f4d03f 18%, var(--surface-2));}.badge.high.svelte-1j8piq,\n  .badge.urgent.svelte-1j8piq {background:color-mix(in srgb, #ff6b6b 16%, var(--surface-2));}.badge.recur.svelte-1j8piq {font-size:0.85rem;padding:0.1rem 0.35rem;}.meta.svelte-1j8piq {display:flex;flex-wrap:wrap;gap:0.5rem 0.8rem;font-size:0.78rem;color:var(--text-muted);}.editor.svelte-1j8piq {display:grid;gap:0.5rem;padding-top:0.25rem;}.editor.svelte-1j8piq input:where(.svelte-1j8piq),\n  .editor.svelte-1j8piq select:where(.svelte-1j8piq),\n  .actions.svelte-1j8piq button:where(.svelte-1j8piq) {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.45rem 0.6rem;}.grid2.svelte-1j8piq {display:grid;gap:0.5rem;grid-template-columns:repeat(2, minmax(0, 1fr));}.actions.svelte-1j8piq {display:flex;gap:0.5rem;justify-content:flex-end;flex-wrap:wrap;}.actions.svelte-1j8piq .ghost:where(.svelte-1j8piq) {background:transparent;}.actions.svelte-1j8piq .danger:where(.svelte-1j8piq) {border-color:color-mix(in srgb, #ff6b6b 55%, var(--border-color));}.note.svelte-1j8piq {margin:0;color:var(--text-muted);font-size:0.75rem;}\n\n  @media (max-width: 600px) {.grid2.svelte-1j8piq {grid-template-columns:1fr;}\n  }"
+  code: ".task-card.svelte-1j8piq {display:grid;gap:0.6rem;padding:0.85rem;border-radius:0.9rem;border:1px solid var(--border-color);background:var(--surface-1);}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.5rem;}.checkbox-row.svelte-1j8piq {display:flex;gap:0.6rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {line-height:1.35;word-break:break-word;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.badges.svelte-1j8piq {display:flex;gap:0.35rem;align-items:center;}.badge.svelte-1j8piq {padding:0.2rem 0.5rem;border-radius:999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;border:1px solid var(--border-color);background:var(--surface-2);}.badge.low.svelte-1j8piq {background:color-mix(in srgb, #58d68d 16%, var(--surface-2));}.badge.medium.svelte-1j8piq {background:color-mix(in srgb, #f4d03f 18%, var(--surface-2));}.badge.high.svelte-1j8piq,\n  .badge.urgent.svelte-1j8piq {background:color-mix(in srgb, #ff6b6b 16%, var(--surface-2));}.meta.svelte-1j8piq {display:flex;flex-wrap:wrap;gap:0.5rem 0.8rem;font-size:0.78rem;color:var(--text-muted);}.editor.svelte-1j8piq {display:grid;gap:0.5rem;padding-top:0.25rem;}.editor.svelte-1j8piq input:where(.svelte-1j8piq),\n  .editor.svelte-1j8piq select:where(.svelte-1j8piq),\n  .actions.svelte-1j8piq button:where(.svelte-1j8piq) {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.45rem 0.6rem;}.grid2.svelte-1j8piq {display:grid;gap:0.5rem;grid-template-columns:repeat(2, minmax(0, 1fr));}.actions.svelte-1j8piq {display:flex;gap:0.5rem;justify-content:flex-end;flex-wrap:wrap;}.actions.svelte-1j8piq .ghost:where(.svelte-1j8piq) {background:transparent;}.actions.svelte-1j8piq .danger:where(.svelte-1j8piq) {border-color:color-mix(in srgb, #ff6b6b 55%, var(--border-color));}.note.svelte-1j8piq {margin:0;color:var(--text-muted);font-size:0.75rem;}\n\n  @media (max-width: 600px) {.grid2.svelte-1j8piq {grid-template-columns:1fr;}\n  }"
 };
 function TaskCard($$anchor, $$props) {
   push($$props, true);
-  append_styles($$anchor, $$css4);
+  append_styles($$anchor, $$css3);
   let editing = state(false);
   let title = state("");
   let priority = state("medium");
   let categoryId = state("");
-  let recurrence = state(void 0);
   user_effect(() => {
     set(title, $$props.task.title, true);
     set(priority, $$props.task.priority === "urgent" ? "high" : $$props.task.priority, true);
     set(categoryId, $$props.task.categoryId ?? "", true);
-    set(recurrence, $$props.task.recurrence, true);
   });
-  const dueText = user_derived(() => $$props.task.nextDueAt ? new Date($$props.task.nextDueAt).toLocaleDateString() : null);
   async function save2() {
     await updateTask($$props.task.id, {
       title: get(title),
       priority: get(priority),
-      categoryId: get(categoryId) || void 0,
-      recurrence: get(recurrence)
+      categoryId: get(categoryId) || void 0
     });
     set(editing, false);
   }
-  var article = root4();
+  var article = root3();
   let classes;
   var div = child(article);
   var label = child(div);
@@ -6641,56 +6477,33 @@ function TaskCard($$anchor, $$props) {
   reset(span);
   reset(label);
   var div_1 = sibling(label, 2);
-  var node = child(div_1);
-  {
-    var consequent = ($$anchor2) => {
-      var span_1 = root_14();
-      append($$anchor2, span_1);
-    };
-    if_block(node, ($$render) => {
-      if ($$props.task.recurrence) $$render(consequent);
-    });
-  }
-  var span_2 = sibling(node, 2);
-  var text_1 = child(span_2, true);
-  reset(span_2);
+  var span_1 = child(div_1);
+  var text_1 = child(span_1, true);
+  reset(span_1);
   reset(div_1);
   reset(div);
   var div_2 = sibling(div, 2);
-  var span_3 = child(div_2);
-  var text_2 = child(span_3, true);
-  reset(span_3);
-  var node_1 = sibling(span_3, 2);
+  var span_2 = child(div_2);
+  var text_2 = child(span_2, true);
+  reset(span_2);
+  var node = sibling(span_2, 2);
   {
-    var consequent_1 = ($$anchor2) => {
-      var span_4 = root_23();
-      var text_3 = child(span_4);
-      reset(span_4);
-      template_effect(() => set_text(text_3, `Due: ${get(dueText) ?? ""}`));
-      append($$anchor2, span_4);
+    var consequent = ($$anchor2) => {
+      var span_3 = root_13();
+      var text_3 = child(span_3);
+      reset(span_3);
+      template_effect(() => set_text(text_3, `${$$props.task.sourceFile ?? ""}:${$$props.task.sourceLine ?? ""}`));
+      append($$anchor2, span_3);
     };
-    if_block(node_1, ($$render) => {
-      if (get(dueText)) $$render(consequent_1);
-    });
-  }
-  var node_2 = sibling(node_1, 2);
-  {
-    var consequent_2 = ($$anchor2) => {
-      var span_5 = root_33();
-      var text_4 = child(span_5);
-      reset(span_5);
-      template_effect(() => set_text(text_4, `${$$props.task.sourceFile ?? ""}:${$$props.task.sourceLine ?? ""}`));
-      append($$anchor2, span_5);
-    };
-    if_block(node_2, ($$render) => {
-      if ($$props.task.sourceFile) $$render(consequent_2);
+    if_block(node, ($$render) => {
+      if ($$props.task.sourceFile) $$render(consequent);
     });
   }
   reset(div_2);
-  var node_3 = sibling(div_2, 2);
+  var node_1 = sibling(div_2, 2);
   {
-    var consequent_3 = ($$anchor2) => {
-      var div_3 = root_42();
+    var consequent_1 = ($$anchor2) => {
+      var div_3 = root_22();
       var input_1 = child(div_3);
       remove_input_defaults(input_1);
       var div_4 = sibling(input_1, 2);
@@ -6705,14 +6518,14 @@ function TaskCard($$anchor, $$props) {
       var select_1 = sibling(select, 2);
       var option_3 = child(select_1);
       option_3.value = option_3.__value = "";
-      var node_4 = sibling(option_3);
-      each(node_4, 17, () => [...categories].sort((a, b) => a.sortOrder - b.sortOrder), index, ($$anchor3, category) => {
-        var option_4 = root_52();
-        var text_5 = child(option_4);
+      var node_2 = sibling(option_3);
+      each(node_2, 17, () => [...categories].sort((a, b) => a.sortOrder - b.sortOrder), index, ($$anchor3, category) => {
+        var option_4 = root_32();
+        var text_4 = child(option_4);
         reset(option_4);
         var option_4_value = {};
         template_effect(() => {
-          set_text(text_5, `${get(category).emoji ? `${get(category).emoji} ` : ""}${get(category).name ?? ""}`);
+          set_text(text_4, `${get(category).emoji ? `${get(category).emoji} ` : ""}${get(category).name ?? ""}`);
           if (option_4_value !== (option_4_value = get(category).id)) {
             option_4.value = (option_4.__value = get(category).id) ?? "";
           }
@@ -6721,15 +6534,7 @@ function TaskCard($$anchor, $$props) {
       });
       reset(select_1);
       reset(div_4);
-      var node_5 = sibling(div_4, 2);
-      RecurrencePicker(node_5, {
-        compact: true,
-        get value() {
-          return get(recurrence);
-        },
-        onChange: (value) => set(recurrence, value, true)
-      });
-      var div_5 = sibling(node_5, 2);
+      var div_5 = sibling(div_4, 2);
       var button = child(div_5);
       var button_1 = sibling(button, 2);
       reset(div_5);
@@ -6743,7 +6548,7 @@ function TaskCard($$anchor, $$props) {
       append($$anchor2, div_3);
     };
     var alternate = ($$anchor2) => {
-      var div_6 = root_6();
+      var div_6 = root_42();
       var button_2 = child(div_6);
       var button_3 = sibling(button_2, 2);
       var button_4 = sibling(button_3, 2);
@@ -6753,8 +6558,8 @@ function TaskCard($$anchor, $$props) {
       delegated("click", button_4, () => deleteTask($$props.task.id));
       append($$anchor2, div_6);
     };
-    if_block(node_3, ($$render) => {
-      if (get(editing)) $$render(consequent_3);
+    if_block(node_1, ($$render) => {
+      if (get(editing)) $$render(consequent_1);
       else $$render(alternate, false);
     });
   }
@@ -6764,7 +6569,7 @@ function TaskCard($$anchor, $$props) {
       classes = set_class(article, 1, "task-card svelte-1j8piq", null, classes, { done: $$props.task.completed });
       set_checked(input, $$props.task.completed);
       set_text(text2, $$props.task.title);
-      set_class(span_2, 1, `badge ${$$props.task.priority ?? ""}`, "svelte-1j8piq");
+      set_class(span_1, 1, `badge ${$$props.task.priority ?? ""}`, "svelte-1j8piq");
       set_text(text_1, $$props.task.priority);
       set_text(text_2, $0);
     },
@@ -6780,169 +6585,278 @@ function TaskCard($$anchor, $$props) {
 delegate(["change", "click"]);
 
 // components/TaskBoard.svelte
-var root_53 = from_html(`<div class="empty-state svelte-q5ccww">No tasks here yet.</div>`);
-var root_62 = from_html(`<div class="cards svelte-q5ccww"></div>`);
-var root_9 = from_html(`<li><button type="button" class="svelte-q5ccww"> </button></li>`);
-var root_8 = from_html(`<aside class="side-column svelte-q5ccww"><section class="panel svelte-q5ccww"><h3 class="svelte-q5ccww">Categories</h3> <ul class="category-links svelte-q5ccww"><!> <li><button type="button" class="svelte-q5ccww">Uncategorized / group-level</button></li></ul></section></aside>`);
-var root5 = from_html(`<section class="task-board svelte-q5ccww"><header class="page-header svelte-q5ccww"><div><h1 class="svelte-q5ccww"> </h1> <p class="svelte-q5ccww"><!></p></div> <div class="stats-grid svelte-q5ccww"><div class="svelte-q5ccww"><span class="svelte-q5ccww"> </span><small class="svelte-q5ccww">Open</small></div> <div class="svelte-q5ccww"><span class="svelte-q5ccww"> </span><small class="svelte-q5ccww">Done</small></div> <div class="svelte-q5ccww"><span class="svelte-q5ccww"> </span><small class="svelte-q5ccww">Recurring</small></div></div></header> <div><div class="main-column svelte-q5ccww"><!> <section class="task-list svelte-q5ccww"><div class="task-list-header svelte-q5ccww"><h2 class="svelte-q5ccww">Tasks</h2> <p class="svelte-q5ccww">Drag cards is visual-only for now; file order is preserved from vault sources.</p></div> <!></section></div> <!></div></section>`);
-var $$css5 = {
+var root_23 = from_html(`<div class="empty-state compact svelte-q5ccww">No uncategorized tasks.</div>`);
+var root_43 = from_html(`<li> </li>`);
+var root_52 = from_html(`<small class="svelte-q5ccww"> </small>`);
+var root_33 = from_html(`<button type="button" class="uncategorized-list svelte-q5ccww"><span class="uncategorized-count svelte-q5ccww"> </span> <ul class="svelte-q5ccww"></ul> <!></button>`);
+var root_14 = from_html(`<section class="uncategorized-panel svelte-q5ccww"><div class="section-head svelte-q5ccww"><h2 class="svelte-q5ccww">Uncategorized</h2> <button type="button" class="ghost svelte-q5ccww">View only</button></div> <!></section>`);
+var root_6 = from_html(`<div class="empty-state svelte-q5ccww">No tasks here yet.</div>`);
+var root_9 = from_html(`<div class="cards svelte-q5ccww"></div>`);
+var root_11 = from_html(`<section class="subtag-group svelte-q5ccww"><div class="subtag-header svelte-q5ccww"> </div> <div class="cards svelte-q5ccww"></div></section>`);
+var root_8 = from_html(`<!> <!>`, 1);
+var root_132 = from_html(`<div class="cards svelte-q5ccww"></div>`);
+var root_16 = from_html(`<li><button type="button" class="svelte-q5ccww"> </button></li>`);
+var root_15 = from_html(`<aside class="side-column svelte-q5ccww"><section class="panel svelte-q5ccww"><h3 class="svelte-q5ccww">Categories</h3> <ul class="category-links svelte-q5ccww"><!> <li><button type="button" class="svelte-q5ccww">Uncategorized / group-level</button></li></ul></section></aside>`);
+var root4 = from_html(`<section class="task-board svelte-q5ccww"><header class="page-header svelte-q5ccww"><h1 class="svelte-q5ccww"> </h1> <div class="stats-grid svelte-q5ccww"><div class="svelte-q5ccww"><span class="svelte-q5ccww"> </span><small class="svelte-q5ccww">Open</small></div> <div class="svelte-q5ccww"><span class="svelte-q5ccww"> </span><small class="svelte-q5ccww">Done</small></div></div> <div class="header-actions svelte-q5ccww"><button type="button">Board</button> <button type="button" class="svelte-q5ccww"> </button></div></header> <div><div class="main-column svelte-q5ccww"><!> <!> <section class="task-list svelte-q5ccww"><div class="task-list-header svelte-q5ccww"><h2 class="svelte-q5ccww">Tasks</h2> <p class="svelte-q5ccww">Drag cards is visual-only for now; file order is preserved from vault sources.</p></div> <!></section></div> <!></div></section>`);
+var $$css4 = {
   hash: "svelte-q5ccww",
-  code: ".task-board.svelte-q5ccww {display:grid;gap:1rem;}.page-header.svelte-q5ccww {display:flex;justify-content:space-between;gap:1rem;align-items:start;}h1.svelte-q5ccww {margin:0;font-size:clamp(1.2rem, 2.3vw, 1.7rem);}.page-header.svelte-q5ccww p:where(.svelte-q5ccww) {margin:0.25rem 0 0;color:var(--text-muted);}.stats-grid.svelte-q5ccww {display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:0.5rem;min-width:min(20rem, 100%);}.stats-grid.svelte-q5ccww > div:where(.svelte-q5ccww) {background:var(--surface-1);border:1px solid var(--border-color);border-radius:0.9rem;padding:0.6rem 0.75rem;display:grid;gap:0.15rem;}.stats-grid.svelte-q5ccww span:where(.svelte-q5ccww) {font-size:1.15rem;font-weight:800;}.stats-grid.svelte-q5ccww small:where(.svelte-q5ccww) {color:var(--text-muted);}.board-grid.svelte-q5ccww {display:grid;grid-template-columns:minmax(0, 1fr) minmax(240px, 320px);gap:1rem;}.board-grid.single-column.svelte-q5ccww {grid-template-columns:minmax(0, 1fr);}.main-column.svelte-q5ccww,\n  .side-column.svelte-q5ccww {display:grid;gap:1rem;align-content:start;}.task-list.svelte-q5ccww {display:grid;gap:0.75rem;padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.task-list-header.svelte-q5ccww h2:where(.svelte-q5ccww),\n  .panel.svelte-q5ccww h3:where(.svelte-q5ccww) {margin:0;font-size:1rem;}.task-list-header.svelte-q5ccww p:where(.svelte-q5ccww) {margin:0.15rem 0 0;color:var(--text-muted);font-size:0.8rem;}.cards.svelte-q5ccww {display:grid;gap:0.7rem;}.empty-state.svelte-q5ccww {padding:1rem;border:1px dashed var(--border-color);border-radius:0.8rem;color:var(--text-muted);}.panel.svelte-q5ccww {padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.panel.svelte-q5ccww ul:where(.svelte-q5ccww) {list-style:none;margin:0.6rem 0 0;padding:0;display:grid;gap:0.45rem;color:var(--text-muted);font-size:0.9rem;}.category-links.svelte-q5ccww button:where(.svelte-q5ccww) {width:100%;text-align:left;font:inherit;color:inherit;background:transparent;border:1px solid transparent;border-radius:0.45rem;padding:0.35rem 0.45rem;cursor:pointer;}.category-links.svelte-q5ccww button:where(.svelte-q5ccww):hover {background:var(--surface-2);color:var(--text-normal);}\n\n  @media (max-width: 980px) {.board-grid.svelte-q5ccww {grid-template-columns:1fr;}\n  }\n\n  @media (max-width: 700px) {.page-header.svelte-q5ccww {flex-direction:column;}.stats-grid.svelte-q5ccww {width:100%;min-width:0;}\n  }"
+  code: ".task-board.svelte-q5ccww {display:grid;gap:1rem;}.page-header.svelte-q5ccww {display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;}h1.svelte-q5ccww {margin:0;font-size:clamp(1.2rem, 2.3vw, 1.7rem);}.stats-grid.svelte-q5ccww {display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:0.5rem;min-width:min(14rem, 100%);}.stats-grid.svelte-q5ccww > div:where(.svelte-q5ccww) {background:var(--surface-1);border:1px solid var(--border-color);border-radius:0.9rem;padding:0.6rem 0.75rem;display:grid;gap:0.15rem;}.stats-grid.svelte-q5ccww span:where(.svelte-q5ccww) {font-size:1.15rem;font-weight:800;}.stats-grid.svelte-q5ccww small:where(.svelte-q5ccww) {color:var(--text-muted);}.header-actions.svelte-q5ccww {display:flex;gap:0.5rem;margin-left:auto;}.header-actions.svelte-q5ccww button:where(.svelte-q5ccww) {background:var(--surface-1);border:1px solid var(--border-color);color:inherit;border-radius:0.65rem;padding:0.45rem 0.75rem;font:inherit;}.header-actions.svelte-q5ccww button.active:where(.svelte-q5ccww) {background:var(--surface-2);}.board-grid.svelte-q5ccww {display:grid;grid-template-columns:minmax(0, 1fr) minmax(240px, 320px);gap:1rem;}.board-grid.single-column.svelte-q5ccww {grid-template-columns:minmax(0, 1fr);}.main-column.svelte-q5ccww,\n  .side-column.svelte-q5ccww {display:grid;gap:1rem;align-content:start;}.task-list.svelte-q5ccww {display:grid;gap:0.75rem;padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.uncategorized-panel.svelte-q5ccww {display:grid;gap:0.6rem;padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.section-head.svelte-q5ccww {display:flex;align-items:center;justify-content:space-between;gap:0.5rem;}.section-head.svelte-q5ccww h2:where(.svelte-q5ccww) {margin:0;font-size:1rem;}.section-head.svelte-q5ccww .ghost:where(.svelte-q5ccww) {background:transparent;border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.35rem 0.55rem;font:inherit;}.uncategorized-list.svelte-q5ccww {text-align:left;display:grid;gap:0.35rem;width:100%;background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.8rem;padding:0.7rem 0.8rem;cursor:pointer;}.uncategorized-list.svelte-q5ccww ul:where(.svelte-q5ccww) {margin:0;padding-left:1rem;display:grid;gap:0.15rem;color:var(--text-muted);font-size:0.85rem;}.uncategorized-list.svelte-q5ccww small:where(.svelte-q5ccww) {color:var(--text-muted);}.uncategorized-count.svelte-q5ccww {font-weight:700;}.empty-state.compact.svelte-q5ccww {padding:0.7rem 0.8rem;}.task-list-header.svelte-q5ccww h2:where(.svelte-q5ccww),\n  .panel.svelte-q5ccww h3:where(.svelte-q5ccww) {margin:0;font-size:1rem;}.task-list-header.svelte-q5ccww p:where(.svelte-q5ccww) {margin:0.15rem 0 0;color:var(--text-muted);font-size:0.8rem;}.cards.svelte-q5ccww {display:grid;gap:0.7rem;}.subtag-group.svelte-q5ccww {display:grid;gap:0.55rem;margin-top:0.4rem;}.subtag-header.svelte-q5ccww {padding:0.35rem 0.55rem;border-radius:0.6rem;border:1px solid var(--border-color);background:var(--surface-2);font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);}.empty-state.svelte-q5ccww {padding:1rem;border:1px dashed var(--border-color);border-radius:0.8rem;color:var(--text-muted);}.panel.svelte-q5ccww {padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.panel.svelte-q5ccww ul:where(.svelte-q5ccww) {list-style:none;margin:0.6rem 0 0;padding:0;display:grid;gap:0.45rem;color:var(--text-muted);font-size:0.9rem;}.category-links.svelte-q5ccww button:where(.svelte-q5ccww) {width:100%;text-align:left;font:inherit;color:inherit;background:transparent;border:1px solid transparent;border-radius:0.45rem;padding:0.35rem 0.45rem;cursor:pointer;}.category-links.svelte-q5ccww button:where(.svelte-q5ccww):hover {background:var(--surface-2);color:var(--text-normal);}\n\n  @media (max-width: 980px) {.board-grid.svelte-q5ccww {grid-template-columns:1fr;}\n  }\n\n  @media (max-width: 700px) {.stats-grid.svelte-q5ccww {width:100%;min-width:0;}.header-actions.svelte-q5ccww {width:100%;margin-left:0;}.header-actions.svelte-q5ccww button:where(.svelte-q5ccww) {flex:1 1 0;}\n  }"
 };
 function TaskBoard($$anchor, $$props) {
   push($$props, true);
-  append_styles($$anchor, $$css5);
-  let title = prop($$props, "title", 3, "Dashboard"), filterUncategorized = prop($$props, "filterUncategorized", 3, false), showCategoriesCard = prop($$props, "showCategoriesCard", 3, true);
+  append_styles($$anchor, $$css4);
+  let title = prop($$props, "title", 3, "Dashboard"), filterUncategorized = prop($$props, "filterUncategorized", 3, false), showCategoriesCard = prop($$props, "showCategoriesCard", 3, true), boardActive = prop($$props, "boardActive", 3, true), rescanLoading = prop($$props, "rescanLoading", 3, false);
   let draggingTaskId = state(null);
   const sortedTasks = user_derived(() => [...visibleTasks()].sort((a, b) => a.sortOrder - b.sortOrder));
   const openCount = user_derived(() => get(sortedTasks).filter((task) => !task.completed).length);
   const doneCount = user_derived(() => get(sortedTasks).filter((task) => task.completed).length);
-  const recurringCount = user_derived(() => get(sortedTasks).filter((task) => task.recurrence).length);
-  const currentCategory = user_derived(() => $$props.filterCategoryId ? getCategory($$props.filterCategoryId) : void 0);
   const sortedCategories = user_derived(() => [...categories].sort((a, b) => a.sortOrder - b.sortOrder));
+  const dashboardUncategorizedTasks = user_derived(() => get(sortedTasks).filter((task) => !task.categoryId));
+  const showSubtagSections = user_derived(() => !!$$props.filterCategoryId && get(sortedTasks).some((task) => !!task.subTag));
+  const untaggedCategoryTasks = user_derived(() => get(showSubtagSections) ? get(sortedTasks).filter((task) => !task.subTag) : []);
+  const subtagGroups = user_derived(() => {
+    const groups = /* @__PURE__ */ new Map();
+    if (!get(showSubtagSections)) return [];
+    for (const task of get(sortedTasks)) {
+      if (!task.subTag) continue;
+      const list = groups.get(task.subTag) ?? [];
+      list.push(task);
+      groups.set(task.subTag, list);
+    }
+    return [...groups.entries()].map(([subTag, tasks2]) => ({ subTag, tasks: tasks2 }));
+  });
   function onDropOn(_targetTaskId) {
     set(draggingTaskId, null);
   }
-  var section = root5();
+  var section = root4();
   var header = child(section);
-  var div = child(header);
-  var h1 = child(div);
+  var h1 = child(header);
   var text2 = child(h1, true);
   reset(h1);
-  var p = sibling(h1, 2);
-  var node = child(p);
-  {
-    var consequent = ($$anchor2) => {
-      var text_1 = text();
-      template_effect(() => set_text(text_1, `${get(currentCategory).emoji ? `${get(currentCategory).emoji} ` : ""}${get(currentCategory).name ?? ""}`));
-      append($$anchor2, text_1);
-    };
-    var consequent_1 = ($$anchor2) => {
-      var text_2 = text("Tasks without a mapped category, including group-level items.");
-      append($$anchor2, text_2);
-    };
-    var consequent_2 = ($$anchor2) => {
-      var text_3 = text("Group-level and category tasks in this section.");
-      append($$anchor2, text_3);
-    };
-    var alternate = ($$anchor2) => {
-      var text_4 = text("All tasks, including uncategorized items.");
-      append($$anchor2, text_4);
-    };
-    if_block(node, ($$render) => {
-      if (get(currentCategory)) $$render(consequent);
-      else if (filterUncategorized()) $$render(consequent_1, 1);
-      else if ($$props.filterGroupId) $$render(consequent_2, 2);
-      else $$render(alternate, false);
-    });
-  }
-  reset(p);
-  reset(div);
-  var div_1 = sibling(div, 2);
-  var div_2 = child(div_1);
-  var span = child(div_2);
-  var text_5 = child(span, true);
+  var div = sibling(h1, 2);
+  var div_1 = child(div);
+  var span = child(div_1);
+  var text_1 = child(span, true);
   reset(span);
   next();
-  reset(div_2);
-  var div_3 = sibling(div_2, 2);
-  var span_1 = child(div_3);
-  var text_6 = child(span_1, true);
+  reset(div_1);
+  var div_2 = sibling(div_1, 2);
+  var span_1 = child(div_2);
+  var text_2 = child(span_1, true);
   reset(span_1);
   next();
-  reset(div_3);
-  var div_4 = sibling(div_3, 2);
-  var span_2 = child(div_4);
-  var text_7 = child(span_2, true);
-  reset(span_2);
-  next();
-  reset(div_4);
-  reset(div_1);
-  reset(header);
-  var div_5 = sibling(header, 2);
+  reset(div_2);
+  reset(div);
+  var div_3 = sibling(div, 2);
+  var button = child(div_3);
   let classes;
-  var div_6 = child(div_5);
-  var node_1 = child(div_6);
-  QuickCapture(node_1, {
+  var button_1 = sibling(button, 2);
+  var text_3 = child(button_1, true);
+  reset(button_1);
+  reset(div_3);
+  reset(header);
+  var div_4 = sibling(header, 2);
+  let classes_1;
+  var div_5 = child(div_4);
+  var node = child(div_5);
+  {
+    var consequent_2 = ($$anchor2) => {
+      var section_1 = root_14();
+      var div_6 = child(section_1);
+      var button_2 = sibling(child(div_6), 2);
+      reset(div_6);
+      var node_1 = sibling(div_6, 2);
+      {
+        var consequent = ($$anchor3) => {
+          var div_7 = root_23();
+          append($$anchor3, div_7);
+        };
+        var alternate = ($$anchor3) => {
+          var button_3 = root_33();
+          var span_2 = child(button_3);
+          var text_4 = child(span_2);
+          reset(span_2);
+          var ul = sibling(span_2, 2);
+          each(ul, 21, () => get(dashboardUncategorizedTasks).slice(0, 5), (task) => task.id, ($$anchor4, task) => {
+            var li = root_43();
+            var text_5 = child(li, true);
+            reset(li);
+            template_effect(() => set_text(text_5, get(task).title));
+            append($$anchor4, li);
+          });
+          reset(ul);
+          var node_2 = sibling(ul, 2);
+          {
+            var consequent_1 = ($$anchor4) => {
+              var small = root_52();
+              var text_6 = child(small);
+              reset(small);
+              template_effect(() => set_text(text_6, `+${get(dashboardUncategorizedTasks).length - 5} more`));
+              append($$anchor4, small);
+            };
+            if_block(node_2, ($$render) => {
+              if (get(dashboardUncategorizedTasks).length > 5) $$render(consequent_1);
+            });
+          }
+          reset(button_3);
+          template_effect(() => set_text(text_4, `${get(dashboardUncategorizedTasks).length ?? ""} tasks`));
+          delegated("click", button_3, () => $$props.onSelectUncategorized?.());
+          append($$anchor3, button_3);
+        };
+        if_block(node_1, ($$render) => {
+          if (get(dashboardUncategorizedTasks).length === 0) $$render(consequent);
+          else $$render(alternate, false);
+        });
+      }
+      reset(section_1);
+      delegated("click", button_2, () => $$props.onSelectUncategorized?.());
+      append($$anchor2, section_1);
+    };
+    if_block(node, ($$render) => {
+      if (showCategoriesCard()) $$render(consequent_2);
+    });
+  }
+  var node_3 = sibling(node, 2);
+  QuickCapture(node_3, {
     get defaultCategoryId() {
       return $$props.filterCategoryId;
     }
   });
-  var section_1 = sibling(node_1, 2);
-  var node_2 = sibling(child(section_1), 2);
+  var section_2 = sibling(node_3, 2);
+  var node_4 = sibling(child(section_2), 2);
   {
     var consequent_3 = ($$anchor2) => {
-      var div_7 = root_53();
-      append($$anchor2, div_7);
-    };
-    var alternate_1 = ($$anchor2) => {
-      var div_8 = root_62();
-      each(div_8, 21, () => get(sortedTasks), (task) => task.id, ($$anchor3, task) => {
-        TaskCard($$anchor3, {
-          get task() {
-            return get(task);
-          },
-          onDragStart: (id) => set(draggingTaskId, id, true),
-          onDropOn
-        });
-      });
-      reset(div_8);
+      var div_8 = root_6();
       append($$anchor2, div_8);
     };
-    if_block(node_2, ($$render) => {
+    var alternate_2 = ($$anchor2) => {
+      var fragment = comment();
+      var node_5 = first_child(fragment);
+      {
+        var consequent_5 = ($$anchor3) => {
+          var fragment_1 = root_8();
+          var node_6 = first_child(fragment_1);
+          {
+            var consequent_4 = ($$anchor4) => {
+              var div_9 = root_9();
+              each(div_9, 21, () => get(untaggedCategoryTasks), (task) => task.id, ($$anchor5, task) => {
+                TaskCard($$anchor5, {
+                  get task() {
+                    return get(task);
+                  },
+                  onDragStart: (id) => set(draggingTaskId, id, true),
+                  onDropOn
+                });
+              });
+              reset(div_9);
+              append($$anchor4, div_9);
+            };
+            if_block(node_6, ($$render) => {
+              if (get(untaggedCategoryTasks).length) $$render(consequent_4);
+            });
+          }
+          var node_7 = sibling(node_6, 2);
+          each(node_7, 17, () => get(subtagGroups), (group) => group.subTag, ($$anchor4, group) => {
+            var section_3 = root_11();
+            var div_10 = child(section_3);
+            var text_7 = child(div_10, true);
+            reset(div_10);
+            var div_11 = sibling(div_10, 2);
+            each(div_11, 21, () => get(group).tasks, (task) => task.id, ($$anchor5, task) => {
+              TaskCard($$anchor5, {
+                get task() {
+                  return get(task);
+                },
+                onDragStart: (id) => set(draggingTaskId, id, true),
+                onDropOn
+              });
+            });
+            reset(div_11);
+            reset(section_3);
+            template_effect(() => set_text(text_7, get(group).subTag));
+            append($$anchor4, section_3);
+          });
+          append($$anchor3, fragment_1);
+        };
+        var alternate_1 = ($$anchor3) => {
+          var div_12 = root_132();
+          each(div_12, 21, () => get(sortedTasks), (task) => task.id, ($$anchor4, task) => {
+            TaskCard($$anchor4, {
+              get task() {
+                return get(task);
+              },
+              onDragStart: (id) => set(draggingTaskId, id, true),
+              onDropOn
+            });
+          });
+          reset(div_12);
+          append($$anchor3, div_12);
+        };
+        if_block(node_5, ($$render) => {
+          if (get(showSubtagSections)) $$render(consequent_5);
+          else $$render(alternate_1, false);
+        });
+      }
+      append($$anchor2, fragment);
+    };
+    if_block(node_4, ($$render) => {
       if (get(sortedTasks).length === 0) $$render(consequent_3);
-      else $$render(alternate_1, false);
+      else $$render(alternate_2, false);
     });
   }
-  reset(section_1);
-  reset(div_6);
-  var node_3 = sibling(div_6, 2);
+  reset(section_2);
+  reset(div_5);
+  var node_8 = sibling(div_5, 2);
   {
-    var consequent_4 = ($$anchor2) => {
-      var aside = root_8();
-      var section_2 = child(aside);
-      var ul = sibling(child(section_2), 2);
-      var node_4 = child(ul);
-      each(node_4, 17, () => get(sortedCategories), index, ($$anchor3, category) => {
-        var li = root_9();
-        var button = child(li);
-        var text_8 = child(button);
-        reset(button);
-        reset(li);
+    var consequent_6 = ($$anchor2) => {
+      var aside = root_15();
+      var section_4 = child(aside);
+      var ul_1 = sibling(child(section_4), 2);
+      var node_9 = child(ul_1);
+      each(node_9, 17, () => get(sortedCategories), index, ($$anchor3, category) => {
+        var li_1 = root_16();
+        var button_4 = child(li_1);
+        var text_8 = child(button_4);
+        reset(button_4);
+        reset(li_1);
         template_effect(() => set_text(text_8, `${get(category).emoji ? `${get(category).emoji} ` : ""}${get(category).name ?? ""}`));
-        delegated("click", button, () => $$props.onSelectCategory?.(get(category).id));
-        append($$anchor3, li);
+        delegated("click", button_4, () => $$props.onSelectCategory?.(get(category).id));
+        append($$anchor3, li_1);
       });
-      var li_1 = sibling(node_4, 2);
-      var button_1 = child(li_1);
-      reset(li_1);
-      reset(ul);
-      reset(section_2);
+      var li_2 = sibling(node_9, 2);
+      var button_5 = child(li_2);
+      reset(li_2);
+      reset(ul_1);
+      reset(section_4);
       reset(aside);
-      delegated("click", button_1, () => $$props.onSelectUncategorized?.());
+      delegated("click", button_5, () => $$props.onSelectUncategorized?.());
       append($$anchor2, aside);
     };
-    if_block(node_3, ($$render) => {
-      if (showCategoriesCard()) $$render(consequent_4);
+    if_block(node_8, ($$render) => {
+      if (showCategoriesCard()) $$render(consequent_6);
     });
   }
-  reset(div_5);
+  reset(div_4);
   reset(section);
   template_effect(() => {
     set_text(text2, title());
-    set_text(text_5, get(openCount));
-    set_text(text_6, get(doneCount));
-    set_text(text_7, get(recurringCount));
-    classes = set_class(div_5, 1, "board-grid svelte-q5ccww", null, classes, { "single-column": !showCategoriesCard() });
+    set_text(text_1, get(openCount));
+    set_text(text_2, get(doneCount));
+    classes = set_class(button, 1, "svelte-q5ccww", null, classes, { active: boardActive() });
+    button_1.disabled = rescanLoading();
+    set_text(text_3, rescanLoading() ? "Scanning\u2026" : "Rescan");
+    classes_1 = set_class(div_4, 1, "board-grid svelte-q5ccww", null, classes_1, { "single-column": !showCategoriesCard() });
   });
+  delegated("click", button, () => $$props.onBoard?.());
+  delegated("click", button_1, () => $$props.onRescan?.());
   append($$anchor, section);
   pop();
 }
 delegate(["click"]);
 
 // components/App.svelte
-var root_54 = from_html(`<div class="error-banner"> </div>`);
-var root6 = from_html(`<div class="adhd-todo-container"><aside class="adhd-todo-sidebar-pane"><!></aside> <main class="adhd-todo-main"><header class="topbar"><div><h1> </h1> <p><!></p></div> <div class="topbar-actions"><button type="button">Board</button> <button type="button"> </button></div></header> <!> <!></main></div>`);
+var root_17 = from_html(`<div class="error-banner"> </div>`);
+var root5 = from_html(`<div class="adhd-todo-container"><aside class="adhd-todo-sidebar-pane"><!></aside> <main class="adhd-todo-main"><!> <!></main></div>`);
 function App($$anchor, $$props) {
   push($$props, true);
   user_effect(() => {
@@ -6952,68 +6866,27 @@ function App($$anchor, $$props) {
   const activeCategory = user_derived(() => nav.categoryId ? getCategory(nav.categoryId) : void 0);
   const isDashboardView = user_derived(() => !nav.groupId && !nav.categoryId && !nav.uncategorizedOnly);
   const pageTitle = user_derived(() => get(activeCategory) ? `${get(activeCategory).emoji ? `${get(activeCategory).emoji} ` : ""}${get(activeCategory).name}` : nav.uncategorizedOnly ? "Uncategorized / Group-level" : get(activeGroup) ? get(activeGroup).name : "Dashboard");
-  var div = root6();
+  var div = root5();
   var aside = child(div);
   var node = child(aside);
   Sidebar(node, {});
   reset(aside);
   var main = sibling(aside, 2);
-  var header = child(main);
-  var div_1 = child(header);
-  var h1 = child(div_1);
-  var text2 = child(h1, true);
-  reset(h1);
-  var p = sibling(h1, 2);
-  var node_1 = child(p);
+  var node_1 = child(main);
   {
     var consequent = ($$anchor2) => {
-      var text_1 = text("Tasks from this category sourced from `#todo` tags in your vault.");
-      append($$anchor2, text_1);
-    };
-    var consequent_1 = ($$anchor2) => {
-      var text_2 = text("Tasks without a mapped category, including group-level items.");
-      append($$anchor2, text_2);
-    };
-    var consequent_2 = ($$anchor2) => {
-      var text_3 = text("Group view across categories and group-level tagged tasks.");
-      append($$anchor2, text_3);
-    };
-    var alternate = ($$anchor2) => {
-      var text_4 = text("All scanned tasks from your vault.");
-      append($$anchor2, text_4);
+      var div_1 = root_17();
+      var text2 = child(div_1);
+      reset(div_1);
+      template_effect(() => set_text(text2, `Scan failed: ${ui.errorMessage ?? ""}`));
+      append($$anchor2, div_1);
     };
     if_block(node_1, ($$render) => {
-      if (get(activeCategory)) $$render(consequent);
-      else if (nav.uncategorizedOnly) $$render(consequent_1, 1);
-      else if (get(activeGroup)) $$render(consequent_2, 2);
-      else $$render(alternate, false);
+      if (ui.errorMessage) $$render(consequent);
     });
   }
-  reset(p);
-  reset(div_1);
-  var div_2 = sibling(div_1, 2);
-  var button = child(div_2);
-  let classes;
-  var button_1 = sibling(button, 2);
-  var text_5 = child(button_1, true);
-  reset(button_1);
-  reset(div_2);
-  reset(header);
-  var node_2 = sibling(header, 2);
-  {
-    var consequent_3 = ($$anchor2) => {
-      var div_3 = root_54();
-      var text_6 = child(div_3);
-      reset(div_3);
-      template_effect(() => set_text(text_6, `Scan failed: ${ui.errorMessage ?? ""}`));
-      append($$anchor2, div_3);
-    };
-    if_block(node_2, ($$render) => {
-      if (ui.errorMessage) $$render(consequent_3);
-    });
-  }
-  var node_3 = sibling(node_2, 2);
-  TaskBoard(node_3, {
+  var node_2 = sibling(node_1, 2);
+  TaskBoard(node_2, {
     get title() {
       return get(pageTitle);
     },
@@ -7029,27 +6902,26 @@ function App($$anchor, $$props) {
     get showCategoriesCard() {
       return get(isDashboardView);
     },
+    get boardActive() {
+      return get(isDashboardView);
+    },
+    get rescanLoading() {
+      return ui.loading;
+    },
     onSelectCategory: (categoryId) => setNavCategory(categoryId),
     get onSelectUncategorized() {
       return setNavUncategorized;
-    }
+    },
+    get onBoard() {
+      return setNavDashboard;
+    },
+    onRescan: () => refreshVaultState()
   });
   reset(main);
   reset(div);
-  template_effect(() => {
-    set_text(text2, get(pageTitle));
-    classes = set_class(button, 1, "", null, classes, { active: get(isDashboardView) });
-    button_1.disabled = ui.loading;
-    set_text(text_5, ui.loading ? "Scanning\u2026" : "Rescan");
-  });
-  delegated("click", button, function(...$$args) {
-    setNavDashboard?.apply(this, $$args);
-  });
-  delegated("click", button_1, () => refreshVaultState());
   append($$anchor, div);
   pop();
 }
-delegate(["click"]);
 
 // TodoView.ts
 var VIEW_TYPE_TODO = "adhd-todo-view";

@@ -1,11 +1,5 @@
 export type Priority = 'low' | 'medium' | 'high' | 'urgent';
 
-export type Recurrence = {
-  type: 'daily' | 'weekly' | 'monthly';
-  interval: number;
-  daysOfWeek?: number[];
-};
-
 export type Task = {
   id: string;
   title: string;
@@ -16,8 +10,6 @@ export type Task = {
   completedAt?: string;
   sortOrder: number;
   categoryId?: string;
-  recurrence?: Recurrence;
-  nextDueAt?: string;
   source?: string;
   sourceTag?: string;
   sourceFile?: string;

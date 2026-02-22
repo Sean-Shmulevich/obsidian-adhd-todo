@@ -1,5 +1,4 @@
 <script lang="ts">
-  import RecurrencePicker from './RecurrencePicker.svelte';
   import {
     categories,
     categoryLabel,
@@ -8,7 +7,7 @@
     toggleTaskComplete,
     updateTask
   } from '../state.svelte.ts';
-  import type { Priority, Recurrence, Task } from '../types';
+  import type { Priority, Task } from '../types';
 
   let {
     task,
@@ -24,19 +23,15 @@
   let title = $state('');
   let priority = $state<Priority>('medium');
   let categoryId = $state('');
-  let recurrence = $state<Recurrence | undefined>(undefined);
 
   $effect(() => {
     title = task.title;
     priority = task.priority === 'urgent' ? 'high' : task.priority;
     categoryId = task.categoryId ?? '';
-    recurrence = task.recurrence;
   });
 
-  const dueText = $derived(task.nextDueAt ? new Date(task.nextDueAt).toLocaleDateString() : null);
-
   async function save() {
-    await updateTask(task.id, { title, priority, categoryId: categoryId || undefined, recurrence });
+    await updateTask(task.id, { title, priority, categoryId: categoryId || undefined });
     editing = false;
   }
 </script>
@@ -55,14 +50,12 @@
       <span class="title">{task.title}</span>
     </label>
     <div class="badges">
-      {#if task.recurrence}<span class="badge recur" title="Recurring task">🔄</span>{/if}
       <span class="badge {task.priority}">{task.priority}</span>
     </div>
   </div>
 
   <div class="meta">
     <span>{categoryLabel(task.categoryId)}</span>
-    {#if dueText}<span>Due: {dueText}</span>{/if}
     {#if task.sourceFile}<span>{task.sourceFile}:{task.sourceLine}</span>{/if}
   </div>
 
@@ -82,7 +75,6 @@
           {/each}
         </select>
       </div>
-      <RecurrencePicker compact value={recurrence} onChange={(value) => (recurrence = value)} />
       <div class="actions">
         <button type="button" onclick={save}>Save</button>
         <button type="button" class="ghost" onclick={() => (editing = false)}>Cancel</button>
@@ -155,8 +147,6 @@
   .badge.medium { background: color-mix(in srgb, #f4d03f 18%, var(--surface-2)); }
   .badge.high,
   .badge.urgent { background: color-mix(in srgb, #ff6b6b 16%, var(--surface-2)); }
-  .badge.recur { font-size: 0.85rem; padding: 0.1rem 0.35rem; }
-
   .meta {
     display: flex;
     flex-wrap: wrap;

@@ -1,14 +1,12 @@
 <script lang="ts">
   import { addTask, categories } from '../state.svelte.ts';
-  import RecurrencePicker from './RecurrencePicker.svelte';
-  import type { Priority, Recurrence } from '../types';
+  import type { Priority } from '../types';
 
   let { defaultCategoryId }: { defaultCategoryId?: string } = $props();
 
   let title = $state('');
   let priority = $state<Priority>('medium');
   let categoryId = $state<string>('');
-  let recurrence = $state<Recurrence | undefined>(undefined);
   let submitting = $state(false);
 
   $effect(() => {
@@ -22,7 +20,6 @@
       await addTask({ title, priority, categoryId: categoryId || undefined });
       title = '';
       priority = 'medium';
-      recurrence = undefined;
     } finally {
       submitting = false;
     }
@@ -66,8 +63,6 @@
       </label>
       <button type="submit" disabled={submitting}>{submitting ? 'Adding…' : 'Add Task'}</button>
     </div>
-    <RecurrencePicker value={recurrence} onChange={(value) => (recurrence = value)} />
-    <p class="note">Recurrence is UI-only for now; vault writeback stores title, category tag, and priority marker.</p>
   </form>
 </section>
 
@@ -133,12 +128,6 @@
     border-color: var(--accent);
     color: white;
     font-weight: 700;
-  }
-
-  .note {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 0.75rem;
   }
 
   @media (max-width: 700px) {
