@@ -394,7 +394,7 @@
   }
 
   .empty-state.compact {
-    padding: 0.4rem 0;
+    padding: 0;
     border: none;
     font-size: 0.85rem;
   }
@@ -413,7 +413,7 @@
 
   .task-section {
     display: grid;
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
 
   .task-section + .task-section {
