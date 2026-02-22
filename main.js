@@ -6243,6 +6243,9 @@ function getCategory(categoryId) {
   if (!categoryId) return void 0;
   return categories.find((category) => category.id === categoryId);
 }
+function categoryLabel(categoryId) {
+  return getCategory(categoryId)?.name ?? "Uncategorized";
+}
 function toggleGroupCollapsed(groupId) {
   const group = categoryGroups.find((g) => g.id === groupId);
   if (!group) return;
