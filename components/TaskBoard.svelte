@@ -394,7 +394,9 @@
   }
 
   .empty-state.compact {
-    padding: 0.7rem 0.8rem;
+    padding: 0.4rem 0;
+    border: none;
+    font-size: 0.85rem;
   }
 
   .task-list-header h2,
