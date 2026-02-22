@@ -1,0 +1,130 @@
+.adhd-todo-container {
+  --accent: var(--interactive-accent);
+  --accent-hover: var(--interactive-accent-hover, var(--interactive-accent));
+  --surface-1: var(--background-primary);
+  --surface-2: var(--background-secondary);
+  --surface-3: var(--background-modifier-hover);
+  --border-color: var(--background-modifier-border);
+  --text-muted: var(--text-muted);
+  --sidebar-bg: color-mix(in srgb, var(--background-secondary) 92%, black 8%);
+  --sidebar-text: var(--text-normal);
+  --sidebar-muted: var(--text-muted);
+  --sidebar-border: var(--background-modifier-border);
+  --sidebar-active-bg: color-mix(in srgb, var(--interactive-accent) 12%, var(--background-secondary));
+
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  background:
+    radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--interactive-accent) 10%, transparent), transparent 35%),
+    radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--interactive-accent) 7%, transparent), transparent 45%),
+    var(--background-primary);
+  color: var(--text-normal);
+}
+
+.adhd-todo-container * {
+  box-sizing: border-box;
+}
+
+.adhd-todo-container .adhd-todo-main {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.adhd-todo-container .topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--background-primary) 80%, var(--background-secondary));
+  backdrop-filter: blur(4px);
+}
+
+.adhd-todo-container .topbar h1 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.adhd-todo-container .topbar p {
+  margin: 0.2rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.adhd-todo-container .topbar-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.adhd-todo-container button,
+.adhd-todo-container input,
+.adhd-todo-container select {
+  font: inherit;
+}
+
+.adhd-todo-container .topbar-actions button {
+  border: 1px solid var(--border-color);
+  background: var(--surface-2);
+  color: inherit;
+  border-radius: 0.65rem;
+  padding: 0.45rem 0.7rem;
+}
+
+.adhd-todo-container .topbar-actions button.active {
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface-2));
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-color));
+}
+
+.adhd-todo-container .topbar-actions button:disabled {
+  opacity: 0.6;
+}
+
+.adhd-todo-container .error-banner {
+  border: 1px solid color-mix(in srgb, #ff6b6b 40%, var(--border-color));
+  background: color-mix(in srgb, #ff6b6b 8%, var(--surface-1));
+  color: var(--text-normal);
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.8rem;
+}
+
+.adhd-todo-container .focus-layout {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+}
+
+.adhd-todo-container .panel {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  background: var(--surface-1);
+}
+
+.adhd-todo-container .panel h3 {
+  margin: 0 0 0.5rem;
+}
+
+.adhd-todo-container .panel p {
+  margin: 0.35rem 0;
+  color: var(--text-muted);
+}
+
+@media (max-width: 980px) {
+  .adhd-todo-container {
+    grid-template-columns: 1fr;
+  }
+
+  .adhd-todo-container .focus-layout {
+    grid-template-columns: 1fr;
+  }
+}

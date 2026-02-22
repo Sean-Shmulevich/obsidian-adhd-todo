@@ -1,0 +1,10 @@
+{
+  "id": "adhd-todo",
+  "name": "ADHD Todo",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Discord-style task manager that reads #todo tags from your vault",
+  "author": "Sean Shmulevich",
+  "authorUrl": "https://github.com/Sean-Shmulevich",
+  "isDesktopOnly": false
+}
