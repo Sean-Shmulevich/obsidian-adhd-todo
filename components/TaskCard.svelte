@@ -40,9 +40,23 @@
   class="task-card"
   class:done={task.completed}
   draggable="true"
-  ondragstart={() => onDragStart?.(task.id)}
-  ondragover={(event) => event.preventDefault()}
-  ondrop={() => onDropOn?.(task.id)}
+  ondragstart={(event) => {
+    event.dataTransfer?.setData('text/plain', task.id);
+    event.dataTransfer!.effectAllowed = 'move';
+    event.stopPropagation();
+    onDragStart?.(task.id);
+  }}
+  ondragover={(event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.dataTransfer!.dropEffect = 'move';
+  }}
+  ondrop={(event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    onDropOn?.(task.id);
+  }}
+  ondragend={(event) => event.stopPropagation()}
 >
   <div class="row top-row">
     <label class="checkbox-row">

@@ -6706,9 +6706,23 @@ function TaskCard($$anchor, $$props) {
     set_class(span_1, 1, `badge ${$$props.task.priority ?? ""}`, "svelte-1j8piq");
     set_text(text_1, $$props.task.priority);
   });
-  event("dragstart", article, () => $$props.onDragStart?.($$props.task.id));
-  event("dragover", article, (event2) => event2.preventDefault());
-  event("drop", article, () => $$props.onDropOn?.($$props.task.id));
+  event("dragstart", article, (event2) => {
+    event2.dataTransfer?.setData("text/plain", $$props.task.id);
+    event2.dataTransfer.effectAllowed = "move";
+    event2.stopPropagation();
+    $$props.onDragStart?.($$props.task.id);
+  });
+  event("dragover", article, (event2) => {
+    event2.preventDefault();
+    event2.stopPropagation();
+    event2.dataTransfer.dropEffect = "move";
+  });
+  event("drop", article, (event2) => {
+    event2.preventDefault();
+    event2.stopPropagation();
+    $$props.onDropOn?.($$props.task.id);
+  });
+  event("dragend", article, (event2) => event2.stopPropagation());
   delegated("change", input, () => toggleTaskComplete($$props.task.id));
   append($$anchor, article);
   pop();
