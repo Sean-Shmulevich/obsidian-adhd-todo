@@ -492,6 +492,7 @@
     border: 1px dashed var(--border-color);
     border-radius: 0.8rem;
     color: var(--text-muted);
+    text-align: left;
   }
 
   .panel {
