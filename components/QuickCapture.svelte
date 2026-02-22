@@ -42,6 +42,8 @@
       bind:value={title}
       placeholder="What needs to happen next?"
       maxlength="140"
+      onkeydown={(e) => e.stopPropagation()}
+      onfocus={(e) => e.stopPropagation()}
     />
     <div class="row">
       <label>

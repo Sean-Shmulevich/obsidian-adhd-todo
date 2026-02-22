@@ -6503,12 +6503,15 @@ function QuickCapture($$anchor, $$props) {
     event2.preventDefault();
     void submit();
   });
+  delegated("keydown", input, (e) => e.stopPropagation());
+  event("focus", input, (e) => e.stopPropagation());
   bind_value(input, () => get(title), ($$value) => set(title, $$value));
   bind_select_value(select, () => get(priority), ($$value) => set(priority, $$value));
   bind_select_value(select_1, () => get(categoryId), ($$value) => set(categoryId, $$value));
   append($$anchor, section);
   pop();
 }
+delegate(["keydown"]);
 
 // components/TaskCard.svelte
 var root_13 = from_html(`<button type="button" class="ghost icon-btn svelte-1j8piq" title="Open in Obsidian">\u2197</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Edit">\u270E</button> <button type="button" class="danger icon-btn svelte-1j8piq" title="Delete">\u{1F5D1}</button>`, 1);
@@ -6610,6 +6613,7 @@ function TaskCard($$anchor, $$props) {
       var button_4 = sibling(button_3, 2);
       reset(div_4);
       reset(div_2);
+      delegated("keydown", input_1, (e) => e.stopPropagation());
       bind_value(input_1, () => get(title), ($$value) => set(title, $$value));
       bind_select_value(select, () => get(priority), ($$value) => set(priority, $$value));
       bind_select_value(select_1, () => get(categoryId), ($$value) => set(categoryId, $$value));
@@ -6636,7 +6640,7 @@ function TaskCard($$anchor, $$props) {
   append($$anchor, article);
   pop();
 }
-delegate(["change", "click"]);
+delegate(["change", "click", "keydown"]);
 
 // components/TaskBoard.svelte
 var root_14 = from_html(`<div class="empty-state svelte-q5ccww">No tasks here yet.</div>`);

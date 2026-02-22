@@ -61,7 +61,7 @@
 
   {#if editing}
     <div class="editor">
-      <input type="text" bind:value={title} maxlength="140" />
+      <input type="text" bind:value={title} maxlength="140" onkeydown={(e) => e.stopPropagation()} />
       <div class="grid2">
         <select bind:value={priority}>
           <option value="low">Low</option>
