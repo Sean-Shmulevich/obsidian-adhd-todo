@@ -54,7 +54,14 @@
     return showSubtagSections ? groupBySubtag(finishedTasks) : [];
   });
 
-  // No auto-reset — user controls the toggle manually
+  let prevFilterKey = $state('');
+  $effect(() => {
+    const key = `${filterCategoryId ?? ''}|${filterGroupId ?? ''}|${filterUncategorized ?? ''}`;
+    if (key !== prevFilterKey) {
+      prevFilterKey = key;
+      finishedExpanded = false;
+    }
+  });
 
   function groupBySubtag(list: Task[]) {
     const groups = new Map<string, Task[]>();
