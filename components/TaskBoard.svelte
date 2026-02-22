@@ -65,6 +65,33 @@
     return showSubtagSections ? groupBySubtag(finishedTasks) : [];
   });
 
+  // Group view: group tasks by their category
+  const showCategorySections = $derived(!!filterGroupId && !filterCategoryId);
+  function groupByCategory(list: Task[]) {
+    const groups = new Map<string, { name: string; categoryId: string; tasks: Task[] }>();
+    const rootTasks: Task[] = [];
+    for (const task of list) {
+      if (!task.categoryId) {
+        rootTasks.push(task);
+        continue;
+      }
+      const existing = groups.get(task.categoryId);
+      if (existing) {
+        existing.tasks.push(task);
+      } else {
+        const cat = sortedCategories.find(c => c.id === task.categoryId);
+        groups.set(task.categoryId, {
+          name: cat?.name ?? 'Unknown',
+          categoryId: task.categoryId,
+          tasks: [task]
+        });
+      }
+    }
+    return { rootTasks, categoryGroups: [...groups.values()] };
+  }
+  const openByCategory = $derived.by(() => showCategorySections ? groupByCategory(incompleteTasks) : { rootTasks: [], categoryGroups: [] });
+  const finishedByCategory = $derived.by(() => showCategorySections ? groupByCategory(finishedTasks) : { rootTasks: [], categoryGroups: [] });
+
   {
     // Reset finishedExpanded on navigation, using a non-reactive tracker
     let lastFilterKey = '';
@@ -204,6 +231,28 @@
             </div>
             {#if openCount === 0}
               <!-- nothing to show -->
+            {:else if showCategorySections}
+              <!-- Group view: tasks grouped by category -->
+              {#if openByCategory.rootTasks.length}
+                <section class="subtag-group">
+                  <div class="subtag-header">Root / Uncategorized</div>
+                  <div class="cards">
+                    {#each openByCategory.rootTasks as task (task.id)}
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                    {/each}
+                  </div>
+                </section>
+              {/if}
+              {#each openByCategory.categoryGroups as group (group.categoryId)}
+                <section class="subtag-group">
+                  <div class="subtag-header">{group.name}</div>
+                  <div class="cards">
+                    {#each group.tasks as task (task.id)}
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                    {/each}
+                  </div>
+                </section>
+              {/each}
             {:else if showSubtagSections}
               {#if openUntaggedCategoryTasks.length}
                 <div class="cards">
@@ -245,6 +294,27 @@
             {#if finishedExpanded}
               {#if doneCount === 0}
                 <div class="empty-state compact">No finished tasks.</div>
+              {:else if showCategorySections}
+                {#if finishedByCategory.rootTasks.length}
+                  <section class="subtag-group">
+                    <div class="subtag-header">Root / Uncategorized</div>
+                    <div class="cards">
+                      {#each finishedByCategory.rootTasks as task (task.id)}
+                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                      {/each}
+                    </div>
+                  </section>
+                {/if}
+                {#each finishedByCategory.categoryGroups as group (group.categoryId)}
+                  <section class="subtag-group">
+                    <div class="subtag-header">{group.name}</div>
+                    <div class="cards">
+                      {#each group.tasks as task (task.id)}
+                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                      {/each}
+                    </div>
+                  </section>
+                {/each}
               {:else if showSubtagSections}
                 {#if finishedUntaggedCategoryTasks.length}
                   <div class="cards">
