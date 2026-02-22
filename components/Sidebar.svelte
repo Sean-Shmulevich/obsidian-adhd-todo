@@ -5,6 +5,7 @@
     setNavCategory,
     setNavDashboard,
     setNavGroup,
+    setNavUncategorized,
     toggleGroupCollapsed,
     ungroupedCategories
   } from '../state.svelte.ts';
@@ -16,6 +17,11 @@
 
   function goDashboard() {
     setNavDashboard();
+    onNavigate?.();
+  }
+
+  function goUncategorized() {
+    setNavUncategorized();
     onNavigate?.();
   }
 
@@ -39,9 +45,25 @@
     </div>
   </div>
 
-  <button type="button" class:active={!nav.groupId && !nav.categoryId && !nav.uncategorizedOnly} onclick={goDashboard}>
-    🏡 Dashboard
-  </button>
+  <div class="pinned-nav">
+    <button
+      type="button"
+      class="pinned-item"
+      class:active={!!nav.uncategorizedOnly}
+      onclick={goUncategorized}
+    >
+      📌 Uncategorized / Group-level
+    </button>
+
+    <button
+      type="button"
+      class="pinned-item"
+      class:active={!nav.groupId && !nav.categoryId && !nav.uncategorizedOnly}
+      onclick={goDashboard}
+    >
+      🏡 Dashboard
+    </button>
+  </div>
 
   <div class="group-list">
     {#each grouped as section (section.group.id)}
@@ -98,7 +120,7 @@
 <style>
   .sidebar {
     display: grid;
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto 1fr;
     gap: 0.35rem;
     height: 100%;
     min-height: 0;
@@ -149,7 +171,24 @@
     font: inherit;
   }
 
-  .sidebar > button.active {
+  .pinned-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.1rem 0.15rem 0.35rem;
+    margin-bottom: 0.2rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--sidebar-border) 70%, transparent);
+  }
+
+  .pinned-item {
+    width: 100%;
+    background: color-mix(in srgb, var(--sidebar-active-bg) 50%, transparent);
+    border-color: color-mix(in srgb, var(--sidebar-border) 85%, transparent);
+    padding: 0.45rem 0.55rem;
+    font-weight: 600;
+  }
+
+  .pinned-item.active {
     background: var(--sidebar-active-bg);
     border-color: var(--sidebar-border);
   }

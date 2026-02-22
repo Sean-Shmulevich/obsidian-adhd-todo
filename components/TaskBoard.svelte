@@ -31,27 +31,46 @@
   } = $props();
 
   let draggingTaskId = $state<string | null>(null);
+  let finishedExpanded = $state(false);
 
   const sortedTasks = $derived([...visibleTasks()].sort((a, b) => a.sortOrder - b.sortOrder));
+  const incompleteTasks = $derived(sortedTasks.filter((task) => !task.completed));
+  const finishedTasks = $derived(sortedTasks.filter((task) => task.completed));
   const openCount = $derived(sortedTasks.filter((task) => !task.completed).length);
   const doneCount = $derived(sortedTasks.filter((task) => task.completed).length);
   const sortedCategories = $derived([...categories].sort((a, b) => a.sortOrder - b.sortOrder));
   const dashboardUncategorizedTasks = $derived(sortedTasks.filter((task) => !task.categoryId));
   const showSubtagSections = $derived(!!filterCategoryId && sortedTasks.some((task) => !!task.subTag));
-  const untaggedCategoryTasks = $derived(
-    showSubtagSections ? sortedTasks.filter((task) => !task.subTag) : []
+  const openUntaggedCategoryTasks = $derived(
+    showSubtagSections ? incompleteTasks.filter((task) => !task.subTag) : []
   );
-  const subtagGroups = $derived.by(() => {
+  const finishedUntaggedCategoryTasks = $derived(
+    showSubtagSections ? finishedTasks.filter((task) => !task.subTag) : []
+  );
+  const openSubtagGroups = $derived.by(() => {
+    return showSubtagSections ? groupBySubtag(incompleteTasks) : [];
+  });
+  const finishedSubtagGroups = $derived.by(() => {
+    return showSubtagSections ? groupBySubtag(finishedTasks) : [];
+  });
+
+  $effect(() => {
+    filterCategoryId;
+    filterGroupId;
+    filterUncategorized;
+    finishedExpanded = false;
+  });
+
+  function groupBySubtag(list: Task[]) {
     const groups = new Map<string, Task[]>();
-    if (!showSubtagSections) return [] as Array<{ subTag: string; tasks: Task[] }>;
-    for (const task of sortedTasks) {
+    for (const task of list) {
       if (!task.subTag) continue;
-      const list = groups.get(task.subTag) ?? [];
-      list.push(task);
-      groups.set(task.subTag, list);
+      const items = groups.get(task.subTag) ?? [];
+      items.push(task);
+      groups.set(task.subTag, items);
     }
     return [...groups.entries()].map(([subTag, tasks]) => ({ subTag, tasks }));
-  });
+  }
 
   function onDropOn(_targetTaskId: string) {
     draggingTaskId = null;
@@ -103,37 +122,87 @@
       <QuickCapture defaultCategoryId={filterCategoryId} />
       <section class="task-list">
         <div class="task-list-header">
-          <h2>Tasks</h2>
+          <h2>Task List</h2>
           <p>Drag cards is visual-only for now; file order is preserved from vault sources.</p>
         </div>
         {#if sortedTasks.length === 0}
           <div class="empty-state">No tasks here yet.</div>
         {:else}
-          {#if showSubtagSections}
-            {#if untaggedCategoryTasks.length}
+          <section class="task-section">
+            <div class="task-section-head">
+              <h3>Tasks</h3>
+              <small>{openCount}</small>
+            </div>
+            {#if openCount === 0}
+              <div class="empty-state compact">No incomplete tasks.</div>
+            {:else if showSubtagSections}
+              {#if openUntaggedCategoryTasks.length}
+                <div class="cards">
+                  {#each openUntaggedCategoryTasks as task (task.id)}
+                    <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                  {/each}
+                </div>
+              {/if}
+              {#each openSubtagGroups as group (group.subTag)}
+                <section class="subtag-group">
+                  <div class="subtag-header">{group.subTag}</div>
+                  <div class="cards">
+                    {#each group.tasks as task (task.id)}
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                    {/each}
+                  </div>
+                </section>
+              {/each}
+            {:else}
               <div class="cards">
-                {#each untaggedCategoryTasks as task (task.id)}
+                {#each incompleteTasks as task (task.id)}
                   <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
                 {/each}
               </div>
             {/if}
-            {#each subtagGroups as group (group.subTag)}
-              <section class="subtag-group">
-                <div class="subtag-header">{group.subTag}</div>
+          </section>
+
+          <section class="task-section finished-block">
+            <button
+              type="button"
+              class="finished-toggle"
+              aria-expanded={finishedExpanded}
+              onclick={() => (finishedExpanded = !finishedExpanded)}
+            >
+              <span>Finished Tasks ({doneCount})</span>
+              <span class="chevron" class:expanded={finishedExpanded}>▾</span>
+            </button>
+
+            {#if finishedExpanded}
+              {#if doneCount === 0}
+                <div class="empty-state compact">No finished tasks.</div>
+              {:else if showSubtagSections}
+                {#if finishedUntaggedCategoryTasks.length}
+                  <div class="cards">
+                    {#each finishedUntaggedCategoryTasks as task (task.id)}
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                    {/each}
+                  </div>
+                {/if}
+                {#each finishedSubtagGroups as group (group.subTag)}
+                  <section class="subtag-group">
+                    <div class="subtag-header">{group.subTag}</div>
+                    <div class="cards">
+                      {#each group.tasks as task (task.id)}
+                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                      {/each}
+                    </div>
+                  </section>
+                {/each}
+              {:else}
                 <div class="cards">
-                  {#each group.tasks as task (task.id)}
+                  {#each finishedTasks as task (task.id)}
                     <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
                   {/each}
                 </div>
-              </section>
-            {/each}
-          {:else}
-            <div class="cards">
-              {#each sortedTasks as task (task.id)}
-                <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
-              {/each}
-            </div>
-          {/if}
+              {/if}
+            {/if}
+          </section>
         {/if}
       </section>
     </div>
@@ -253,7 +322,7 @@
 
   .task-list {
     display: grid;
-    gap: 0.75rem;
+    gap: 0.65rem;
     padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: 1rem;
@@ -343,9 +412,67 @@
     font-size: 0.8rem;
   }
 
+  .task-section {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .task-section + .task-section {
+    margin-top: 0.2rem;
+  }
+
+  .task-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .task-section-head h3 {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  .task-section-head small {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .finished-block {
+    gap: 0.55rem;
+    padding-top: 0.15rem;
+    border-top: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
+  }
+
+  .finished-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: inherit;
+    border-radius: 0.65rem;
+    padding: 0.4rem 0.55rem;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .finished-toggle .chevron {
+    color: var(--text-muted);
+    transition: transform 120ms ease;
+  }
+
+  .finished-toggle .chevron.expanded {
+    transform: rotate(180deg);
+  }
+
   .cards {
     display: grid;
-    gap: 0.7rem;
+    gap: 0.45rem;
   }
 
   .subtag-group {

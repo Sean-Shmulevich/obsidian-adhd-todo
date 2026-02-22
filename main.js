@@ -6288,10 +6288,10 @@ var root_2 = from_html(`<div class="items svelte-1b12cm3"></div>`);
 var root_1 = from_html(`<div class="group-block svelte-1b12cm3"><div class="group-header-row svelte-1b12cm3"><button type="button" class="group-collapse svelte-1b12cm3"><span>\u25B8</span></button> <button type="button" class="group-label svelte-1b12cm3"> </button></div> <!></div>`);
 var root_5 = from_html(`<button type="button"><span class="accent svelte-1b12cm3"></span> <span class="emoji svelte-1b12cm3"> </span> <span class="svelte-1b12cm3"> </span></button>`);
 var root_4 = from_html(`<div class="group-block svelte-1b12cm3"><div class="group-header-static svelte-1b12cm3">UNGROUPED</div> <div class="items svelte-1b12cm3"></div></div>`);
-var root = from_html(`<nav aria-label="Sidebar navigation"><div class="brand svelte-1b12cm3"><div class="logo svelte-1b12cm3">\u2713</div> <div><strong class="svelte-1b12cm3">ADHD Todo</strong> <small class="svelte-1b12cm3">Vault-backed task board</small></div></div> <button type="button">\u{1F3E1} Dashboard</button> <div class="group-list svelte-1b12cm3"><!> <!></div></nav>`);
+var root = from_html(`<nav aria-label="Sidebar navigation"><div class="brand svelte-1b12cm3"><div class="logo svelte-1b12cm3">\u2713</div> <div><strong class="svelte-1b12cm3">ADHD Todo</strong> <small class="svelte-1b12cm3">Vault-backed task board</small></div></div> <div class="pinned-nav svelte-1b12cm3"><button type="button">\u{1F4CC} Uncategorized / Group-level</button> <button type="button">\u{1F3E1} Dashboard</button></div> <div class="group-list svelte-1b12cm3"><!> <!></div></nav>`);
 var $$css = {
   hash: "svelte-1b12cm3",
-  code: ".sidebar.svelte-1b12cm3 {display:grid;grid-template-rows:auto auto auto 1fr;gap:0.35rem;height:100%;min-height:0;padding:0.5rem;background:var(--sidebar-bg);color:var(--sidebar-text);border-right:1px solid var(--sidebar-border);}.brand.svelte-1b12cm3 {display:flex;gap:0.5rem;align-items:center;padding:0.25rem 0.25rem 0.35rem;min-width:0;}.logo.svelte-1b12cm3 {width:2rem;height:2rem;display:grid;place-items:center;border-radius:0.6rem;background:color-mix(in srgb, var(--accent) 20%, transparent);border:1px solid color-mix(in srgb, var(--accent) 50%, var(--sidebar-border));font-weight:800;}.brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {color:var(--sidebar-muted);}.brand.svelte-1b12cm3 strong:where(.svelte-1b12cm3),\n  .brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.sidebar.svelte-1b12cm3 button:where(.svelte-1b12cm3) {text-align:left;background:transparent;border:1px solid transparent;color:inherit;border-radius:0.5rem;padding:0.35rem 0.5rem;font:inherit;}.sidebar.svelte-1b12cm3 > button.active:where(.svelte-1b12cm3) {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.group-list.svelte-1b12cm3 {overflow-x:hidden;overflow-y:auto;display:grid;gap:0.2rem;align-content:start;padding:0.1rem 0.15rem 0.2rem 0.1rem;}.group-block.svelte-1b12cm3 {display:grid;gap:0.2rem;margin-bottom:0.875rem;}.group-header-row.svelte-1b12cm3 {display:flex;gap:0.25rem;align-items:center;padding-inline:0.3rem;}.group-block.svelte-1b12cm3 + .group-block:where(.svelte-1b12cm3) .group-header-row:where(.svelte-1b12cm3),\n  .group-block.svelte-1b12cm3 + .group-block:where(.svelte-1b12cm3) .group-header-static:where(.svelte-1b12cm3) {margin-top:0.3rem;}.group-collapse.svelte-1b12cm3 {border:0;color:var(--sidebar-muted);padding:0.05rem 0.2rem;}.group-collapse.svelte-1b12cm3 span:where(.svelte-1b12cm3) {display:inline-block;transition:transform 120ms ease;}.group-collapse.svelte-1b12cm3 span.rotated:where(.svelte-1b12cm3) {transform:rotate(90deg);}.group-label.svelte-1b12cm3,\n  .group-header-static.svelte-1b12cm3 {color:var(--sidebar-muted);font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.group-header-static.svelte-1b12cm3 {padding:0.15rem 0.65rem;}.items.svelte-1b12cm3 {display:grid;gap:0.12rem;padding-left:1.15rem;}.category-item.svelte-1b12cm3 {display:grid;grid-template-columns:3px 1.1rem 1fr;gap:0.5rem;align-items:center;padding:0.4rem 0.95rem 0.4rem 0.95rem;border-radius:0.4rem;border:1px solid transparent;font-size:0.85rem;min-width:0;}.category-item.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {width:3px;height:1.2rem;border-radius:999px;opacity:0.7;}.category-item.svelte-1b12cm3 .emoji:where(.svelte-1b12cm3) + span:where(.svelte-1b12cm3) {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.category-item.active.svelte-1b12cm3 {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.category-item.active.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {opacity:1;}"
+  code: ".sidebar.svelte-1b12cm3 {display:grid;grid-template-rows:auto auto 1fr;gap:0.35rem;height:100%;min-height:0;padding:0.5rem;background:var(--sidebar-bg);color:var(--sidebar-text);border-right:1px solid var(--sidebar-border);}.brand.svelte-1b12cm3 {display:flex;gap:0.5rem;align-items:center;padding:0.25rem 0.25rem 0.35rem;min-width:0;}.logo.svelte-1b12cm3 {width:2rem;height:2rem;display:grid;place-items:center;border-radius:0.6rem;background:color-mix(in srgb, var(--accent) 20%, transparent);border:1px solid color-mix(in srgb, var(--accent) 50%, var(--sidebar-border));font-weight:800;}.brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {color:var(--sidebar-muted);}.brand.svelte-1b12cm3 strong:where(.svelte-1b12cm3),\n  .brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.sidebar.svelte-1b12cm3 button:where(.svelte-1b12cm3) {text-align:left;background:transparent;border:1px solid transparent;color:inherit;border-radius:0.5rem;padding:0.35rem 0.5rem;font:inherit;}.pinned-nav.svelte-1b12cm3 {display:flex;flex-direction:column;gap:0.35rem;padding:0.1rem 0.15rem 0.35rem;margin-bottom:0.2rem;border-bottom:1px solid color-mix(in srgb, var(--sidebar-border) 70%, transparent);}.pinned-item.svelte-1b12cm3 {width:100%;background:color-mix(in srgb, var(--sidebar-active-bg) 50%, transparent);border-color:color-mix(in srgb, var(--sidebar-border) 85%, transparent);padding:0.45rem 0.55rem;font-weight:600;}.pinned-item.active.svelte-1b12cm3 {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.group-list.svelte-1b12cm3 {overflow-x:hidden;overflow-y:auto;display:grid;gap:0.2rem;align-content:start;padding:0.1rem 0.15rem 0.2rem 0.1rem;}.group-block.svelte-1b12cm3 {display:grid;gap:0.2rem;margin-bottom:0.875rem;}.group-header-row.svelte-1b12cm3 {display:flex;gap:0.25rem;align-items:center;padding-inline:0.3rem;}.group-block.svelte-1b12cm3 + .group-block:where(.svelte-1b12cm3) .group-header-row:where(.svelte-1b12cm3),\n  .group-block.svelte-1b12cm3 + .group-block:where(.svelte-1b12cm3) .group-header-static:where(.svelte-1b12cm3) {margin-top:0.3rem;}.group-collapse.svelte-1b12cm3 {border:0;color:var(--sidebar-muted);padding:0.05rem 0.2rem;}.group-collapse.svelte-1b12cm3 span:where(.svelte-1b12cm3) {display:inline-block;transition:transform 120ms ease;}.group-collapse.svelte-1b12cm3 span.rotated:where(.svelte-1b12cm3) {transform:rotate(90deg);}.group-label.svelte-1b12cm3,\n  .group-header-static.svelte-1b12cm3 {color:var(--sidebar-muted);font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.group-header-static.svelte-1b12cm3 {padding:0.15rem 0.65rem;}.items.svelte-1b12cm3 {display:grid;gap:0.12rem;padding-left:1.15rem;}.category-item.svelte-1b12cm3 {display:grid;grid-template-columns:3px 1.1rem 1fr;gap:0.5rem;align-items:center;padding:0.4rem 0.95rem 0.4rem 0.95rem;border-radius:0.4rem;border:1px solid transparent;font-size:0.85rem;min-width:0;}.category-item.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {width:3px;height:1.2rem;border-radius:999px;opacity:0.7;}.category-item.svelte-1b12cm3 .emoji:where(.svelte-1b12cm3) + span:where(.svelte-1b12cm3) {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.category-item.active.svelte-1b12cm3 {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.category-item.active.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {opacity:1;}"
 };
 function Sidebar($$anchor, $$props) {
   push($$props, true);
@@ -6301,6 +6301,10 @@ function Sidebar($$anchor, $$props) {
   const looseCategories = user_derived(ungroupedCategories);
   function goDashboard() {
     setNavDashboard();
+    $$props.onNavigate?.();
+  }
+  function goUncategorized() {
+    setNavUncategorized();
     $$props.onNavigate?.();
   }
   function goGroup(id) {
@@ -6313,103 +6317,109 @@ function Sidebar($$anchor, $$props) {
   }
   var nav_1 = root();
   let classes;
-  var button = sibling(child(nav_1), 2);
+  var div = sibling(child(nav_1), 2);
+  var button = child(div);
   let classes_1;
-  var div = sibling(button, 2);
-  var node = child(div);
+  var button_1 = sibling(button, 2);
+  let classes_2;
+  reset(div);
+  var div_1 = sibling(div, 2);
+  var node = child(div_1);
   each(node, 17, () => get(grouped), (section) => section.group.id, ($$anchor2, section) => {
-    var div_1 = root_1();
-    var div_2 = child(div_1);
-    var button_1 = child(div_2);
-    var span = child(button_1);
-    let classes_2;
-    reset(button_1);
-    var button_2 = sibling(button_1, 2);
-    var text2 = child(button_2, true);
+    var div_2 = root_1();
+    var div_3 = child(div_2);
+    var button_2 = child(div_3);
+    var span = child(button_2);
+    let classes_3;
     reset(button_2);
-    reset(div_2);
-    var node_1 = sibling(div_2, 2);
+    var button_3 = sibling(button_2, 2);
+    var text2 = child(button_3, true);
+    reset(button_3);
+    reset(div_3);
+    var node_1 = sibling(div_3, 2);
     {
       var consequent = ($$anchor3) => {
-        var div_3 = root_2();
-        each(div_3, 21, () => get(section).categories, (category) => category.id, ($$anchor4, category) => {
-          var button_3 = root_3();
-          let classes_3;
-          var span_1 = child(button_3);
+        var div_4 = root_2();
+        each(div_4, 21, () => get(section).categories, (category) => category.id, ($$anchor4, category) => {
+          var button_4 = root_3();
+          let classes_4;
+          var span_1 = child(button_4);
           var span_2 = sibling(span_1, 2);
           var text_1 = child(span_2, true);
           reset(span_2);
           var span_3 = sibling(span_2, 2);
           var text_2 = child(span_3, true);
           reset(span_3);
-          reset(button_3);
+          reset(button_4);
           template_effect(() => {
-            classes_3 = set_class(button_3, 1, "category-item svelte-1b12cm3", null, classes_3, { active: nav.categoryId === get(category).id });
+            classes_4 = set_class(button_4, 1, "category-item svelte-1b12cm3", null, classes_4, { active: nav.categoryId === get(category).id });
             set_style(span_1, `background:${get(category).color ?? "var(--accent)"}`);
             set_text(text_1, get(category).emoji ?? "\u2022");
             set_text(text_2, get(category).name);
           });
-          delegated("click", button_3, () => goCategory(get(category).id));
-          append($$anchor4, button_3);
+          delegated("click", button_4, () => goCategory(get(category).id));
+          append($$anchor4, button_4);
         });
-        reset(div_3);
-        append($$anchor3, div_3);
+        reset(div_4);
+        append($$anchor3, div_4);
       };
       if_block(node_1, ($$render) => {
         if (!get(section).group.collapsed) $$render(consequent);
       });
     }
-    reset(div_1);
+    reset(div_2);
     template_effect(() => {
-      classes_2 = set_class(span, 1, "svelte-1b12cm3", null, classes_2, { rotated: get(section).group.collapsed });
+      classes_3 = set_class(span, 1, "svelte-1b12cm3", null, classes_3, { rotated: get(section).group.collapsed });
       set_text(text2, get(section).group.name);
     });
-    delegated("click", button_1, () => toggleGroupCollapsed(get(section).group.id));
-    delegated("click", button_2, () => goGroup(get(section).group.id));
-    append($$anchor2, div_1);
+    delegated("click", button_2, () => toggleGroupCollapsed(get(section).group.id));
+    delegated("click", button_3, () => goGroup(get(section).group.id));
+    append($$anchor2, div_2);
   });
   var node_2 = sibling(node, 2);
   {
     var consequent_1 = ($$anchor2) => {
-      var div_4 = root_4();
-      var div_5 = sibling(child(div_4), 2);
-      each(div_5, 21, () => get(looseCategories), (category) => category.id, ($$anchor3, category) => {
-        var button_4 = root_5();
-        let classes_4;
-        var span_4 = child(button_4);
+      var div_5 = root_4();
+      var div_6 = sibling(child(div_5), 2);
+      each(div_6, 21, () => get(looseCategories), (category) => category.id, ($$anchor3, category) => {
+        var button_5 = root_5();
+        let classes_5;
+        var span_4 = child(button_5);
         var span_5 = sibling(span_4, 2);
         var text_3 = child(span_5, true);
         reset(span_5);
         var span_6 = sibling(span_5, 2);
         var text_4 = child(span_6, true);
         reset(span_6);
-        reset(button_4);
+        reset(button_5);
         template_effect(() => {
-          classes_4 = set_class(button_4, 1, "category-item svelte-1b12cm3", null, classes_4, { active: nav.categoryId === get(category).id });
+          classes_5 = set_class(button_5, 1, "category-item svelte-1b12cm3", null, classes_5, { active: nav.categoryId === get(category).id });
           set_style(span_4, `background:${get(category).color ?? "var(--accent)"}`);
           set_text(text_3, get(category).emoji ?? "\u2022");
           set_text(text_4, get(category).name);
         });
-        delegated("click", button_4, () => goCategory(get(category).id));
-        append($$anchor3, button_4);
+        delegated("click", button_5, () => goCategory(get(category).id));
+        append($$anchor3, button_5);
       });
+      reset(div_6);
       reset(div_5);
-      reset(div_4);
-      append($$anchor2, div_4);
+      append($$anchor2, div_5);
     };
     if_block(node_2, ($$render) => {
       if (get(looseCategories).length) $$render(consequent_1);
     });
   }
-  reset(div);
+  reset(div_1);
   reset(nav_1);
   template_effect(() => {
     classes = set_class(nav_1, 1, "sidebar adhd-todo-sidebar svelte-1b12cm3", null, classes, { mobile: mobile() });
-    classes_1 = set_class(button, 1, "svelte-1b12cm3", null, classes_1, {
+    classes_1 = set_class(button, 1, "pinned-item svelte-1b12cm3", null, classes_1, { active: !!nav.uncategorizedOnly });
+    classes_2 = set_class(button_1, 1, "pinned-item svelte-1b12cm3", null, classes_2, {
       active: !nav.groupId && !nav.categoryId && !nav.uncategorizedOnly
     });
   });
-  delegated("click", button, goDashboard);
+  delegated("click", button, goUncategorized);
+  delegated("click", button_1, goDashboard);
   append($$anchor, nav_1);
   pop();
 }
@@ -6507,11 +6517,11 @@ function QuickCapture($$anchor, $$props) {
 var root_13 = from_html(`<span class="svelte-1j8piq"> </span>`);
 var root_32 = from_html(`<option> </option>`);
 var root_22 = from_html(`<div class="editor svelte-1j8piq"><input type="text" maxlength="140" class="svelte-1j8piq"/> <div class="grid2 svelte-1j8piq"><select class="svelte-1j8piq"><option>Low</option><option>Medium</option><option>High</option></select> <select disabled="" class="svelte-1j8piq"><option>Vault category (read from tags)</option><!></select></div> <div class="actions svelte-1j8piq"><button type="button" class="svelte-1j8piq">Save</button> <button type="button" class="ghost svelte-1j8piq">Cancel</button></div> <p class="note svelte-1j8piq">Only title and completion state are written back to vault in Phase 1 migration.</p></div>`);
-var root_42 = from_html(`<div class="actions svelte-1j8piq"><button type="button" class="ghost svelte-1j8piq">Open in Obsidian</button> <button type="button" class="ghost svelte-1j8piq">Edit</button> <button type="button" class="danger svelte-1j8piq">Delete</button></div>`);
-var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><label class="checkbox-row svelte-1j8piq"><input type="checkbox"/> <span class="title svelte-1j8piq"> </span></label> <div class="badges svelte-1j8piq"><span> </span></div></div> <div class="meta svelte-1j8piq"><span class="svelte-1j8piq"> </span> <!></div> <!></article>`);
+var root_42 = from_html(`<div class="actions svelte-1j8piq"><button type="button" class="ghost icon-btn svelte-1j8piq" title="Open in Obsidian" aria-label="Open in Obsidian">\u2197</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Edit task" aria-label="Edit task">\u270E</button> <button type="button" class="danger icon-btn svelte-1j8piq" title="Delete task" aria-label="Delete task">\u{1F5D1}</button></div>`);
+var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><label class="checkbox-row svelte-1j8piq"><input type="checkbox" class="svelte-1j8piq"/> <span class="title svelte-1j8piq"> </span></label> <div class="badges svelte-1j8piq"><span> </span></div></div> <div class="meta svelte-1j8piq"><span class="svelte-1j8piq"> </span> <!></div> <!></article>`);
 var $$css3 = {
   hash: "svelte-1j8piq",
-  code: ".task-card.svelte-1j8piq {display:grid;gap:0.6rem;padding:0.85rem;border-radius:0.9rem;border:1px solid var(--border-color);background:var(--surface-1);}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.5rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.6rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.badges.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.35rem;align-items:center;}.badge.svelte-1j8piq {padding:0.2rem 0.5rem;border-radius:999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;border:1px solid var(--border-color);background:var(--surface-2);}.badge.low.svelte-1j8piq {background:color-mix(in srgb, #58d68d 16%, var(--surface-2));}.badge.medium.svelte-1j8piq {background:color-mix(in srgb, #f4d03f 18%, var(--surface-2));}.badge.high.svelte-1j8piq,\n  .badge.urgent.svelte-1j8piq {background:color-mix(in srgb, #ff6b6b 16%, var(--surface-2));}.meta.svelte-1j8piq {display:flex;flex-wrap:wrap;gap:0.5rem 0.8rem;font-size:0.78rem;color:var(--text-muted);}.meta.svelte-1j8piq > span:where(.svelte-1j8piq) {max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.editor.svelte-1j8piq {display:grid;gap:0.5rem;padding-top:0.25rem;}.editor.svelte-1j8piq input:where(.svelte-1j8piq),\n  .editor.svelte-1j8piq select:where(.svelte-1j8piq),\n  .actions.svelte-1j8piq button:where(.svelte-1j8piq) {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.45rem 0.6rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.grid2.svelte-1j8piq {display:grid;gap:0.5rem;grid-template-columns:repeat(2, minmax(0, 1fr));}.actions.svelte-1j8piq {display:flex;gap:0.5rem;justify-content:flex-end;flex-wrap:wrap;}.actions.svelte-1j8piq .ghost:where(.svelte-1j8piq) {background:transparent;}.actions.svelte-1j8piq .danger:where(.svelte-1j8piq) {border-color:color-mix(in srgb, #ff6b6b 55%, var(--border-color));}.note.svelte-1j8piq {margin:0;color:var(--text-muted);font-size:0.75rem;}\n\n  @media (max-width: 600px) {.grid2.svelte-1j8piq {grid-template-columns:1fr;}\n  }\n\n  @media (max-width: 500px) {.actions.svelte-1j8piq {justify-content:flex-start;}.actions.svelte-1j8piq button:where(.svelte-1j8piq) {flex:1 1 calc(50% - 0.25rem);}\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.badges.svelte-1j8piq {width:100%;justify-content:flex-start;}.actions.svelte-1j8piq button:where(.svelte-1j8piq) {flex-basis:100%;}\n  }"
+  code: ".task-card.svelte-1j8piq {display:grid;gap:0.4rem;padding:0.5rem;border-radius:0.75rem;border:1px solid var(--border-color);background:var(--surface-1);}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.35rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.45rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.2;font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.checkbox-row.svelte-1j8piq input[type='checkbox']:where(.svelte-1j8piq) {margin-top:0.1rem;inline-size:0.95rem;block-size:0.95rem;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.badges.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.25rem;align-items:center;}.badge.svelte-1j8piq {padding:0.1rem 0.35rem;border-radius:999px;font-size:0.62rem;font-weight:600;text-transform:uppercase;border:1px solid var(--border-color);background:var(--surface-2);opacity:0.9;}.badge.low.svelte-1j8piq {background:color-mix(in srgb, #58d68d 16%, var(--surface-2));}.badge.medium.svelte-1j8piq {background:color-mix(in srgb, #f4d03f 18%, var(--surface-2));}.badge.high.svelte-1j8piq,\n  .badge.urgent.svelte-1j8piq {background:color-mix(in srgb, #ff6b6b 16%, var(--surface-2));}.meta.svelte-1j8piq {display:flex;flex-wrap:wrap;gap:0.3rem 0.6rem;font-size:0.72rem;color:var(--text-muted);}.meta.svelte-1j8piq > span:where(.svelte-1j8piq) {max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.editor.svelte-1j8piq {display:grid;gap:0.5rem;padding-top:0.1rem;}.editor.svelte-1j8piq input:where(.svelte-1j8piq),\n  .editor.svelte-1j8piq select:where(.svelte-1j8piq),\n  .actions.svelte-1j8piq button:where(.svelte-1j8piq) {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.45rem 0.6rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.grid2.svelte-1j8piq {display:grid;gap:0.5rem;grid-template-columns:repeat(2, minmax(0, 1fr));}.actions.svelte-1j8piq {display:flex;gap:0.35rem;justify-content:flex-end;flex-wrap:wrap;}.icon-btn.svelte-1j8piq {display:grid;place-items:center;min-width:1.8rem;min-height:1.8rem;padding:0.2rem;line-height:1;font-size:0.8rem;border-radius:0.45rem;}.actions.svelte-1j8piq .ghost:where(.svelte-1j8piq) {background:transparent;}.actions.svelte-1j8piq .danger:where(.svelte-1j8piq) {border-color:color-mix(in srgb, #ff6b6b 55%, var(--border-color));}.note.svelte-1j8piq {margin:0;color:var(--text-muted);font-size:0.75rem;}\n\n  @media (max-width: 600px) {.grid2.svelte-1j8piq {grid-template-columns:1fr;}\n  }\n\n  @media (max-width: 500px) {.actions.svelte-1j8piq {justify-content:flex-start;}\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.badges.svelte-1j8piq {width:100%;justify-content:flex-start;}.icon-btn.svelte-1j8piq {min-width:1.65rem;min-height:1.65rem;}\n  }"
 };
 function TaskCard($$anchor, $$props) {
   push($$props, true);
@@ -6658,40 +6668,62 @@ var root_52 = from_html(`<small class="svelte-q5ccww"> </small>`);
 var root_33 = from_html(`<button type="button" class="uncategorized-list svelte-q5ccww"><span class="uncategorized-count svelte-q5ccww"> </span> <ul class="svelte-q5ccww"></ul> <!></button>`);
 var root_14 = from_html(`<section class="uncategorized-panel svelte-q5ccww"><div class="section-head svelte-q5ccww"><h2 class="svelte-q5ccww">Uncategorized</h2> <button type="button" class="ghost svelte-q5ccww">View only</button></div> <!></section>`);
 var root_6 = from_html(`<div class="empty-state svelte-q5ccww">No tasks here yet.</div>`);
-var root_9 = from_html(`<div class="cards svelte-q5ccww"></div>`);
-var root_11 = from_html(`<section class="subtag-group svelte-q5ccww"><div class="subtag-header svelte-q5ccww"> </div> <div class="cards svelte-q5ccww"></div></section>`);
-var root_8 = from_html(`<!> <!>`, 1);
-var root_132 = from_html(`<div class="cards svelte-q5ccww"></div>`);
-var root_16 = from_html(`<li><button type="button" class="svelte-q5ccww"> </button></li>`);
-var root_15 = from_html(`<aside class="side-column svelte-q5ccww"><section class="panel svelte-q5ccww"><h3 class="svelte-q5ccww">Categories</h3> <ul class="category-links svelte-q5ccww"><!> <li><button type="button" class="svelte-q5ccww">Uncategorized / group-level</button></li></ul></section></aside>`);
-var root4 = from_html(`<section class="task-board svelte-q5ccww"><header class="page-header svelte-q5ccww"><h1 class="svelte-q5ccww"> </h1> <div class="stats-grid svelte-q5ccww"><div class="svelte-q5ccww"><span class="svelte-q5ccww"> </span><small class="svelte-q5ccww">Open</small></div> <div class="svelte-q5ccww"><span class="svelte-q5ccww"> </span><small class="svelte-q5ccww">Done</small></div></div> <div class="header-actions svelte-q5ccww"><button type="button">Board</button> <button type="button" class="svelte-q5ccww"> </button></div></header> <div><div class="main-column svelte-q5ccww"><!> <!> <section class="task-list svelte-q5ccww"><div class="task-list-header svelte-q5ccww"><h2 class="svelte-q5ccww">Tasks</h2> <p class="svelte-q5ccww">Drag cards is visual-only for now; file order is preserved from vault sources.</p></div> <!></section></div> <!></div></section>`);
+var root_8 = from_html(`<div class="empty-state compact svelte-q5ccww">No incomplete tasks.</div>`);
+var root_10 = from_html(`<div class="cards svelte-q5ccww"></div>`);
+var root_122 = from_html(`<section class="subtag-group svelte-q5ccww"><div class="subtag-header svelte-q5ccww"> </div> <div class="cards svelte-q5ccww"></div></section>`);
+var root_9 = from_html(`<!> <!>`, 1);
+var root_142 = from_html(`<div class="cards svelte-q5ccww"></div>`);
+var root_17 = from_html(`<div class="empty-state compact svelte-q5ccww">No finished tasks.</div>`);
+var root_19 = from_html(`<div class="cards svelte-q5ccww"></div>`);
+var root_21 = from_html(`<section class="subtag-group svelte-q5ccww"><div class="subtag-header svelte-q5ccww"> </div> <div class="cards svelte-q5ccww"></div></section>`);
+var root_18 = from_html(`<!> <!>`, 1);
+var root_232 = from_html(`<div class="cards svelte-q5ccww"></div>`);
+var root_7 = from_html(`<section class="task-section svelte-q5ccww"><div class="task-section-head svelte-q5ccww"><h3 class="svelte-q5ccww">Tasks</h3> <small class="svelte-q5ccww"> </small></div> <!></section> <section class="task-section finished-block svelte-q5ccww"><button type="button" class="finished-toggle svelte-q5ccww"><span> </span> <span>\u25BE</span></button> <!></section>`, 1);
+var root_26 = from_html(`<li><button type="button" class="svelte-q5ccww"> </button></li>`);
+var root_25 = from_html(`<aside class="side-column svelte-q5ccww"><section class="panel svelte-q5ccww"><h3 class="svelte-q5ccww">Categories</h3> <ul class="category-links svelte-q5ccww"><!> <li><button type="button" class="svelte-q5ccww">Uncategorized / group-level</button></li></ul></section></aside>`);
+var root4 = from_html(`<section class="task-board svelte-q5ccww"><header class="page-header svelte-q5ccww"><h1 class="svelte-q5ccww"> </h1> <div class="stats-grid svelte-q5ccww"><div class="svelte-q5ccww"><span class="svelte-q5ccww"> </span><small class="svelte-q5ccww">Open</small></div> <div class="svelte-q5ccww"><span class="svelte-q5ccww"> </span><small class="svelte-q5ccww">Done</small></div></div> <div class="header-actions svelte-q5ccww"><button type="button">Board</button> <button type="button" class="svelte-q5ccww"> </button></div></header> <div><div class="main-column svelte-q5ccww"><!> <!> <section class="task-list svelte-q5ccww"><div class="task-list-header svelte-q5ccww"><h2 class="svelte-q5ccww">Task List</h2> <p class="svelte-q5ccww">Drag cards is visual-only for now; file order is preserved from vault sources.</p></div> <!></section></div> <!></div></section>`);
 var $$css4 = {
   hash: "svelte-q5ccww",
-  code: ".task-board.svelte-q5ccww {display:grid;gap:1rem;}.page-header.svelte-q5ccww {display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;}h1.svelte-q5ccww {margin:0;font-size:clamp(1.2rem, 2.3vw, 1.7rem);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.stats-grid.svelte-q5ccww {display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:0.5rem;min-width:min(14rem, 100%);}.stats-grid.svelte-q5ccww > div:where(.svelte-q5ccww) {background:var(--surface-1);border:1px solid var(--border-color);border-radius:0.9rem;padding:0.6rem 0.75rem;display:grid;gap:0.15rem;}.stats-grid.svelte-q5ccww span:where(.svelte-q5ccww) {font-size:1.15rem;font-weight:800;}.stats-grid.svelte-q5ccww small:where(.svelte-q5ccww) {color:var(--text-muted);}.header-actions.svelte-q5ccww {display:flex;gap:0.5rem;margin-left:auto;min-width:0;}.header-actions.svelte-q5ccww button:where(.svelte-q5ccww) {background:var(--surface-1);border:1px solid var(--border-color);color:inherit;border-radius:0.65rem;padding:0.45rem 0.75rem;font:inherit;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.header-actions.svelte-q5ccww button.active:where(.svelte-q5ccww) {background:var(--surface-2);}.board-grid.svelte-q5ccww {display:grid;grid-template-columns:minmax(0, 1fr) minmax(240px, 320px);gap:1rem;}.board-grid.single-column.svelte-q5ccww {grid-template-columns:minmax(0, 1fr);}.main-column.svelte-q5ccww,\n  .side-column.svelte-q5ccww {display:grid;gap:1rem;align-content:start;}.task-list.svelte-q5ccww {display:grid;gap:0.75rem;padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.uncategorized-panel.svelte-q5ccww {display:grid;gap:0.6rem;padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.section-head.svelte-q5ccww {display:flex;align-items:center;justify-content:space-between;gap:0.5rem;}.section-head.svelte-q5ccww h2:where(.svelte-q5ccww) {margin:0;font-size:1rem;}.section-head.svelte-q5ccww .ghost:where(.svelte-q5ccww) {background:transparent;border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.35rem 0.55rem;font:inherit;}.uncategorized-list.svelte-q5ccww {text-align:left;display:grid;gap:0.35rem;width:100%;background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.8rem;padding:0.7rem 0.8rem;cursor:pointer;}.uncategorized-list.svelte-q5ccww ul:where(.svelte-q5ccww) {margin:0;padding-left:1rem;display:grid;gap:0.15rem;color:var(--text-muted);font-size:0.85rem;}.uncategorized-list.svelte-q5ccww li:where(.svelte-q5ccww),\n  .category-links.svelte-q5ccww button:where(.svelte-q5ccww) {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.uncategorized-list.svelte-q5ccww small:where(.svelte-q5ccww) {color:var(--text-muted);}.uncategorized-count.svelte-q5ccww {font-weight:700;}.empty-state.compact.svelte-q5ccww {padding:0.7rem 0.8rem;}.task-list-header.svelte-q5ccww h2:where(.svelte-q5ccww),\n  .panel.svelte-q5ccww h3:where(.svelte-q5ccww) {margin:0;font-size:1rem;}.task-list-header.svelte-q5ccww p:where(.svelte-q5ccww) {margin:0.15rem 0 0;color:var(--text-muted);font-size:0.8rem;}.cards.svelte-q5ccww {display:grid;gap:0.7rem;}.subtag-group.svelte-q5ccww {display:grid;gap:0.55rem;margin-top:0.4rem;}.subtag-header.svelte-q5ccww {padding:0.35rem 0.55rem;border-radius:0.6rem;border:1px solid var(--border-color);background:var(--surface-2);font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);}.empty-state.svelte-q5ccww {padding:1rem;border:1px dashed var(--border-color);border-radius:0.8rem;color:var(--text-muted);}.panel.svelte-q5ccww {padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.panel.svelte-q5ccww ul:where(.svelte-q5ccww) {list-style:none;margin:0.6rem 0 0;padding:0;display:grid;gap:0.45rem;color:var(--text-muted);font-size:0.9rem;}.category-links.svelte-q5ccww button:where(.svelte-q5ccww) {width:100%;text-align:left;font:inherit;color:inherit;background:transparent;border:1px solid transparent;border-radius:0.45rem;padding:0.35rem 0.45rem;cursor:pointer;max-width:100%;}.category-links.svelte-q5ccww button:where(.svelte-q5ccww):hover {background:var(--surface-2);color:var(--text-normal);}\n\n  @media (max-width: 700px) {.board-grid.svelte-q5ccww {grid-template-columns:1fr;}\n  }\n\n  @media (max-width: 700px) {.stats-grid.svelte-q5ccww {width:100%;min-width:0;}.header-actions.svelte-q5ccww {width:100%;margin-left:0;}.header-actions.svelte-q5ccww button:where(.svelte-q5ccww) {flex:1 1 0;}\n  }\n\n  @media (max-width: 500px) {.page-header.svelte-q5ccww {gap:0.7rem;}.stats-grid.svelte-q5ccww {gap:0.4rem;}.stats-grid.svelte-q5ccww > div:where(.svelte-q5ccww) {padding:0.45rem 0.55rem;border-radius:0.75rem;}.stats-grid.svelte-q5ccww span:where(.svelte-q5ccww) {font-size:1rem;}.stats-grid.svelte-q5ccww small:where(.svelte-q5ccww) {font-size:0.72rem;}\n  }\n\n  @media (max-width: 400px) {.page-header.svelte-q5ccww {align-items:stretch;}.stats-grid.svelte-q5ccww > div:where(.svelte-q5ccww) {padding:0.35rem 0.45rem;border-radius:0.65rem;gap:0.05rem;}.stats-grid.svelte-q5ccww span:where(.svelte-q5ccww) {font-size:0.9rem;}.stats-grid.svelte-q5ccww small:where(.svelte-q5ccww) {font-size:0.65rem;}.header-actions.svelte-q5ccww {gap:0.35rem;}\n  }"
+  code: ".task-board.svelte-q5ccww {display:grid;gap:1rem;}.page-header.svelte-q5ccww {display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;}h1.svelte-q5ccww {margin:0;font-size:clamp(1.2rem, 2.3vw, 1.7rem);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.stats-grid.svelte-q5ccww {display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:0.5rem;min-width:min(14rem, 100%);}.stats-grid.svelte-q5ccww > div:where(.svelte-q5ccww) {background:var(--surface-1);border:1px solid var(--border-color);border-radius:0.9rem;padding:0.6rem 0.75rem;display:grid;gap:0.15rem;}.stats-grid.svelte-q5ccww span:where(.svelte-q5ccww) {font-size:1.15rem;font-weight:800;}.stats-grid.svelte-q5ccww small:where(.svelte-q5ccww) {color:var(--text-muted);}.header-actions.svelte-q5ccww {display:flex;gap:0.5rem;margin-left:auto;min-width:0;}.header-actions.svelte-q5ccww button:where(.svelte-q5ccww) {background:var(--surface-1);border:1px solid var(--border-color);color:inherit;border-radius:0.65rem;padding:0.45rem 0.75rem;font:inherit;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.header-actions.svelte-q5ccww button.active:where(.svelte-q5ccww) {background:var(--surface-2);}.board-grid.svelte-q5ccww {display:grid;grid-template-columns:minmax(0, 1fr) minmax(240px, 320px);gap:1rem;}.board-grid.single-column.svelte-q5ccww {grid-template-columns:minmax(0, 1fr);}.main-column.svelte-q5ccww,\n  .side-column.svelte-q5ccww {display:grid;gap:1rem;align-content:start;}.task-list.svelte-q5ccww {display:grid;gap:0.65rem;padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.uncategorized-panel.svelte-q5ccww {display:grid;gap:0.6rem;padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.section-head.svelte-q5ccww {display:flex;align-items:center;justify-content:space-between;gap:0.5rem;}.section-head.svelte-q5ccww h2:where(.svelte-q5ccww) {margin:0;font-size:1rem;}.section-head.svelte-q5ccww .ghost:where(.svelte-q5ccww) {background:transparent;border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.35rem 0.55rem;font:inherit;}.uncategorized-list.svelte-q5ccww {text-align:left;display:grid;gap:0.35rem;width:100%;background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.8rem;padding:0.7rem 0.8rem;cursor:pointer;}.uncategorized-list.svelte-q5ccww ul:where(.svelte-q5ccww) {margin:0;padding-left:1rem;display:grid;gap:0.15rem;color:var(--text-muted);font-size:0.85rem;}.uncategorized-list.svelte-q5ccww li:where(.svelte-q5ccww),\n  .category-links.svelte-q5ccww button:where(.svelte-q5ccww) {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.uncategorized-list.svelte-q5ccww small:where(.svelte-q5ccww) {color:var(--text-muted);}.uncategorized-count.svelte-q5ccww {font-weight:700;}.empty-state.compact.svelte-q5ccww {padding:0.7rem 0.8rem;}.task-list-header.svelte-q5ccww h2:where(.svelte-q5ccww),\n  .panel.svelte-q5ccww h3:where(.svelte-q5ccww) {margin:0;font-size:1rem;}.task-list-header.svelte-q5ccww p:where(.svelte-q5ccww) {margin:0.15rem 0 0;color:var(--text-muted);font-size:0.8rem;}.task-section.svelte-q5ccww {display:grid;gap:0.5rem;}.task-section.svelte-q5ccww + .task-section:where(.svelte-q5ccww) {margin-top:0.2rem;}.task-section-head.svelte-q5ccww {display:flex;align-items:center;justify-content:space-between;gap:0.5rem;}.task-section-head.svelte-q5ccww h3:where(.svelte-q5ccww) {margin:0;font-size:0.9rem;}.task-section-head.svelte-q5ccww small:where(.svelte-q5ccww) {color:var(--text-muted);font-size:0.75rem;font-weight:600;}.finished-block.svelte-q5ccww {gap:0.55rem;padding-top:0.15rem;border-top:1px solid color-mix(in srgb, var(--border-color) 70%, transparent);}.finished-toggle.svelte-q5ccww {display:flex;align-items:center;justify-content:space-between;gap:0.5rem;width:100%;text-align:left;background:transparent;border:1px solid var(--border-color);color:inherit;border-radius:0.65rem;padding:0.4rem 0.55rem;font:inherit;cursor:pointer;}.finished-toggle.svelte-q5ccww .chevron:where(.svelte-q5ccww) {color:var(--text-muted);transition:transform 120ms ease;}.finished-toggle.svelte-q5ccww .chevron.expanded:where(.svelte-q5ccww) {transform:rotate(180deg);}.cards.svelte-q5ccww {display:grid;gap:0.45rem;}.subtag-group.svelte-q5ccww {display:grid;gap:0.55rem;margin-top:0.4rem;}.subtag-header.svelte-q5ccww {padding:0.35rem 0.55rem;border-radius:0.6rem;border:1px solid var(--border-color);background:var(--surface-2);font-size:0.8rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);}.empty-state.svelte-q5ccww {padding:1rem;border:1px dashed var(--border-color);border-radius:0.8rem;color:var(--text-muted);}.panel.svelte-q5ccww {padding:1rem;border:1px solid var(--border-color);border-radius:1rem;background:var(--surface-1);}.panel.svelte-q5ccww ul:where(.svelte-q5ccww) {list-style:none;margin:0.6rem 0 0;padding:0;display:grid;gap:0.45rem;color:var(--text-muted);font-size:0.9rem;}.category-links.svelte-q5ccww button:where(.svelte-q5ccww) {width:100%;text-align:left;font:inherit;color:inherit;background:transparent;border:1px solid transparent;border-radius:0.45rem;padding:0.35rem 0.45rem;cursor:pointer;max-width:100%;}.category-links.svelte-q5ccww button:where(.svelte-q5ccww):hover {background:var(--surface-2);color:var(--text-normal);}\n\n  @media (max-width: 700px) {.board-grid.svelte-q5ccww {grid-template-columns:1fr;}\n  }\n\n  @media (max-width: 700px) {.stats-grid.svelte-q5ccww {width:100%;min-width:0;}.header-actions.svelte-q5ccww {width:100%;margin-left:0;}.header-actions.svelte-q5ccww button:where(.svelte-q5ccww) {flex:1 1 0;}\n  }\n\n  @media (max-width: 500px) {.page-header.svelte-q5ccww {gap:0.7rem;}.stats-grid.svelte-q5ccww {gap:0.4rem;}.stats-grid.svelte-q5ccww > div:where(.svelte-q5ccww) {padding:0.45rem 0.55rem;border-radius:0.75rem;}.stats-grid.svelte-q5ccww span:where(.svelte-q5ccww) {font-size:1rem;}.stats-grid.svelte-q5ccww small:where(.svelte-q5ccww) {font-size:0.72rem;}\n  }\n\n  @media (max-width: 400px) {.page-header.svelte-q5ccww {align-items:stretch;}.stats-grid.svelte-q5ccww > div:where(.svelte-q5ccww) {padding:0.35rem 0.45rem;border-radius:0.65rem;gap:0.05rem;}.stats-grid.svelte-q5ccww span:where(.svelte-q5ccww) {font-size:0.9rem;}.stats-grid.svelte-q5ccww small:where(.svelte-q5ccww) {font-size:0.65rem;}.header-actions.svelte-q5ccww {gap:0.35rem;}\n  }"
 };
 function TaskBoard($$anchor, $$props) {
   push($$props, true);
   append_styles($$anchor, $$css4);
   let title = prop($$props, "title", 3, "Dashboard"), filterUncategorized = prop($$props, "filterUncategorized", 3, false), showCategoriesCard = prop($$props, "showCategoriesCard", 3, true), boardActive = prop($$props, "boardActive", 3, true), rescanLoading = prop($$props, "rescanLoading", 3, false);
   let draggingTaskId = state(null);
+  let finishedExpanded = state(false);
   const sortedTasks = user_derived(() => [...visibleTasks()].sort((a, b) => a.sortOrder - b.sortOrder));
+  const incompleteTasks = user_derived(() => get(sortedTasks).filter((task) => !task.completed));
+  const finishedTasks = user_derived(() => get(sortedTasks).filter((task) => task.completed));
   const openCount = user_derived(() => get(sortedTasks).filter((task) => !task.completed).length);
   const doneCount = user_derived(() => get(sortedTasks).filter((task) => task.completed).length);
   const sortedCategories = user_derived(() => [...categories].sort((a, b) => a.sortOrder - b.sortOrder));
   const dashboardUncategorizedTasks = user_derived(() => get(sortedTasks).filter((task) => !task.categoryId));
   const showSubtagSections = user_derived(() => !!$$props.filterCategoryId && get(sortedTasks).some((task) => !!task.subTag));
-  const untaggedCategoryTasks = user_derived(() => get(showSubtagSections) ? get(sortedTasks).filter((task) => !task.subTag) : []);
-  const subtagGroups = user_derived(() => {
+  const openUntaggedCategoryTasks = user_derived(() => get(showSubtagSections) ? get(incompleteTasks).filter((task) => !task.subTag) : []);
+  const finishedUntaggedCategoryTasks = user_derived(() => get(showSubtagSections) ? get(finishedTasks).filter((task) => !task.subTag) : []);
+  const openSubtagGroups = user_derived(() => {
+    return get(showSubtagSections) ? groupBySubtag(get(incompleteTasks)) : [];
+  });
+  const finishedSubtagGroups = user_derived(() => {
+    return get(showSubtagSections) ? groupBySubtag(get(finishedTasks)) : [];
+  });
+  user_effect(() => {
+    $$props.filterCategoryId;
+    $$props.filterGroupId;
+    filterUncategorized();
+    set(finishedExpanded, false);
+  });
+  function groupBySubtag(list) {
     const groups = /* @__PURE__ */ new Map();
-    if (!get(showSubtagSections)) return [];
-    for (const task of get(sortedTasks)) {
+    for (const task of list) {
       if (!task.subTag) continue;
-      const list = groups.get(task.subTag) ?? [];
-      list.push(task);
-      groups.set(task.subTag, list);
+      const items = groups.get(task.subTag) ?? [];
+      items.push(task);
+      groups.set(task.subTag, items);
     }
     return [...groups.entries()].map(([subTag, tasks2]) => ({ subTag, tasks: tasks2 }));
-  });
+  }
   function onDropOn(_targetTaskId) {
     set(draggingTaskId, null);
   }
@@ -6796,17 +6828,27 @@ function TaskBoard($$anchor, $$props) {
       var div_8 = root_6();
       append($$anchor2, div_8);
     };
-    var alternate_2 = ($$anchor2) => {
-      var fragment = comment();
-      var node_5 = first_child(fragment);
+    var alternate_3 = ($$anchor2) => {
+      var fragment = root_7();
+      var section_3 = first_child(fragment);
+      var div_9 = child(section_3);
+      var small_1 = sibling(child(div_9), 2);
+      var text_7 = child(small_1, true);
+      reset(small_1);
+      reset(div_9);
+      var node_5 = sibling(div_9, 2);
       {
-        var consequent_5 = ($$anchor3) => {
-          var fragment_1 = root_8();
+        var consequent_4 = ($$anchor3) => {
+          var div_10 = root_8();
+          append($$anchor3, div_10);
+        };
+        var consequent_6 = ($$anchor3) => {
+          var fragment_1 = root_9();
           var node_6 = first_child(fragment_1);
           {
-            var consequent_4 = ($$anchor4) => {
-              var div_9 = root_9();
-              each(div_9, 21, () => get(untaggedCategoryTasks), (task) => task.id, ($$anchor5, task) => {
+            var consequent_5 = ($$anchor4) => {
+              var div_11 = root_10();
+              each(div_11, 21, () => get(openUntaggedCategoryTasks), (task) => task.id, ($$anchor5, task) => {
                 TaskCard($$anchor5, {
                   get task() {
                     return get(task);
@@ -6815,21 +6857,21 @@ function TaskBoard($$anchor, $$props) {
                   onDropOn
                 });
               });
-              reset(div_9);
-              append($$anchor4, div_9);
+              reset(div_11);
+              append($$anchor4, div_11);
             };
             if_block(node_6, ($$render) => {
-              if (get(untaggedCategoryTasks).length) $$render(consequent_4);
+              if (get(openUntaggedCategoryTasks).length) $$render(consequent_5);
             });
           }
           var node_7 = sibling(node_6, 2);
-          each(node_7, 17, () => get(subtagGroups), (group) => group.subTag, ($$anchor4, group) => {
-            var section_3 = root_11();
-            var div_10 = child(section_3);
-            var text_7 = child(div_10, true);
-            reset(div_10);
-            var div_11 = sibling(div_10, 2);
-            each(div_11, 21, () => get(group).tasks, (task) => task.id, ($$anchor5, task) => {
+          each(node_7, 17, () => get(openSubtagGroups), (group) => group.subTag, ($$anchor4, group) => {
+            var section_4 = root_122();
+            var div_12 = child(section_4);
+            var text_8 = child(div_12, true);
+            reset(div_12);
+            var div_13 = sibling(div_12, 2);
+            each(div_13, 21, () => get(group).tasks, (task) => task.id, ($$anchor5, task) => {
               TaskCard($$anchor5, {
                 get task() {
                   return get(task);
@@ -6838,16 +6880,16 @@ function TaskBoard($$anchor, $$props) {
                 onDropOn
               });
             });
-            reset(div_11);
-            reset(section_3);
-            template_effect(() => set_text(text_7, get(group).subTag));
-            append($$anchor4, section_3);
+            reset(div_13);
+            reset(section_4);
+            template_effect(() => set_text(text_8, get(group).subTag));
+            append($$anchor4, section_4);
           });
           append($$anchor3, fragment_1);
         };
         var alternate_1 = ($$anchor3) => {
-          var div_12 = root_132();
-          each(div_12, 21, () => get(sortedTasks), (task) => task.id, ($$anchor4, task) => {
+          var div_14 = root_142();
+          each(div_14, 21, () => get(incompleteTasks), (task) => task.id, ($$anchor4, task) => {
             TaskCard($$anchor4, {
               get task() {
                 return get(task);
@@ -6856,51 +6898,150 @@ function TaskBoard($$anchor, $$props) {
               onDropOn
             });
           });
-          reset(div_12);
-          append($$anchor3, div_12);
+          reset(div_14);
+          append($$anchor3, div_14);
         };
         if_block(node_5, ($$render) => {
-          if (get(showSubtagSections)) $$render(consequent_5);
+          if (get(openCount) === 0) $$render(consequent_4);
+          else if (get(showSubtagSections)) $$render(consequent_6, 1);
           else $$render(alternate_1, false);
         });
       }
+      reset(section_3);
+      var section_5 = sibling(section_3, 2);
+      var button_4 = child(section_5);
+      var span_3 = child(button_4);
+      var text_9 = child(span_3);
+      reset(span_3);
+      var span_4 = sibling(span_3, 2);
+      let classes_2;
+      reset(button_4);
+      var node_8 = sibling(button_4, 2);
+      {
+        var consequent_10 = ($$anchor3) => {
+          var fragment_5 = comment();
+          var node_9 = first_child(fragment_5);
+          {
+            var consequent_7 = ($$anchor4) => {
+              var div_15 = root_17();
+              append($$anchor4, div_15);
+            };
+            var consequent_9 = ($$anchor4) => {
+              var fragment_6 = root_18();
+              var node_10 = first_child(fragment_6);
+              {
+                var consequent_8 = ($$anchor5) => {
+                  var div_16 = root_19();
+                  each(div_16, 21, () => get(finishedUntaggedCategoryTasks), (task) => task.id, ($$anchor6, task) => {
+                    TaskCard($$anchor6, {
+                      get task() {
+                        return get(task);
+                      },
+                      onDragStart: (id) => set(draggingTaskId, id, true),
+                      onDropOn
+                    });
+                  });
+                  reset(div_16);
+                  append($$anchor5, div_16);
+                };
+                if_block(node_10, ($$render) => {
+                  if (get(finishedUntaggedCategoryTasks).length) $$render(consequent_8);
+                });
+              }
+              var node_11 = sibling(node_10, 2);
+              each(node_11, 17, () => get(finishedSubtagGroups), (group) => group.subTag, ($$anchor5, group) => {
+                var section_6 = root_21();
+                var div_17 = child(section_6);
+                var text_10 = child(div_17, true);
+                reset(div_17);
+                var div_18 = sibling(div_17, 2);
+                each(div_18, 21, () => get(group).tasks, (task) => task.id, ($$anchor6, task) => {
+                  TaskCard($$anchor6, {
+                    get task() {
+                      return get(task);
+                    },
+                    onDragStart: (id) => set(draggingTaskId, id, true),
+                    onDropOn
+                  });
+                });
+                reset(div_18);
+                reset(section_6);
+                template_effect(() => set_text(text_10, get(group).subTag));
+                append($$anchor5, section_6);
+              });
+              append($$anchor4, fragment_6);
+            };
+            var alternate_2 = ($$anchor4) => {
+              var div_19 = root_232();
+              each(div_19, 21, () => get(finishedTasks), (task) => task.id, ($$anchor5, task) => {
+                TaskCard($$anchor5, {
+                  get task() {
+                    return get(task);
+                  },
+                  onDragStart: (id) => set(draggingTaskId, id, true),
+                  onDropOn
+                });
+              });
+              reset(div_19);
+              append($$anchor4, div_19);
+            };
+            if_block(node_9, ($$render) => {
+              if (get(doneCount) === 0) $$render(consequent_7);
+              else if (get(showSubtagSections)) $$render(consequent_9, 1);
+              else $$render(alternate_2, false);
+            });
+          }
+          append($$anchor3, fragment_5);
+        };
+        if_block(node_8, ($$render) => {
+          if (get(finishedExpanded)) $$render(consequent_10);
+        });
+      }
+      reset(section_5);
+      template_effect(() => {
+        set_text(text_7, get(openCount));
+        set_attribute2(button_4, "aria-expanded", get(finishedExpanded));
+        set_text(text_9, `Finished Tasks (${get(doneCount) ?? ""})`);
+        classes_2 = set_class(span_4, 1, "chevron svelte-q5ccww", null, classes_2, { expanded: get(finishedExpanded) });
+      });
+      delegated("click", button_4, () => set(finishedExpanded, !get(finishedExpanded)));
       append($$anchor2, fragment);
     };
     if_block(node_4, ($$render) => {
       if (get(sortedTasks).length === 0) $$render(consequent_3);
-      else $$render(alternate_2, false);
+      else $$render(alternate_3, false);
     });
   }
   reset(section_2);
   reset(div_5);
-  var node_8 = sibling(div_5, 2);
+  var node_12 = sibling(div_5, 2);
   {
-    var consequent_6 = ($$anchor2) => {
-      var aside = root_15();
-      var section_4 = child(aside);
-      var ul_1 = sibling(child(section_4), 2);
-      var node_9 = child(ul_1);
-      each(node_9, 17, () => get(sortedCategories), index, ($$anchor3, category) => {
-        var li_1 = root_16();
-        var button_4 = child(li_1);
-        var text_8 = child(button_4);
-        reset(button_4);
+    var consequent_11 = ($$anchor2) => {
+      var aside = root_25();
+      var section_7 = child(aside);
+      var ul_1 = sibling(child(section_7), 2);
+      var node_13 = child(ul_1);
+      each(node_13, 17, () => get(sortedCategories), index, ($$anchor3, category) => {
+        var li_1 = root_26();
+        var button_5 = child(li_1);
+        var text_11 = child(button_5);
+        reset(button_5);
         reset(li_1);
-        template_effect(() => set_text(text_8, `${get(category).emoji ? `${get(category).emoji} ` : ""}${get(category).name ?? ""}`));
-        delegated("click", button_4, () => $$props.onSelectCategory?.(get(category).id));
+        template_effect(() => set_text(text_11, `${get(category).emoji ? `${get(category).emoji} ` : ""}${get(category).name ?? ""}`));
+        delegated("click", button_5, () => $$props.onSelectCategory?.(get(category).id));
         append($$anchor3, li_1);
       });
-      var li_2 = sibling(node_9, 2);
-      var button_5 = child(li_2);
+      var li_2 = sibling(node_13, 2);
+      var button_6 = child(li_2);
       reset(li_2);
       reset(ul_1);
-      reset(section_4);
+      reset(section_7);
       reset(aside);
-      delegated("click", button_5, () => $$props.onSelectUncategorized?.());
+      delegated("click", button_6, () => $$props.onSelectUncategorized?.());
       append($$anchor2, aside);
     };
-    if_block(node_8, ($$render) => {
-      if (showCategoriesCard()) $$render(consequent_6);
+    if_block(node_12, ($$render) => {
+      if (showCategoriesCard()) $$render(consequent_11);
     });
   }
   reset(div_4);
@@ -6922,7 +7063,7 @@ function TaskBoard($$anchor, $$props) {
 delegate(["click"]);
 
 // components/App.svelte
-var root_17 = from_html(`<button type="button" class="adhd-todo-sidebar-backdrop" aria-label="Close sidebar"></button>`);
+var root_15 = from_html(`<button type="button" class="adhd-todo-sidebar-backdrop" aria-label="Close sidebar"></button>`);
 var root_24 = from_html(`<div class="error-banner"> </div>`);
 var root5 = from_html(`<div><aside class="adhd-todo-sidebar-pane" id="adhd-todo-sidebar"><!></aside> <!> <main class="adhd-todo-main"><button type="button" class="adhd-todo-sidebar-toggle" aria-controls="adhd-todo-sidebar">\u2630 Menu</button> <!> <!></main></div>`);
 function App($$anchor, $$props) {
@@ -6975,7 +7116,7 @@ function App($$anchor, $$props) {
   var node_1 = sibling(aside, 2);
   {
     var consequent = ($$anchor2) => {
-      var button = root_17();
+      var button = root_15();
       delegated("click", button, () => set(sidebarOpen, false));
       append($$anchor2, button);
     };

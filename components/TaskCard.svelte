@@ -83,9 +83,33 @@
     </div>
   {:else}
     <div class="actions">
-      <button type="button" class="ghost" onclick={() => openTaskInObsidian(task.id)}>Open in Obsidian</button>
-      <button type="button" class="ghost" onclick={() => (editing = true)}>Edit</button>
-      <button type="button" class="danger" onclick={() => deleteTask(task.id)}>Delete</button>
+      <button
+        type="button"
+        class="ghost icon-btn"
+        title="Open in Obsidian"
+        aria-label="Open in Obsidian"
+        onclick={() => openTaskInObsidian(task.id)}
+      >
+        ↗
+      </button>
+      <button
+        type="button"
+        class="ghost icon-btn"
+        title="Edit task"
+        aria-label="Edit task"
+        onclick={() => (editing = true)}
+      >
+        ✎
+      </button>
+      <button
+        type="button"
+        class="danger icon-btn"
+        title="Delete task"
+        aria-label="Delete task"
+        onclick={() => deleteTask(task.id)}
+      >
+        🗑
+      </button>
     </div>
   {/if}
 </article>
@@ -93,9 +117,9 @@
 <style>
   .task-card {
     display: grid;
-    gap: 0.6rem;
-    padding: 0.85rem;
-    border-radius: 0.9rem;
+    gap: 0.4rem;
+    padding: 0.5rem;
+    border-radius: 0.75rem;
     border: 1px solid var(--border-color);
     background: var(--surface-1);
   }
@@ -107,7 +131,7 @@
   .top-row {
     display: flex;
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: 0.35rem;
     align-items: flex-start;
     min-width: 0;
   }
@@ -115,7 +139,7 @@
   .checkbox-row {
     display: flex;
     flex: 1 1 auto;
-    gap: 0.6rem;
+    gap: 0.45rem;
     align-items: flex-start;
     font-weight: 600;
     min-width: 0;
@@ -124,10 +148,17 @@
   .checkbox-row .title {
     display: block;
     min-width: 0;
-    line-height: 1.35;
+    line-height: 1.2;
+    font-size: 0.9rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .checkbox-row input[type='checkbox'] {
+    margin-top: 0.1rem;
+    inline-size: 0.95rem;
+    block-size: 0.95rem;
   }
 
   .done .title {
@@ -137,18 +168,19 @@
   .badges {
     display: flex;
     flex: 0 0 auto;
-    gap: 0.35rem;
+    gap: 0.25rem;
     align-items: center;
   }
 
   .badge {
-    padding: 0.2rem 0.5rem;
+    padding: 0.1rem 0.35rem;
     border-radius: 999px;
-    font-size: 0.7rem;
-    font-weight: 700;
+    font-size: 0.62rem;
+    font-weight: 600;
     text-transform: uppercase;
     border: 1px solid var(--border-color);
     background: var(--surface-2);
+    opacity: 0.9;
   }
 
   .badge.low { background: color-mix(in srgb, #58d68d 16%, var(--surface-2)); }
@@ -158,8 +190,8 @@
   .meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 0.8rem;
-    font-size: 0.78rem;
+    gap: 0.3rem 0.6rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
   }
 
@@ -173,7 +205,7 @@
   .editor {
     display: grid;
     gap: 0.5rem;
-    padding-top: 0.25rem;
+    padding-top: 0.1rem;
   }
 
   .editor input,
@@ -198,9 +230,20 @@
 
   .actions {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.35rem;
     justify-content: flex-end;
     flex-wrap: wrap;
+  }
+
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    min-width: 1.8rem;
+    min-height: 1.8rem;
+    padding: 0.2rem;
+    line-height: 1;
+    font-size: 0.8rem;
+    border-radius: 0.45rem;
   }
 
   .actions .ghost {
@@ -225,10 +268,6 @@
     .actions {
       justify-content: flex-start;
     }
-
-    .actions button {
-      flex: 1 1 calc(50% - 0.25rem);
-    }
   }
 
   @media (max-width: 400px) {
@@ -241,8 +280,9 @@
       justify-content: flex-start;
     }
 
-    .actions button {
-      flex-basis: 100%;
+    .icon-btn {
+      min-width: 1.65rem;
+      min-height: 1.65rem;
     }
   }
 </style>
