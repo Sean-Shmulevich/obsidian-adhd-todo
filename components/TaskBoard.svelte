@@ -54,11 +54,13 @@
     return showSubtagSections ? groupBySubtag(finishedTasks) : [];
   });
 
+  let prevFilterKey = $state('');
   $effect(() => {
-    filterCategoryId;
-    filterGroupId;
-    filterUncategorized;
-    finishedExpanded = false;
+    const key = `${filterCategoryId ?? ''}|${filterGroupId ?? ''}|${filterUncategorized ?? ''}`;
+    if (key !== prevFilterKey) {
+      prevFilterKey = key;
+      finishedExpanded = false;
+    }
   });
 
   function groupBySubtag(list: Task[]) {

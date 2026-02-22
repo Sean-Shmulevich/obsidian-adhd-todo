@@ -6771,11 +6771,13 @@ function TaskBoard($$anchor, $$props) {
   const finishedSubtagGroups = user_derived(() => {
     return get(showSubtagSections) ? groupBySubtag(get(finishedTasks)) : [];
   });
+  let prevFilterKey = state("");
   user_effect(() => {
-    $$props.filterCategoryId;
-    $$props.filterGroupId;
-    filterUncategorized();
-    set(finishedExpanded, false);
+    const key2 = `${$$props.filterCategoryId ?? ""}|${$$props.filterGroupId ?? ""}|${filterUncategorized() ?? ""}`;
+    if (key2 !== get(prevFilterKey)) {
+      set(prevFilterKey, key2);
+      set(finishedExpanded, false);
+    }
   });
   function groupBySubtag(list) {
     const groups = /* @__PURE__ */ new Map();
