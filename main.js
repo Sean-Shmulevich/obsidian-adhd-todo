@@ -6771,14 +6771,16 @@ function TaskBoard($$anchor, $$props) {
   const finishedSubtagGroups = user_derived(() => {
     return get(showSubtagSections) ? groupBySubtag(get(finishedTasks)) : [];
   });
-  let prevFilterKey = state("");
-  user_effect(() => {
-    const key2 = `${$$props.filterCategoryId ?? ""}|${$$props.filterGroupId ?? ""}|${filterUncategorized() ?? ""}`;
-    if (key2 !== get(prevFilterKey)) {
-      set(prevFilterKey, key2);
-      set(finishedExpanded, false);
-    }
-  });
+  {
+    let lastFilterKey = "";
+    user_effect(() => {
+      const key2 = `${$$props.filterCategoryId ?? ""}|${$$props.filterGroupId ?? ""}|${filterUncategorized() ?? ""}`;
+      if (lastFilterKey && key2 !== lastFilterKey) {
+        set(finishedExpanded, false);
+      }
+      lastFilterKey = key2;
+    });
+  }
   function groupBySubtag(list) {
     const groups = /* @__PURE__ */ new Map();
     for (const task of list) {

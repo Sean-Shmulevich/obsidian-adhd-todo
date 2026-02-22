@@ -54,14 +54,17 @@
     return showSubtagSections ? groupBySubtag(finishedTasks) : [];
   });
 
-  let prevFilterKey = $state('');
-  $effect(() => {
-    const key = `${filterCategoryId ?? ''}|${filterGroupId ?? ''}|${filterUncategorized ?? ''}`;
-    if (key !== prevFilterKey) {
-      prevFilterKey = key;
-      finishedExpanded = false;
-    }
-  });
+  {
+    // Reset finishedExpanded on navigation, using a non-reactive tracker
+    let lastFilterKey = '';
+    $effect(() => {
+      const key = `${filterCategoryId ?? ''}|${filterGroupId ?? ''}|${filterUncategorized ?? ''}`;
+      if (lastFilterKey && key !== lastFilterKey) {
+        finishedExpanded = false;
+      }
+      lastFilterKey = key;
+    });
+  }
 
   function groupBySubtag(list: Task[]) {
     const groups = new Map<string, Task[]>();
