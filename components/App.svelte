@@ -74,7 +74,7 @@
   bind:this={containerEl}
 >
   <aside class="tasks-dashboard-sidebar-pane" id="tasks-dashboard-sidebar">
-    <Sidebar mobile={isNarrowViewport} onNavigate={closeSidebarOnMobileNavigate} />
+    <Sidebar mobile={isNarrowViewport} onNavigate={closeSidebarOnMobileNavigate} settings={plugin.settings} />
   </aside>
 
   {#if isNarrowViewport && sidebarOpen}
@@ -102,6 +102,7 @@
     {/if}
 
     <TaskBoard
+      app={plugin.app}
       title={pageTitle}
       filterCategoryId={nav.categoryId}
       filterGroupId={nav.groupId}

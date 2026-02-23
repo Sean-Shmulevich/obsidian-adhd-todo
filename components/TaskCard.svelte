@@ -14,13 +14,15 @@
     onDragStart,
     onDropOn,
     showCategory = false,
-    onGoToCategory
+    onGoToCategory,
+    onEnlarge
   }: {
     task: Task;
     onDragStart?: (id: string) => void;
     onDropOn?: (id: string) => void;
     showCategory?: boolean;
     onGoToCategory?: (categoryId: string) => void;
+    onEnlarge?: (task: Task) => void;
   } = $props();
 
   const catName = $derived(showCategory ? categoryLabel(task.categoryId) : '');
@@ -77,6 +79,7 @@
         >{catName}</button>
       {/if}
       {#if !editing}
+        <button type="button" class="ghost icon-btn" title="Enlarge" onclick={() => onEnlarge?.(task)}>⤢</button>
         <button type="button" class="ghost icon-btn" title="Open in Obsidian" onclick={() => openTaskInObsidian(task.id)}>↗</button>
         <button type="button" class="ghost icon-btn" title="Edit" onclick={() => (editing = true)}>✎</button>
         <button type="button" class="danger icon-btn" title="Delete" onclick={() => deleteTask(task.id)}>🗑</button>

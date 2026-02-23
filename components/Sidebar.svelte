@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { TodoSettings } from '../settings';
   import {
     categoriesByGroup,
     nav,
@@ -10,7 +11,12 @@
     ungroupedCategories
   } from '../state.svelte.ts';
 
-  let { mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void } = $props();
+  let { mobile = false, onNavigate, settings }: { mobile?: boolean; onNavigate?: () => void; settings: TodoSettings } = $props();
+
+  const sidebarStyle = $derived(
+    `--sb-group-spacing:${settings.sidebarGroupSpacing}rem;` +
+    `--sb-cat-gap:${settings.sidebarCategoryGap}rem`
+  );
 
   const grouped = $derived(categoriesByGroup());
   const looseCategories = $derived(ungroupedCategories());
@@ -36,7 +42,7 @@
   }
 </script>
 
-<nav class="sidebar tasks-dashboard-sidebar" class:mobile aria-label="Sidebar navigation">
+<nav class="sidebar tasks-dashboard-sidebar" class:mobile aria-label="Sidebar navigation" style={sidebarStyle}>
   <div class="brand">
     <div class="logo">✓</div>
     <div>
@@ -205,7 +211,7 @@
   .group-block {
     display: grid;
     gap: 0.2rem;
-    margin-bottom: 0.875rem;
+    margin-bottom: var(--sb-group-spacing, 0.875rem);
   }
 
   .group-header-row {
@@ -254,7 +260,7 @@
 
   .items {
     display: grid;
-    gap: 0.12rem;
+    gap: var(--sb-cat-gap, 0.12rem);
     padding-left: 1.15rem;
   }
 
@@ -263,7 +269,7 @@
     grid-template-columns: 3px 1.1rem 1fr;
     gap: 0.5rem;
     align-items: center;
-    padding: 0.4rem 0.95rem 0.4rem 0.95rem;
+    padding: 0.4rem 0.95rem;
     border-radius: 0.4rem;
     border: 1px solid transparent;
     font-size: 0.85rem;

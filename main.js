@@ -23,16 +23,16 @@ __export(main_exports, {
   default: () => TodoPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian5 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 // TodoView.ts
-var import_obsidian3 = require("obsidian");
+var import_obsidian4 = require("obsidian");
 
-// ../adhd-todo/node_modules/esm-env/dev-fallback.js
+// node_modules/esm-env/dev-fallback.js
 var node_env = globalThis.process?.env?.NODE_ENV;
 var dev_fallback_default = node_env && !node_env.toLowerCase().startsWith("prod");
 
-// ../adhd-todo/node_modules/svelte/src/internal/shared/utils.js
+// node_modules/svelte/src/internal/shared/utils.js
 var is_array = Array.isArray;
 var index_of = Array.prototype.indexOf;
 var includes = Array.prototype.includes;
@@ -62,7 +62,7 @@ function deferred() {
   return { promise, resolve, reject };
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/constants.js
+// node_modules/svelte/src/internal/client/constants.js
 var DERIVED = 1 << 1;
 var EFFECT = 1 << 2;
 var RENDER_EFFECT = 1 << 3;
@@ -88,10 +88,10 @@ var WAS_MARKED = 1 << 16;
 var REACTION_IS_UPDATING = 1 << 21;
 var ASYNC = 1 << 22;
 var ERROR_VALUE = 1 << 23;
-var STATE_SYMBOL = /* @__PURE__ */ Symbol("$state");
-var LEGACY_PROPS = /* @__PURE__ */ Symbol("legacy props");
-var LOADING_ATTR_SYMBOL = /* @__PURE__ */ Symbol("");
-var PROXY_PATH_SYMBOL = /* @__PURE__ */ Symbol("proxy path");
+var STATE_SYMBOL = Symbol("$state");
+var LEGACY_PROPS = Symbol("legacy props");
+var LOADING_ATTR_SYMBOL = Symbol("");
+var PROXY_PATH_SYMBOL = Symbol("proxy path");
 var STALE_REACTION = new class StaleReactionError extends Error {
   name = "StaleReactionError";
   message = "The reaction that called `getAbortSignal()` was re-run or destroyed";
@@ -103,7 +103,7 @@ var IS_XHTML = (
 var TEXT_NODE = 3;
 var COMMENT_NODE = 8;
 
-// ../adhd-todo/node_modules/svelte/src/internal/shared/errors.js
+// node_modules/svelte/src/internal/shared/errors.js
 function lifecycle_outside_component(name) {
   if (dev_fallback_default) {
     const error = new Error(`lifecycle_outside_component
@@ -116,7 +116,7 @@ https://svelte.dev/e/lifecycle_outside_component`);
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/errors.js
+// node_modules/svelte/src/internal/client/errors.js
 function async_derived_orphan() {
   if (dev_fallback_default) {
     const error = new Error(`async_derived_orphan
@@ -159,6 +159,17 @@ https://svelte.dev/e/each_key_duplicate`);
     throw error;
   } else {
     throw new Error(`https://svelte.dev/e/each_key_duplicate`);
+  }
+}
+function each_key_volatile(index2, a, b) {
+  if (dev_fallback_default) {
+    const error = new Error(`each_key_volatile
+Keyed each block has key that is not idempotent \u2014 the key for item at index ${index2} was \`${a}\` but is now \`${b}\`. Keys must be the same each time for a given item
+https://svelte.dev/e/each_key_volatile`);
+    error.name = "Svelte error";
+    throw error;
+  } else {
+    throw new Error(`https://svelte.dev/e/each_key_volatile`);
   }
 }
 function effect_in_teardown(rune) {
@@ -283,7 +294,7 @@ https://svelte.dev/e/svelte_boundary_reset_onerror`);
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/constants.js
+// node_modules/svelte/src/constants.js
 var EACH_ITEM_REACTIVE = 1;
 var EACH_INDEX_REACTIVE = 1 << 1;
 var EACH_IS_CONTROLLED = 1 << 2;
@@ -302,15 +313,17 @@ var TEMPLATE_USE_SVG = 1 << 2;
 var TEMPLATE_USE_MATHML = 1 << 3;
 var HYDRATION_START = "[";
 var HYDRATION_START_ELSE = "[!";
+var HYDRATION_START_FAILED = "[?";
 var HYDRATION_END = "]";
 var HYDRATION_ERROR = {};
 var ELEMENT_PRESERVE_ATTRIBUTE_CASE = 1 << 1;
 var ELEMENT_IS_INPUT = 1 << 2;
-var UNINITIALIZED = /* @__PURE__ */ Symbol();
-var FILENAME = /* @__PURE__ */ Symbol("filename");
+var UNINITIALIZED = Symbol();
+var FILENAME = Symbol("filename");
+var HMR = Symbol("hmr");
 var NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/warnings.js
+// node_modules/svelte/src/internal/client/warnings.js
 var bold = "font-weight: bold";
 var normal = "font-weight: normal";
 function await_waterfall(name, location) {
@@ -390,7 +403,7 @@ https://svelte.dev/e/svelte_boundary_reset_noop`, bold, normal);
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/hydration.js
+// node_modules/svelte/src/internal/client/dom/hydration.js
 var hydrating = false;
 function set_hydrating(value) {
   hydrating = value;
@@ -461,7 +474,7 @@ function read_hydration_instruction(node) {
   );
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/equality.js
+// node_modules/svelte/src/internal/client/reactivity/equality.js
 function equals(value) {
   return value === this.v;
 }
@@ -472,12 +485,12 @@ function safe_equals(value) {
   return !safe_not_equal(value, this.v);
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/flags/index.js
+// node_modules/svelte/src/internal/flags/index.js
 var async_mode_flag = false;
 var legacy_mode_flag = false;
 var tracing_mode_flag = false;
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dev/tracing.js
+// node_modules/svelte/src/internal/client/dev/tracing.js
 var tracing_expressions = null;
 function tag(source2, label) {
   source2.label = label;
@@ -489,7 +502,7 @@ function tag_proxy(value, label) {
   return value;
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/shared/dev.js
+// node_modules/svelte/src/internal/shared/dev.js
 function get_error(label) {
   const error = new Error();
   const stack2 = get_stack();
@@ -533,7 +546,7 @@ function get_stack() {
   return new_lines;
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/context.js
+// node_modules/svelte/src/internal/client/context.js
 var component_context = null;
 function set_component_context(context) {
   component_context = context;
@@ -588,7 +601,7 @@ function is_runes() {
   return !legacy_mode_flag || component_context !== null && component_context.l === null;
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/task.js
+// node_modules/svelte/src/internal/client/dom/task.js
 var micro_tasks = [];
 function run_micro_tasks() {
   var tasks2 = micro_tasks;
@@ -610,7 +623,7 @@ function flush_tasks() {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/error-handling.js
+// node_modules/svelte/src/internal/client/error-handling.js
 var adjustments = /* @__PURE__ */ new WeakMap();
 function handle_error(error) {
   var effect2 = active_effect;
@@ -680,7 +693,7 @@ function apply_adjustments(error) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/status.js
+// node_modules/svelte/src/internal/client/reactivity/status.js
 var STATUS_MASK = ~(DIRTY | MAYBE_DIRTY | CLEAN);
 function set_signal_status(signal, status) {
   signal.f = signal.f & STATUS_MASK | status;
@@ -693,7 +706,7 @@ function update_derived_status(derived2) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/utils.js
+// node_modules/svelte/src/internal/client/reactivity/utils.js
 function clear_marked(deps) {
   if (deps === null) return;
   for (const dep of deps) {
@@ -717,7 +730,7 @@ function defer_effect(effect2, dirty_effects, maybe_dirty_effects) {
   set_signal_status(effect2, CLEAN);
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/batch.js
+// node_modules/svelte/src/internal/client/reactivity/batch.js
 var batches = /* @__PURE__ */ new Set();
 var current_batch = null;
 var previous_batch = null;
@@ -727,7 +740,6 @@ var last_scheduled_effect = null;
 var is_flushing = false;
 var is_flushing_sync = false;
 var Batch = class _Batch {
-  committed = false;
   /**
    * The current values of any sources that are updated in this batch
    * They keys of this map are identical to `this.#previous`
@@ -785,7 +797,7 @@ var Batch = class _Batch {
   #skipped_branches = /* @__PURE__ */ new Map();
   is_fork = false;
   #decrement_queued = false;
-  is_deferred() {
+  #is_deferred() {
     return this.is_fork || this.#blocking_pending > 0;
   }
   /**
@@ -828,7 +840,7 @@ var Batch = class _Batch {
     for (const root6 of root_effects) {
       this.#traverse_effect_tree(root6, effects, render_effects);
     }
-    if (this.is_deferred()) {
+    if (this.#is_deferred()) {
       this.#defer_effects(render_effects);
       this.#defer_effects(effects);
       for (const [e, t] of this.#skipped_branches) {
@@ -859,20 +871,14 @@ var Batch = class _Batch {
   #traverse_effect_tree(root6, effects, render_effects) {
     root6.f ^= CLEAN;
     var effect2 = root6.first;
-    var pending_boundary = null;
     while (effect2 !== null) {
       var flags2 = effect2.f;
       var is_branch = (flags2 & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
       var is_skippable_branch = is_branch && (flags2 & CLEAN) !== 0;
       var skip = is_skippable_branch || (flags2 & INERT) !== 0 || this.#skipped_branches.has(effect2);
-      if (async_mode_flag && pending_boundary === null && (flags2 & BOUNDARY_EFFECT) !== 0 && effect2.b?.is_pending) {
-        pending_boundary = effect2;
-      }
       if (!skip && effect2.fn !== null) {
         if (is_branch) {
           effect2.f ^= CLEAN;
-        } else if (pending_boundary !== null && (flags2 & (EFFECT | RENDER_EFFECT | MANAGED_EFFECT)) !== 0) {
-          pending_boundary.b.defer_effect(effect2);
         } else if ((flags2 & EFFECT) !== 0) {
           effects.push(effect2);
         } else if (async_mode_flag && (flags2 & (RENDER_EFFECT | MANAGED_EFFECT)) !== 0) {
@@ -888,9 +894,6 @@ var Batch = class _Batch {
         }
       }
       while (effect2 !== null) {
-        if (effect2 === pending_boundary) {
-          pending_boundary = null;
-        }
         var next2 = effect2.next;
         if (next2 !== null) {
           effect2 = next2;
@@ -995,7 +998,6 @@ var Batch = class _Batch {
       current_batch = null;
       batch_values = previous_batch_values;
     }
-    this.committed = true;
     batches.delete(this);
   }
   /**
@@ -1017,7 +1019,7 @@ var Batch = class _Batch {
     this.#decrement_queued = true;
     queue_micro_task(() => {
       this.#decrement_queued = false;
-      if (!this.is_deferred()) {
+      if (!this.#is_deferred()) {
         this.revive();
       } else if (queued_root_effects.length > 0) {
         this.flush();
@@ -1255,14 +1257,21 @@ function depends_on(reaction, sources, checked) {
 }
 function schedule_effect(signal) {
   var effect2 = last_scheduled_effect = signal;
+  var boundary2 = effect2.b;
+  if (boundary2?.is_pending && (signal.f & (EFFECT | RENDER_EFFECT | MANAGED_EFFECT)) !== 0 && (signal.f & REACTION_RAN) === 0) {
+    boundary2.defer_effect(signal);
+    return;
+  }
   while (effect2.parent !== null) {
     effect2 = effect2.parent;
     var flags2 = effect2.f;
-    if (is_flushing && effect2 === active_effect && (flags2 & BLOCK_EFFECT) !== 0 && (flags2 & HEAD_EFFECT) === 0) {
+    if (is_flushing && effect2 === active_effect && (flags2 & BLOCK_EFFECT) !== 0 && (flags2 & HEAD_EFFECT) === 0 && (flags2 & REACTION_RAN) !== 0) {
       return;
     }
     if ((flags2 & (ROOT_EFFECT | BRANCH_EFFECT)) !== 0) {
-      if ((flags2 & CLEAN) === 0) return;
+      if ((flags2 & CLEAN) === 0) {
+        return;
+      }
       effect2.f ^= CLEAN;
     }
   }
@@ -1285,7 +1294,7 @@ function reset_branch(effect2, tracked) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/reactivity/create-subscriber.js
+// node_modules/svelte/src/reactivity/create-subscriber.js
 function createSubscriber(start) {
   let subscribers = 0;
   let version = source(0);
@@ -1316,15 +1325,21 @@ function createSubscriber(start) {
   };
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/blocks/boundary.js
+// node_modules/svelte/src/internal/client/dom/blocks/boundary.js
 var flags = EFFECT_TRANSPARENT | EFFECT_PRESERVED;
-function boundary(node, props, children) {
-  new Boundary(node, props, children);
+function boundary(node, props, children, transform_error) {
+  new Boundary(node, props, children, transform_error);
 }
 var Boundary = class {
   /** @type {Boundary | null} */
   parent;
   is_pending = false;
+  /**
+   * API-level transformError transform function. Transforms errors before they reach the `failed` snippet.
+   * Inherited from parent boundary, or defaults to identity.
+   * @type {(error: unknown) => unknown}
+   */
+  transform_error;
   /** @type {TemplateNode} */
   #anchor;
   /** @type {TemplateNode | null} */
@@ -1371,8 +1386,9 @@ var Boundary = class {
    * @param {TemplateNode} node
    * @param {BoundaryProps} props
    * @param {((anchor: Node) => void)} children
+   * @param {((error: unknown) => unknown) | undefined} [transform_error]
    */
-  constructor(node, props, children) {
+  constructor(node, props, children, transform_error) {
     this.#anchor = node;
     this.#props = props;
     this.#children = (anchor) => {
@@ -1386,6 +1402,7 @@ var Boundary = class {
     };
     this.parent = /** @type {Effect} */
     active_effect.b;
+    this.transform_error = transform_error ?? this.parent?.transform_error ?? ((e) => e);
     this.#effect = block(() => {
       if (hydrating) {
         const comment2 = (
@@ -1393,7 +1410,12 @@ var Boundary = class {
           this.#hydrate_open
         );
         hydrate_next();
-        if (comment2.data === HYDRATION_START_ELSE) {
+        const server_rendered_pending = comment2.data === HYDRATION_START_ELSE;
+        const server_rendered_failed = comment2.data.startsWith(HYDRATION_START_FAILED);
+        if (server_rendered_failed) {
+          const serialized_error = JSON.parse(comment2.data.slice(HYDRATION_START_FAILED.length));
+          this.#hydrate_failed_content(serialized_error);
+        } else if (server_rendered_pending) {
           this.#hydrate_pending_content();
         } else {
           this.#hydrate_resolved_content();
@@ -1412,6 +1434,21 @@ var Boundary = class {
     } catch (error) {
       this.error(error);
     }
+  }
+  /**
+   * @param {unknown} error The deserialized error from the server's hydration comment
+   */
+  #hydrate_failed_content(error) {
+    const failed = this.#props.failed;
+    if (!failed) return;
+    this.#failed_effect = branch(() => {
+      failed(
+        this.#anchor,
+        () => error,
+        () => () => {
+        }
+      );
+    });
   }
   #hydrate_pending_content() {
     const pending2 = this.#props.pending;
@@ -1436,7 +1473,7 @@ var Boundary = class {
             this.#pending_effect = null;
           }
         );
-        this.is_pending = false;
+        this.#resolve();
       }
     });
   }
@@ -1457,11 +1494,24 @@ var Boundary = class {
         );
         this.#pending_effect = branch(() => pending2(this.#anchor));
       } else {
-        this.is_pending = false;
+        this.#resolve();
       }
     } catch (error) {
       this.error(error);
     }
+  }
+  #resolve() {
+    this.is_pending = false;
+    for (const e of this.#dirty_effects) {
+      set_signal_status(e, DIRTY);
+      schedule_effect(e);
+    }
+    for (const e of this.#maybe_dirty_effects) {
+      set_signal_status(e, MAYBE_DIRTY);
+      schedule_effect(e);
+    }
+    this.#dirty_effects.clear();
+    this.#maybe_dirty_effects.clear();
   }
   /**
    * Defer an effect inside a pending boundary until the boundary resolves
@@ -1516,17 +1566,7 @@ var Boundary = class {
     }
     this.#pending_count += d;
     if (this.#pending_count === 0) {
-      this.is_pending = false;
-      for (const e of this.#dirty_effects) {
-        set_signal_status(e, DIRTY);
-        schedule_effect(e);
-      }
-      for (const e of this.#maybe_dirty_effects) {
-        set_signal_status(e, MAYBE_DIRTY);
-        schedule_effect(e);
-      }
-      this.#dirty_effects.clear();
-      this.#maybe_dirty_effects.clear();
+      this.#resolve();
       if (this.#pending_effect) {
         pause_effect(this.#pending_effect, () => {
           this.#pending_effect = null;
@@ -1611,10 +1651,10 @@ var Boundary = class {
         this.#render();
       });
     };
-    queue_micro_task(() => {
+    const handle_error_result = (transformed_error) => {
       try {
         calling_on_error = true;
-        onerror?.(error, reset2);
+        onerror?.(transformed_error, reset2);
         calling_on_error = false;
       } catch (error2) {
         invoke_error_boundary(error2, this.#effect && this.#effect.parent);
@@ -1632,7 +1672,7 @@ var Boundary = class {
               effect2.f |= BOUNDARY_EFFECT;
               failed(
                 this.#anchor,
-                () => error,
+                () => transformed_error,
                 () => reset2
               );
             });
@@ -1646,11 +1686,30 @@ var Boundary = class {
           }
         });
       }
+    };
+    queue_micro_task(() => {
+      var result;
+      try {
+        result = this.transform_error(error);
+      } catch (e) {
+        invoke_error_boundary(e, this.#effect && this.#effect.parent);
+        return;
+      }
+      if (result !== null && typeof result === "object" && typeof /** @type {any} */
+      result.then === "function") {
+        result.then(
+          handle_error_result,
+          /** @param {unknown} e */
+          (e) => invoke_error_boundary(e, this.#effect && this.#effect.parent)
+        );
+      } else {
+        handle_error_result(result);
+      }
     });
   }
 };
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/async.js
+// node_modules/svelte/src/internal/client/reactivity/async.js
 function flatten(blockers, sync, async2, fn) {
   const d = is_runes() ? derived : derived_safe_equal;
   var pending2 = blockers.filter((b) => !b.settled);
@@ -1674,7 +1733,6 @@ function flatten(blockers, sync, async2, fn) {
         invoke_error_boundary(error, parent);
       }
     }
-    batch?.deactivate();
     unset_context();
   }
   if (async2.length === 0) {
@@ -1710,17 +1768,36 @@ function capture() {
     }
   };
 }
-function unset_context() {
+function unset_context(deactivate_batch = true) {
   set_active_effect(null);
   set_active_reaction(null);
   set_component_context(null);
+  if (deactivate_batch) current_batch?.deactivate();
   if (dev_fallback_default) {
     set_from_async_derived(null);
     set_dev_stack(null);
   }
 }
+function increment_pending() {
+  var boundary2 = (
+    /** @type {Boundary} */
+    /** @type {Effect} */
+    active_effect.b
+  );
+  var batch = (
+    /** @type {Batch} */
+    current_batch
+  );
+  var blocking = boundary2.is_rendered();
+  boundary2.update_pending_count(1);
+  batch.increment(blocking);
+  return () => {
+    boundary2.update_pending_count(-1);
+    batch.decrement(blocking);
+  };
+}
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/deriveds.js
+// node_modules/svelte/src/internal/client/reactivity/deriveds.js
 var current_async_effect = null;
 function set_from_async_derived(v) {
   current_async_effect = v;
@@ -1767,10 +1844,6 @@ function async_derived(fn, label, location) {
   if (parent === null) {
     async_derived_orphan();
   }
-  var boundary2 = (
-    /** @type {Boundary} */
-    parent.b
-  );
   var promise = (
     /** @type {Promise<V>} */
     /** @type {unknown} */
@@ -1788,12 +1861,7 @@ function async_derived(fn, label, location) {
     var d = deferred();
     promise = d.promise;
     try {
-      Promise.resolve(fn()).then(d.resolve, d.reject).then(() => {
-        if (batch === current_batch && batch.committed) {
-          batch.deactivate();
-        }
-        unset_context();
-      });
+      Promise.resolve(fn()).then(d.resolve, d.reject).finally(unset_context);
     } catch (error) {
       d.reject(error);
       unset_context();
@@ -1804,9 +1872,7 @@ function async_derived(fn, label, location) {
       current_batch
     );
     if (should_suspend) {
-      var blocking = boundary2.is_rendered();
-      boundary2.update_pending_count(1);
-      batch.increment(blocking);
+      var decrement_pending = increment_pending();
       deferreds.get(batch)?.reject(STALE_REACTION);
       deferreds.delete(batch);
       deferreds.set(batch, d);
@@ -1843,9 +1909,8 @@ function async_derived(fn, label, location) {
           });
         }
       }
-      if (should_suspend) {
-        boundary2.update_pending_count(-1);
-        batch.decrement(blocking);
+      if (decrement_pending) {
+        decrement_pending();
       }
     };
     d.promise.then(handler, (e) => handler(null, e || "unknown"));
@@ -1986,7 +2051,7 @@ function unfreeze_derived_effects(derived2) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/sources.js
+// node_modules/svelte/src/internal/client/reactivity/sources.js
 var eager_effects = /* @__PURE__ */ new Set();
 var old_values = /* @__PURE__ */ new Map();
 function set_eager_effects(v) {
@@ -2166,7 +2231,7 @@ function mark_reactions(signal, status) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/proxy.js
+// node_modules/svelte/src/internal/client/proxy.js
 var regex_is_valid_identifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/;
 function proxy(value) {
   if (typeof value !== "object" || value === null || STATE_SYMBOL in value) {
@@ -2448,7 +2513,7 @@ function inspectable_array(array) {
   });
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dev/equality.js
+// node_modules/svelte/src/internal/client/dev/equality.js
 function init_array_prototype_warnings() {
   const array_prototype2 = Array.prototype;
   const cleanup = Array.__svelte_cleanup;
@@ -2499,7 +2564,7 @@ function init_array_prototype_warnings() {
   };
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/operations.js
+// node_modules/svelte/src/internal/client/dom/operations.js
 var $window;
 var $document;
 var is_firefox;
@@ -2656,7 +2721,7 @@ function merge_text_nodes(text2) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/misc.js
+// node_modules/svelte/src/internal/client/dom/elements/misc.js
 var listening_to_form_reset = false;
 function add_form_reset_listener() {
   if (!listening_to_form_reset) {
@@ -2682,7 +2747,7 @@ function add_form_reset_listener() {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/bindings/shared.js
+// node_modules/svelte/src/internal/client/dom/elements/bindings/shared.js
 function without_reactive_context(fn) {
   var previous_reaction = active_reaction;
   var previous_effect = active_effect;
@@ -2709,7 +2774,7 @@ function listen_to_event_and_reset_event(element2, event2, handler, on_reset = h
   add_form_reset_listener();
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/effects.js
+// node_modules/svelte/src/internal/client/reactivity/effects.js
 function validate_effect(rune) {
   if (active_effect === null) {
     if (active_reaction === null) {
@@ -3042,10 +3107,10 @@ function move_effect(effect2, fragment) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/legacy.js
+// node_modules/svelte/src/internal/client/legacy.js
 var captured_signals = null;
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/runtime.js
+// node_modules/svelte/src/internal/client/runtime.js
 var is_updating_effect = false;
 var is_destroying_effect = false;
 function set_is_destroying_effect(value) {
@@ -3481,7 +3546,7 @@ function untrack(fn) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/utils.js
+// node_modules/svelte/src/utils.js
 var DOM_BOOLEAN_ATTRIBUTES = [
   "allowfullscreen",
   "async",
@@ -3563,7 +3628,7 @@ var RUNES = (
   ]
 );
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dev/css.js
+// node_modules/svelte/src/internal/client/dev/css.js
 var all_styles = /* @__PURE__ */ new Map();
 function register_style(hash2, style) {
   var styles = all_styles.get(hash2);
@@ -3574,8 +3639,8 @@ function register_style(hash2, style) {
   styles.add(style);
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/events.js
-var event_symbol = /* @__PURE__ */ Symbol("events");
+// node_modules/svelte/src/internal/client/dom/elements/events.js
+var event_symbol = Symbol("events");
 var all_registered_events = /* @__PURE__ */ new Set();
 var root_event_handles = /* @__PURE__ */ new Set();
 function create_event(event_name, dom, handler, options = {}) {
@@ -3707,7 +3772,7 @@ function handle_event_propagation(event2) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/reconciler.js
+// node_modules/svelte/src/internal/client/dom/reconciler.js
 var policy = (
   // We gotta write it like this because after downleveling the pure comment may end up in the wrong location
   globalThis?.window?.trustedTypes && /* @__PURE__ */ globalThis.window.trustedTypes.createPolicy("svelte-trusted-html", {
@@ -3723,14 +3788,13 @@ function create_trusted_html(html2) {
     policy?.createHTML(html2) ?? html2
   );
 }
-function create_fragment_from_html(html2, trusted2 = false) {
+function create_fragment_from_html(html2) {
   var elem = create_element("template");
-  html2 = html2.replaceAll("<!>", "<!---->");
-  elem.innerHTML = trusted2 ? create_trusted_html(html2) : html2;
+  elem.innerHTML = create_trusted_html(html2.replaceAll("<!>", "<!---->"));
   return elem.content;
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/template.js
+// node_modules/svelte/src/internal/client/dom/template.js
 function assign_nodes(start, end) {
   var effect2 = (
     /** @type {Effect} */
@@ -3752,7 +3816,7 @@ function from_html(content, flags2) {
       return hydrate_node;
     }
     if (node === void 0) {
-      node = create_fragment_from_html(has_start ? content : "<!>" + content, true);
+      node = create_fragment_from_html(has_start ? content : "<!>" + content);
       if (!is_fragment) node = /** @type {TemplateNode} */
       get_first_child(node);
     }
@@ -3809,7 +3873,7 @@ function append(anchor, dom) {
   );
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/render.js
+// node_modules/svelte/src/internal/client/render.js
 var should_intro = true;
 function set_text(text2, value) {
   var str = value == null ? "" : typeof value === "object" ? value + "" : value;
@@ -3867,7 +3931,7 @@ function hydrate(component2, options) {
   }
 }
 var listeners = /* @__PURE__ */ new Map();
-function _mount(Component, { target, anchor, props = {}, events, context, intro = true }) {
+function _mount(Component, { target, anchor, props = {}, events, context, intro = true, transformError }) {
   init_operations();
   var component2 = void 0;
   var unmount2 = component_root(() => {
@@ -3908,7 +3972,8 @@ function _mount(Component, { target, anchor, props = {}, events, context, intro 
           }
         }
         pop();
-      }
+      },
+      transformError
     );
     var registered_events = /* @__PURE__ */ new Set();
     var event_handle = (events2) => {
@@ -3983,7 +4048,7 @@ function unmount(component2, options) {
   return Promise.resolve();
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/blocks/branches.js
+// node_modules/svelte/src/internal/client/dom/blocks/branches.js
 var BranchManager = class {
   /** @type {TemplateNode} */
   anchor;
@@ -4153,7 +4218,7 @@ var BranchManager = class {
   }
 };
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/blocks/if.js
+// node_modules/svelte/src/internal/client/dom/blocks/if.js
 function if_block(node, fn, elseif = false) {
   if (hydrating) {
     hydrate_next();
@@ -4195,7 +4260,10 @@ function if_block(node, fn, elseif = false) {
   }, flags2);
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/blocks/each.js
+// node_modules/svelte/src/internal/client/dom/blocks/key.js
+var NAN = Symbol("NaN");
+
+// node_modules/svelte/src/internal/client/dom/blocks/each.js
 function index(_, i) {
   return i;
 }
@@ -4329,6 +4397,12 @@ function each(node, flags2, get_collection, get_key, render_fn, fallback_fn = nu
       }
       var value = array[index2];
       var key2 = get_key(value, index2);
+      if (dev_fallback_default) {
+        var key_again = get_key(value, index2);
+        if (key2 !== key_again) {
+          each_key_volatile(String(index2), String(key2), String(key_again));
+        }
+      }
       var item = first_run ? null : items.get(key2);
       if (item) {
         if (item.v) internal_set(item.v, value);
@@ -4633,7 +4707,7 @@ function validate_each_keys(array, key_fn) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/css.js
+// node_modules/svelte/src/internal/client/dom/css.js
 function append_styles(anchor, css) {
   effect(() => {
     var root6 = anchor.getRootNode();
@@ -4660,7 +4734,7 @@ function append_styles(anchor, css) {
   });
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/shared/attributes.js
+// node_modules/svelte/src/internal/shared/attributes.js
 var whitespace = [..." 	\n\r\f\xA0\v\uFEFF"];
 function to_class(value, hash2, directives) {
   var classname = value == null ? "" : "" + value;
@@ -4668,7 +4742,7 @@ function to_class(value, hash2, directives) {
     classname = classname ? classname + " " + hash2 : hash2;
   }
   if (directives) {
-    for (var key2 in directives) {
+    for (var key2 of Object.keys(directives)) {
       if (directives[key2]) {
         classname = classname ? classname + " " + key2 : key2;
       } else if (classname.length) {
@@ -4690,7 +4764,7 @@ function to_class(value, hash2, directives) {
 function append_styles2(styles, important = false) {
   var separator = important ? " !important;" : ";";
   var css = "";
-  for (var key2 in styles) {
+  for (var key2 of Object.keys(styles)) {
     var value = styles[key2];
     if (value != null && value !== "") {
       css += " " + key2 + ": " + value + separator;
@@ -4781,7 +4855,7 @@ function to_style(value, styles) {
   return value == null ? null : String(value);
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/class.js
+// node_modules/svelte/src/internal/client/dom/elements/class.js
 function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
   var prev = dom.__className;
   if (hydrating || prev !== value || prev === void 0) {
@@ -4807,7 +4881,7 @@ function set_class(dom, is_html, value, hash2, prev_classes, next_classes) {
   return next_classes;
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/style.js
+// node_modules/svelte/src/internal/client/dom/elements/style.js
 function update_styles(dom, prev = {}, next2, priority) {
   for (var key2 in next2) {
     var value = next2[key2];
@@ -4843,7 +4917,7 @@ function set_style(dom, value, prev_styles, next_styles) {
   return next_styles;
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/bindings/select.js
+// node_modules/svelte/src/internal/client/dom/elements/bindings/select.js
 function select_option(select, value, mounting = false) {
   if (select.multiple) {
     if (value == void 0) {
@@ -4937,9 +5011,11 @@ function get_option_value(option) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/attributes.js
-var IS_CUSTOM_ELEMENT = /* @__PURE__ */ Symbol("is custom element");
-var IS_HTML = /* @__PURE__ */ Symbol("is html");
+// node_modules/svelte/src/internal/client/dom/elements/attributes.js
+var CLASS = Symbol("class");
+var STYLE = Symbol("style");
+var IS_CUSTOM_ELEMENT = Symbol("is custom element");
+var IS_HTML = Symbol("is html");
 var LINK_TAG = IS_XHTML ? "link" : "LINK";
 function remove_input_defaults(input) {
   if (!hydrating) return;
@@ -5053,7 +5129,7 @@ function srcset_url_equal(element2, srcset) {
   );
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/bindings/input.js
+// node_modules/svelte/src/internal/client/dom/elements/bindings/input.js
 function bind_value(input, get3, set2 = get3) {
   var batches2 = /* @__PURE__ */ new WeakSet();
   listen_to_event_and_reset_event(input, "input", async (is_reset) => {
@@ -5129,7 +5205,7 @@ function to_number(value) {
   return value === "" ? null : +value;
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/bindings/this.js
+// node_modules/svelte/src/internal/client/dom/elements/bindings/this.js
 function is_bound_this(bound_value, element_or_component) {
   return bound_value === element_or_component || bound_value?.[STATE_SYMBOL] === element_or_component;
 }
@@ -5160,8 +5236,9 @@ function bind_this(element_or_component = {}, update2, get_value, get_parts) {
   return element_or_component;
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/store.js
+// node_modules/svelte/src/internal/client/reactivity/store.js
 var is_store_binding = false;
+var IS_UNMOUNTED = Symbol();
 function capture_store_binding(fn) {
   var previous_is_store_binding = is_store_binding;
   try {
@@ -5172,7 +5249,7 @@ function capture_store_binding(fn) {
   }
 }
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/reactivity/props.js
+// node_modules/svelte/src/internal/client/reactivity/props.js
 function prop(props, key2, flags2, fallback2) {
   var runes = !legacy_mode_flag || (flags2 & PROPS_IS_RUNES) !== 0;
   var bindable = (flags2 & PROPS_IS_BINDABLE) !== 0;
@@ -5293,7 +5370,7 @@ function prop(props, key2, flags2, fallback2) {
   );
 }
 
-// ../adhd-todo/node_modules/svelte/src/legacy/legacy-client.js
+// node_modules/svelte/src/legacy/legacy-client.js
 function createClassComponent(options) {
   return new Svelte4Component(options);
 }
@@ -5337,7 +5414,8 @@ var Svelte4Component = class {
       props,
       context: options.context,
       intro: options.intro ?? false,
-      recover: options.recover
+      recover: options.recover,
+      transformError: options.transformError
     });
     if (!async_mode_flag && (!options?.props?.$$host || options.sync === false)) {
       flushSync();
@@ -5389,7 +5467,7 @@ var Svelte4Component = class {
   }
 };
 
-// ../adhd-todo/node_modules/svelte/src/internal/client/dom/elements/custom-element.js
+// node_modules/svelte/src/internal/client/dom/elements/custom-element.js
 var SvelteElement;
 if (typeof HTMLElement === "function") {
   SvelteElement = class extends HTMLElement {
@@ -5610,7 +5688,7 @@ function get_custom_elements_slots(element2) {
   return result;
 }
 
-// ../adhd-todo/node_modules/svelte/src/index-client.js
+// node_modules/svelte/src/index-client.js
 if (dev_fallback_default) {
   let throw_rune_error = function(rune) {
     if (!(rune in globalThis)) {
@@ -5661,10 +5739,10 @@ function init_update_callbacks(context) {
   return l.u ??= { a: [], b: [], m: [] };
 }
 
-// ../adhd-todo/node_modules/svelte/src/version.js
+// node_modules/svelte/src/version.js
 var PUBLIC_VERSION = "5";
 
-// ../adhd-todo/node_modules/svelte/src/internal/disclose-version.js
+// node_modules/svelte/src/internal/disclose-version.js
 if (typeof window !== "undefined") {
   ((window.__svelte ??= {}).v ??= /* @__PURE__ */ new Set()).add(PUBLIC_VERSION);
 }
@@ -6331,12 +6409,13 @@ var root_4 = from_html(`<div class="group-block svelte-1b12cm3"><div class="grou
 var root = from_html(`<nav aria-label="Sidebar navigation"><div class="brand svelte-1b12cm3"><div class="logo svelte-1b12cm3">\u2713</div> <div><strong class="svelte-1b12cm3">Tasks Dashboard</strong> <small class="svelte-1b12cm3">Vault-backed task board</small></div></div> <div class="pinned-nav svelte-1b12cm3"><button type="button">\u{1F4CC} Uncategorized / Group-level</button> <button type="button">\u{1F3E1} Dashboard</button></div> <div class="group-list svelte-1b12cm3"><!> <!></div></nav>`);
 var $$css = {
   hash: "svelte-1b12cm3",
-  code: ".sidebar.svelte-1b12cm3 {display:grid;grid-template-rows:auto auto 1fr;gap:0.35rem;height:100%;min-height:0;padding:0.5rem;background:var(--sidebar-bg);color:var(--sidebar-text);border-right:1px solid var(--sidebar-border);}.brand.svelte-1b12cm3 {display:flex;gap:0.5rem;align-items:center;padding:0.25rem 0.25rem 0.35rem;min-width:0;}.logo.svelte-1b12cm3 {width:2rem;height:2rem;display:grid;place-items:center;border-radius:0.6rem;background:color-mix(in srgb, var(--accent) 20%, transparent);border:1px solid color-mix(in srgb, var(--accent) 50%, var(--sidebar-border));font-weight:800;}.brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {color:var(--sidebar-muted);}.brand.svelte-1b12cm3 strong:where(.svelte-1b12cm3),\n  .brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.sidebar.svelte-1b12cm3 button:where(.svelte-1b12cm3) {text-align:left;background:transparent;border:1px solid transparent;color:inherit;border-radius:0.5rem;padding:0.35rem 0.5rem;font:inherit;}.pinned-nav.svelte-1b12cm3 {display:flex;flex-direction:column;gap:0.35rem;padding:0.1rem 0.15rem 0.35rem;margin-bottom:0.2rem;border-bottom:1px solid color-mix(in srgb, var(--sidebar-border) 70%, transparent);}.pinned-item.svelte-1b12cm3 {width:100%;background:color-mix(in srgb, var(--sidebar-active-bg) 50%, transparent);border-color:color-mix(in srgb, var(--sidebar-border) 85%, transparent);padding:0.45rem 0.55rem;font-weight:600;}.pinned-item.active.svelte-1b12cm3 {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.group-list.svelte-1b12cm3 {overflow-x:hidden;overflow-y:auto;display:grid;gap:0.2rem;align-content:start;padding:0.1rem 0.15rem 0.2rem 0.1rem;}.group-block.svelte-1b12cm3 {display:grid;gap:0.2rem;margin-bottom:0.875rem;}.group-header-row.svelte-1b12cm3 {display:flex;gap:0.25rem;align-items:center;padding-inline:0.3rem;}.group-block.svelte-1b12cm3 + .group-block:where(.svelte-1b12cm3) .group-header-row:where(.svelte-1b12cm3),\n  .group-block.svelte-1b12cm3 + .group-block:where(.svelte-1b12cm3) .group-header-static:where(.svelte-1b12cm3) {margin-top:0.3rem;}.group-collapse.svelte-1b12cm3 {border:0;color:var(--sidebar-muted);padding:0.05rem 0.2rem;}.group-collapse.svelte-1b12cm3 span:where(.svelte-1b12cm3) {display:inline-block;transition:transform 120ms ease;}.group-collapse.svelte-1b12cm3 span.rotated:where(.svelte-1b12cm3) {transform:rotate(90deg);}.group-label.svelte-1b12cm3,\n  .group-header-static.svelte-1b12cm3 {color:var(--sidebar-muted);font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.group-header-static.svelte-1b12cm3 {padding:0.15rem 0.65rem;}.items.svelte-1b12cm3 {display:grid;gap:0.12rem;padding-left:1.15rem;}.category-item.svelte-1b12cm3 {display:grid;grid-template-columns:3px 1.1rem 1fr;gap:0.5rem;align-items:center;padding:0.4rem 0.95rem 0.4rem 0.95rem;border-radius:0.4rem;border:1px solid transparent;font-size:0.85rem;min-width:0;}.category-item.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {width:3px;height:1.2rem;border-radius:999px;opacity:0.7;}.category-item.svelte-1b12cm3 .emoji:where(.svelte-1b12cm3) + span:where(.svelte-1b12cm3) {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.category-item.active.svelte-1b12cm3 {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.category-item.active.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {opacity:1;}"
+  code: ".sidebar.svelte-1b12cm3 {display:grid;grid-template-rows:auto auto 1fr;gap:0.35rem;height:100%;min-height:0;padding:0.5rem;background:var(--sidebar-bg);color:var(--sidebar-text);border-right:1px solid var(--sidebar-border);}.brand.svelte-1b12cm3 {display:flex;gap:0.5rem;align-items:center;padding:0.25rem 0.25rem 0.35rem;min-width:0;}.logo.svelte-1b12cm3 {width:2rem;height:2rem;display:grid;place-items:center;border-radius:0.6rem;background:color-mix(in srgb, var(--accent) 20%, transparent);border:1px solid color-mix(in srgb, var(--accent) 50%, var(--sidebar-border));font-weight:800;}.brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {color:var(--sidebar-muted);}.brand.svelte-1b12cm3 strong:where(.svelte-1b12cm3),\n  .brand.svelte-1b12cm3 small:where(.svelte-1b12cm3) {display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.sidebar.svelte-1b12cm3 button:where(.svelte-1b12cm3) {text-align:left;background:transparent;border:1px solid transparent;color:inherit;border-radius:0.5rem;padding:0.35rem 0.5rem;font:inherit;}.pinned-nav.svelte-1b12cm3 {display:flex;flex-direction:column;gap:0.35rem;padding:0.1rem 0.15rem 0.35rem;margin-bottom:0.2rem;border-bottom:1px solid color-mix(in srgb, var(--sidebar-border) 70%, transparent);}.pinned-item.svelte-1b12cm3 {width:100%;background:color-mix(in srgb, var(--sidebar-active-bg) 50%, transparent);border-color:color-mix(in srgb, var(--sidebar-border) 85%, transparent);padding:0.45rem 0.55rem;font-weight:600;}.pinned-item.active.svelte-1b12cm3 {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.group-list.svelte-1b12cm3 {overflow-x:hidden;overflow-y:auto;display:grid;gap:0.2rem;align-content:start;padding:0.1rem 0.15rem 0.2rem 0.1rem;}.group-block.svelte-1b12cm3 {display:grid;gap:0.2rem;margin-bottom:var(--sb-group-spacing, 0.875rem);}.group-header-row.svelte-1b12cm3 {display:flex;gap:0.25rem;align-items:center;padding-inline:0.3rem;}.group-block.svelte-1b12cm3 + .group-block:where(.svelte-1b12cm3) .group-header-row:where(.svelte-1b12cm3),\n  .group-block.svelte-1b12cm3 + .group-block:where(.svelte-1b12cm3) .group-header-static:where(.svelte-1b12cm3) {margin-top:0.3rem;}.group-collapse.svelte-1b12cm3 {border:0;color:var(--sidebar-muted);padding:0.05rem 0.2rem;}.group-collapse.svelte-1b12cm3 span:where(.svelte-1b12cm3) {display:inline-block;transition:transform 120ms ease;}.group-collapse.svelte-1b12cm3 span.rotated:where(.svelte-1b12cm3) {transform:rotate(90deg);}.group-label.svelte-1b12cm3,\n  .group-header-static.svelte-1b12cm3 {color:var(--sidebar-muted);font-size:0.72rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:0.15rem 0.5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.group-header-static.svelte-1b12cm3 {padding:0.15rem 0.65rem;}.items.svelte-1b12cm3 {display:grid;gap:var(--sb-cat-gap, 0.12rem);padding-left:1.15rem;}.category-item.svelte-1b12cm3 {display:grid;grid-template-columns:3px 1.1rem 1fr;gap:0.5rem;align-items:center;padding:0.4rem 0.95rem;border-radius:0.4rem;border:1px solid transparent;font-size:0.85rem;min-width:0;}.category-item.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {width:3px;height:1.2rem;border-radius:999px;opacity:0.7;}.category-item.svelte-1b12cm3 .emoji:where(.svelte-1b12cm3) + span:where(.svelte-1b12cm3) {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.category-item.active.svelte-1b12cm3 {background:var(--sidebar-active-bg);border-color:var(--sidebar-border);}.category-item.active.svelte-1b12cm3 .accent:where(.svelte-1b12cm3) {opacity:1;}"
 };
 function Sidebar($$anchor, $$props) {
   push($$props, true);
   append_styles($$anchor, $$css);
   let mobile = prop($$props, "mobile", 3, false);
+  const sidebarStyle = user_derived(() => `--sb-group-spacing:${$$props.settings.sidebarGroupSpacing}rem;--sb-cat-gap:${$$props.settings.sidebarCategoryGap}rem`);
   const grouped = user_derived(categoriesByGroup);
   const looseCategories = user_derived(ungroupedCategories);
   function goDashboard() {
@@ -6453,6 +6532,7 @@ function Sidebar($$anchor, $$props) {
   reset(nav_1);
   template_effect(() => {
     classes = set_class(nav_1, 1, "sidebar tasks-dashboard-sidebar svelte-1b12cm3", null, classes, { mobile: mobile() });
+    set_style(nav_1, get(sidebarStyle));
     classes_1 = set_class(button, 1, "pinned-item svelte-1b12cm3", null, classes_1, { active: !!nav.uncategorizedOnly });
     classes_2 = set_class(button_1, 1, "pinned-item svelte-1b12cm3", null, classes_2, {
       active: !nav.groupId && !nav.categoryId && !nav.uncategorizedOnly
@@ -6464,6 +6544,29 @@ function Sidebar($$anchor, $$props) {
   pop();
 }
 delegate(["click"]);
+
+// TaskDetailModal.ts
+var import_obsidian3 = require("obsidian");
+var TaskDetailModal = class extends import_obsidian3.Modal {
+  task;
+  constructor(app, task) {
+    super(app);
+    this.task = task;
+  }
+  onOpen() {
+    const { contentEl } = this;
+    contentEl.addClass("task-detail-modal");
+    const title = contentEl.createEl("p", { text: this.task.title });
+    title.style.whiteSpace = "pre-wrap";
+    title.style.wordBreak = "break-word";
+    title.style.fontSize = "1.1rem";
+    title.style.lineHeight = "1.5";
+    title.style.margin = "0";
+  }
+  onClose() {
+    this.contentEl.empty();
+  }
+};
 
 // components/QuickCapture.svelte
 var root_12 = from_html(`<label class="svelte-149ph0u"><span>Subtag (optional)</span> <input type="text" placeholder="e.g. blog, ebook" maxlength="40" class="svelte-149ph0u"/></label>`);
@@ -6569,7 +6672,7 @@ delegate(["keydown"]);
 
 // components/TaskCard.svelte
 var root_13 = from_html(`<button type="button" class="cat-badge svelte-1j8piq"> </button>`);
-var root_23 = from_html(`<button type="button" class="ghost icon-btn svelte-1j8piq" title="Open in Obsidian">\u2197</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Edit">\u270E</button> <button type="button" class="danger icon-btn svelte-1j8piq" title="Delete">\u{1F5D1}</button>`, 1);
+var root_23 = from_html(`<button type="button" class="ghost icon-btn svelte-1j8piq" title="Enlarge">\u2922</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Open in Obsidian">\u2197</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Edit">\u270E</button> <button type="button" class="danger icon-btn svelte-1j8piq" title="Delete">\u{1F5D1}</button>`, 1);
 var root_42 = from_html(`<option> </option>`);
 var root_33 = from_html(`<div class="editor svelte-1j8piq"><input type="text" maxlength="140" class="svelte-1j8piq"/> <div class="grid2 svelte-1j8piq"><select disabled="" class="svelte-1j8piq"><option>Vault category (read from tags)</option><!></select></div> <div class="actions svelte-1j8piq"><button type="button" class="svelte-1j8piq">Save</button> <button type="button" class="ghost svelte-1j8piq">Cancel</button></div></div>`);
 var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><label class="checkbox-row svelte-1j8piq"><input type="checkbox" class="svelte-1j8piq"/> <span class="title svelte-1j8piq"> </span></label> <div class="right-controls svelte-1j8piq"><!> <!></div></div> <!></article>`);
@@ -6631,9 +6734,11 @@ function TaskCard($$anchor, $$props) {
       var button_1 = first_child(fragment);
       var button_2 = sibling(button_1, 2);
       var button_3 = sibling(button_2, 2);
-      delegated("click", button_1, () => openTaskInObsidian($$props.task.id));
-      delegated("click", button_2, () => set(editing, true));
-      delegated("click", button_3, () => deleteTask($$props.task.id));
+      var button_4 = sibling(button_3, 2);
+      delegated("click", button_1, () => $$props.onEnlarge?.($$props.task));
+      delegated("click", button_2, () => openTaskInObsidian($$props.task.id));
+      delegated("click", button_3, () => set(editing, true));
+      delegated("click", button_4, () => deleteTask($$props.task.id));
       append($$anchor2, fragment);
     };
     if_block(node_1, ($$render) => {
@@ -6669,15 +6774,15 @@ function TaskCard($$anchor, $$props) {
       reset(select);
       reset(div_3);
       var div_4 = sibling(div_3, 2);
-      var button_4 = child(div_4);
-      var button_5 = sibling(button_4, 2);
+      var button_5 = child(div_4);
+      var button_6 = sibling(button_5, 2);
       reset(div_4);
       reset(div_2);
       delegated("keydown", input_1, (e) => e.stopPropagation());
       bind_value(input_1, () => get(title), ($$value) => set(title, $$value));
       bind_select_value(select, () => get(categoryId), ($$value) => set(categoryId, $$value));
-      delegated("click", button_4, save2);
-      delegated("click", button_5, () => set(editing, false));
+      delegated("click", button_5, save2);
+      delegated("click", button_6, () => set(editing, false));
       append($$anchor2, div_2);
     };
     if_block(node_2, ($$render) => {
@@ -6832,6 +6937,9 @@ function TaskBoard($$anchor, $$props) {
     moveTask(get(draggingTaskId), targetTaskId);
     set(draggingTaskId, null);
   }
+  function onEnlarge(task) {
+    new TaskDetailModal($$props.app, task).open();
+  }
   var section = root4();
   var header = child(section);
   var h1 = child(header);
@@ -6901,7 +7009,8 @@ function TaskBoard($$anchor, $$props) {
               onDragStart: (id) => set(draggingTaskId, id, true),
               onDropOn: (id) => onDropOn(id),
               showCategory: true,
-              onGoToCategory: (catId) => $$props.onSelectCategory?.(catId)
+              onGoToCategory: (catId) => $$props.onSelectCategory?.(catId),
+              onEnlarge
             });
           });
           reset(div_8);
@@ -6940,7 +7049,8 @@ function TaskBoard($$anchor, $$props) {
                   onDragStart: (id) => set(draggingTaskId, id, true),
                   onDropOn: (id) => onDropOn(id),
                   showCategory: true,
-                  onGoToCategory: (catId) => $$props.onSelectCategory?.(catId)
+                  onGoToCategory: (catId) => $$props.onSelectCategory?.(catId),
+                  onEnlarge
                 });
               });
               reset(div_10);
@@ -6992,7 +7102,8 @@ function TaskBoard($$anchor, $$props) {
                     return get(task);
                   },
                   onDragStart: (id) => set(draggingTaskId, id, true),
-                  onDropOn
+                  onDropOn,
+                  onEnlarge
                 });
               });
               reset(div_12);
@@ -7016,7 +7127,8 @@ function TaskBoard($$anchor, $$props) {
                   return get(task);
                 },
                 onDragStart: (id) => set(draggingTaskId, id, true),
-                onDropOn
+                onDropOn,
+                onEnlarge
               });
             });
             reset(div_14);
@@ -7038,7 +7150,8 @@ function TaskBoard($$anchor, $$props) {
                     return get(task);
                   },
                   onDragStart: (id) => set(draggingTaskId, id, true),
-                  onDropOn: (id) => onDropOn(id, "")
+                  onDropOn: (id) => onDropOn(id, ""),
+                  onEnlarge
                 });
               });
               reset(div_15);
@@ -7061,7 +7174,8 @@ function TaskBoard($$anchor, $$props) {
                   return get(task);
                 },
                 onDragStart: (id) => set(draggingTaskId, id, true),
-                onDropOn: (id) => onDropOn(id, get(group).subTag)
+                onDropOn: (id) => onDropOn(id, get(group).subTag),
+                onEnlarge
               });
             });
             reset(div_17);
@@ -7079,7 +7193,8 @@ function TaskBoard($$anchor, $$props) {
                 return get(task);
               },
               onDragStart: (id) => set(draggingTaskId, id, true),
-              onDropOn
+              onDropOn,
+              onEnlarge
             });
           });
           reset(div_18);
@@ -7124,7 +7239,8 @@ function TaskBoard($$anchor, $$props) {
                         return get(task);
                       },
                       onDragStart: (id) => set(draggingTaskId, id, true),
-                      onDropOn
+                      onDropOn,
+                      onEnlarge
                     });
                   });
                   reset(div_20);
@@ -7148,7 +7264,8 @@ function TaskBoard($$anchor, $$props) {
                       return get(task);
                     },
                     onDragStart: (id) => set(draggingTaskId, id, true),
-                    onDropOn
+                    onDropOn,
+                    onEnlarge
                   });
                 });
                 reset(div_22);
@@ -7170,7 +7287,8 @@ function TaskBoard($$anchor, $$props) {
                         return get(task);
                       },
                       onDragStart: (id) => set(draggingTaskId, id, true),
-                      onDropOn: (id) => onDropOn(id, "")
+                      onDropOn: (id) => onDropOn(id, ""),
+                      onEnlarge
                     });
                   });
                   reset(div_23);
@@ -7193,7 +7311,8 @@ function TaskBoard($$anchor, $$props) {
                       return get(task);
                     },
                     onDragStart: (id) => set(draggingTaskId, id, true),
-                    onDropOn: (id) => onDropOn(id, get(group).subTag)
+                    onDropOn: (id) => onDropOn(id, get(group).subTag),
+                    onEnlarge
                   });
                 });
                 reset(div_25);
@@ -7211,7 +7330,8 @@ function TaskBoard($$anchor, $$props) {
                     return get(task);
                   },
                   onDragStart: (id) => set(draggingTaskId, id, true),
-                  onDropOn
+                  onDropOn,
+                  onEnlarge
                 });
               });
               reset(div_26);
@@ -7355,7 +7475,10 @@ function App($$anchor, $$props) {
     get mobile() {
       return get(isNarrowViewport);
     },
-    onNavigate: closeSidebarOnMobileNavigate
+    onNavigate: closeSidebarOnMobileNavigate,
+    get settings() {
+      return $$props.plugin.settings;
+    }
   });
   reset(aside);
   var node_1 = sibling(aside, 2);
@@ -7386,6 +7509,9 @@ function App($$anchor, $$props) {
   }
   var node_3 = sibling(node_2, 2);
   TaskBoard(node_3, {
+    get app() {
+      return $$props.plugin.app;
+    },
     get title() {
       return get(pageTitle);
     },
@@ -7434,7 +7560,7 @@ delegate(["click"]);
 
 // TodoView.ts
 var VIEW_TYPE_TODO = "tasks-dashboard-view";
-var TodoView = class extends import_obsidian3.ItemView {
+var TodoView = class extends import_obsidian4.ItemView {
   plugin;
   component = null;
   constructor(leaf, plugin) {
@@ -7468,14 +7594,16 @@ var TodoView = class extends import_obsidian3.ItemView {
 };
 
 // settings.ts
-var import_obsidian4 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 var DEFAULT_SETTINGS = {
   tagPrefix: "#todo",
   inboxFile: "Todo Inbox.md",
   archivedGroups: [],
-  showCompleted: true
+  showCompleted: true,
+  sidebarGroupSpacing: 0.875,
+  sidebarCategoryGap: 0.12
 };
-var TodoSettingTab = class extends import_obsidian4.PluginSettingTab {
+var TodoSettingTab = class extends import_obsidian5.PluginSettingTab {
   plugin;
   constructor(app, plugin) {
     super(app, plugin);
@@ -7485,22 +7613,35 @@ var TodoSettingTab = class extends import_obsidian4.PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
     containerEl.createEl("h2", { text: "Tasks Dashboard Settings" });
-    new import_obsidian4.Setting(containerEl).setName("Tag prefix").setDesc("Tag used to discover tasks in your vault").addText(
+    new import_obsidian5.Setting(containerEl).setName("Tag prefix").setDesc("Tag used to discover tasks in your vault").addText(
       (text2) => text2.setPlaceholder("#todo").setValue(this.plugin.settings.tagPrefix).onChange(async (value) => {
         this.plugin.settings.tagPrefix = value.trim() || "#todo";
         await this.plugin.saveSettings();
         await this.plugin.refreshTodoState();
       })
     );
-    new import_obsidian4.Setting(containerEl).setName("Inbox file").setDesc("File used by Quick Capture for new tasks").addText(
+    new import_obsidian5.Setting(containerEl).setName("Inbox file").setDesc("File used by Quick Capture for new tasks").addText(
       (text2) => text2.setPlaceholder("Todo Inbox.md").setValue(this.plugin.settings.inboxFile).onChange(async (value) => {
         this.plugin.settings.inboxFile = value.trim() || DEFAULT_SETTINGS.inboxFile;
         await this.plugin.saveSettings();
       })
     );
-    new import_obsidian4.Setting(containerEl).setName("Show completed").setDesc("Show completed tasks in the task board").addToggle(
+    new import_obsidian5.Setting(containerEl).setName("Show completed").setDesc("Show completed tasks in the task board").addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.showCompleted).onChange(async (value) => {
         this.plugin.settings.showCompleted = value;
+        await this.plugin.saveSettings();
+      })
+    );
+    containerEl.createEl("h3", { text: "Sidebar Spacing" });
+    new import_obsidian5.Setting(containerEl).setName("Group spacing").setDesc("Space between groups in the sidebar").addSlider(
+      (slider) => slider.setLimits(0, 2, 0.05).setValue(this.plugin.settings.sidebarGroupSpacing).setDynamicTooltip().onChange(async (value) => {
+        this.plugin.settings.sidebarGroupSpacing = value;
+        await this.plugin.saveSettings();
+      })
+    );
+    new import_obsidian5.Setting(containerEl).setName("Category gap").setDesc("Space between category items").addSlider(
+      (slider) => slider.setLimits(0, 1, 0.02).setValue(this.plugin.settings.sidebarCategoryGap).setDynamicTooltip().onChange(async (value) => {
+        this.plugin.settings.sidebarCategoryGap = value;
         await this.plugin.saveSettings();
       })
     );
@@ -7508,7 +7649,7 @@ var TodoSettingTab = class extends import_obsidian4.PluginSettingTab {
 };
 
 // main.ts
-var TodoPlugin = class extends import_obsidian5.Plugin {
+var TodoPlugin = class extends import_obsidian6.Plugin {
   settings = DEFAULT_SETTINGS;
   customSortOrders = {};
   async onload() {

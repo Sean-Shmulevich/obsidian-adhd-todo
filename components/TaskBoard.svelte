@@ -1,10 +1,13 @@
 <script lang="ts">
+  import type { App } from 'obsidian';
   import type { Task } from '../types';
   import { categories, changeTaskSubTag, moveTask, visibleTasks } from '../state.svelte.ts';
+  import { TaskDetailModal } from '../TaskDetailModal';
   import QuickCapture from './QuickCapture.svelte';
   import TaskCard from './TaskCard.svelte';
 
   let {
+    app,
     title = 'Dashboard',
     filterCategoryId,
     filterGroupId,
@@ -17,6 +20,7 @@
     onBoard,
     onRescan
   }: {
+    app: App;
     title?: string;
     filterCategoryId?: string;
     filterGroupId?: string;
@@ -133,6 +137,10 @@
     moveTask(draggingTaskId, targetTaskId);
     draggingTaskId = null;
   }
+
+  function onEnlarge(task: Task) {
+    new TaskDetailModal(app, task).open();
+  }
 </script>
 
 <section class="task-board">
@@ -167,7 +175,7 @@
               <div class="cards">
                 {#each incompleteTasks as task (task.id)}
                   <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id)}
-                    showCategory={true} onGoToCategory={(catId) => onSelectCategory?.(catId)} />
+                    showCategory={true} onGoToCategory={(catId) => onSelectCategory?.(catId)} {onEnlarge} />
                 {/each}
               </div>
             {/if}
@@ -190,7 +198,7 @@
                 <div class="cards">
                   {#each finishedTasks as task (task.id)}
                     <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id)}
-                      showCategory={true} onGoToCategory={(catId) => onSelectCategory?.(catId)} />
+                      showCategory={true} onGoToCategory={(catId) => onSelectCategory?.(catId)} {onEnlarge} />
                   {/each}
                 </div>
               {/if}
@@ -212,7 +220,7 @@
                   <div class="subtag-header">Root / Uncategorized</div>
                   <div class="cards">
                     {#each openByCategory.rootTasks as task (task.id)}
-                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
                     {/each}
                   </div>
                 </section>
@@ -222,7 +230,7 @@
                   <div class="subtag-header">{group.name}</div>
                   <div class="cards">
                     {#each group.tasks as task (task.id)}
-                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
                     {/each}
                   </div>
                 </section>
@@ -231,7 +239,7 @@
               {#if openUntaggedCategoryTasks.length}
                 <div class="cards">
                   {#each openUntaggedCategoryTasks as task (task.id)}
-                    <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, '')} />
+                    <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, '')} {onEnlarge} />
                   {/each}
                 </div>
               {/if}
@@ -240,7 +248,7 @@
                   <div class="subtag-header">{group.subTag}</div>
                   <div class="cards">
                     {#each group.tasks as task (task.id)}
-                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, group.subTag)} />
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, group.subTag)} {onEnlarge} />
                     {/each}
                   </div>
                 </section>
@@ -248,7 +256,7 @@
             {:else}
               <div class="cards">
                 {#each incompleteTasks as task (task.id)}
-                  <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                  <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
                 {/each}
               </div>
             {/if}
@@ -274,7 +282,7 @@
                     <div class="subtag-header">Root / Uncategorized</div>
                     <div class="cards">
                       {#each finishedByCategory.rootTasks as task (task.id)}
-                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
                       {/each}
                     </div>
                   </section>
@@ -284,7 +292,7 @@
                     <div class="subtag-header">{group.name}</div>
                     <div class="cards">
                       {#each group.tasks as task (task.id)}
-                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
                       {/each}
                     </div>
                   </section>
@@ -293,7 +301,7 @@
                 {#if finishedUntaggedCategoryTasks.length}
                   <div class="cards">
                     {#each finishedUntaggedCategoryTasks as task (task.id)}
-                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, '')} />
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, '')} {onEnlarge} />
                     {/each}
                   </div>
                 {/if}
@@ -302,7 +310,7 @@
                     <div class="subtag-header">{group.subTag}</div>
                     <div class="cards">
                       {#each group.tasks as task (task.id)}
-                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, group.subTag)} />
+                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, group.subTag)} {onEnlarge} />
                       {/each}
                     </div>
                   </section>
@@ -310,7 +318,7 @@
               {:else}
                 <div class="cards">
                   {#each finishedTasks as task (task.id)}
-                    <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} />
+                    <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
                   {/each}
                 </div>
               {/if}

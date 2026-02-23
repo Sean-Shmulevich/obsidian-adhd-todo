@@ -6,13 +6,17 @@ export interface TodoSettings {
   inboxFile: string;
   archivedGroups: string[];
   showCompleted: boolean;
+  sidebarGroupSpacing: number;
+  sidebarCategoryGap: number;
 }
 
 export const DEFAULT_SETTINGS: TodoSettings = {
   tagPrefix: '#todo',
   inboxFile: 'Todo Inbox.md',
   archivedGroups: [],
-  showCompleted: true
+  showCompleted: true,
+  sidebarGroupSpacing: 0,
+  sidebarCategoryGap: 0
 };
 
 export class TodoSettingTab extends PluginSettingTab {
@@ -64,6 +68,36 @@ export class TodoSettingTab extends PluginSettingTab {
           this.plugin.settings.showCompleted = value;
           await this.plugin.saveSettings();
         })
+      );
+
+    containerEl.createEl('h3', { text: 'Sidebar Spacing' });
+
+    new Setting(containerEl)
+      .setName('Group spacing')
+      .setDesc('Space between groups in the sidebar')
+      .addSlider((slider) =>
+        slider
+          .setLimits(0, 2, 0.05)
+          .setValue(this.plugin.settings.sidebarGroupSpacing)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.sidebarGroupSpacing = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Category gap')
+      .setDesc('Space between category items')
+      .addSlider((slider) =>
+        slider
+          .setLimits(0, 1, 0.02)
+          .setValue(this.plugin.settings.sidebarCategoryGap)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.sidebarCategoryGap = value;
+            await this.plugin.saveSettings();
+          })
       );
 
   }
