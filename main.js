@@ -6751,14 +6751,15 @@ function QuickCapture($$anchor, $$props) {
 delegate(["keydown"]);
 
 // components/TaskCard.svelte
-var root_13 = from_html(`<button type="button" class="cat-badge svelte-1j8piq"> </button>`);
-var root_23 = from_html(`<button type="button" class="ghost icon-btn svelte-1j8piq" title="Enlarge">\u29C9</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Open in Obsidian">\u2197</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Edit">\u270E</button> <button type="button" class="danger icon-btn svelte-1j8piq" title="Delete">\u{1F5D1}</button>`, 1);
-var root_42 = from_html(`<option> </option>`);
-var root_33 = from_html(`<div class="inline-picker-row svelte-1j8piq"><select class="inline-picker-select svelte-1j8piq"><option>Category\u2026</option><!></select> <input class="inline-picker-input svelte-1j8piq" type="text" placeholder="subtag"/> <button type="button" class="inline-picker-save svelte-1j8piq" title="Save">&#10003;</button> <button type="button" class="inline-picker-cancel svelte-1j8piq" title="Cancel">&#10005;</button></div>`);
-var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><div class="checkbox-row svelte-1j8piq" role="checkbox" tabindex="0"><input type="checkbox" tabindex="-1" style="pointer-events: none;" class="svelte-1j8piq"/> <span class="title svelte-1j8piq"> </span></div> <div class="right-controls svelte-1j8piq"><!> <!></div></div> <!></article>`);
+var root_13 = from_html(`<div class="edit-title-row svelte-1j8piq"><input type="text" class="edit-title-input svelte-1j8piq" maxlength="140"/> <button type="button" class="inline-picker-save svelte-1j8piq" title="Save">&#10003;</button> <button type="button" class="inline-picker-cancel svelte-1j8piq" title="Cancel">&#10005;</button></div>`);
+var root_23 = from_html(`<div class="checkbox-row svelte-1j8piq" role="checkbox" tabindex="0"><input type="checkbox" tabindex="-1" style="pointer-events: none;" class="svelte-1j8piq"/> <span class="title svelte-1j8piq"> </span></div>`);
+var root_33 = from_html(`<button type="button" class="cat-badge svelte-1j8piq"> </button>`);
+var root_52 = from_html(`<option> </option>`);
+var root_42 = from_html(`<div class="inline-picker-row svelte-1j8piq"><select class="inline-picker-select svelte-1j8piq"><option>Category\u2026</option><!></select> <input class="inline-picker-input svelte-1j8piq" type="text" placeholder="subtag"/> <button type="button" class="inline-picker-save svelte-1j8piq" title="Save">&#10003;</button> <button type="button" class="inline-picker-cancel svelte-1j8piq" title="Cancel">&#10005;</button></div>`);
+var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><!> <div class="right-controls svelte-1j8piq"><!> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Enlarge">\u29C9</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Open in Obsidian">\u2197</button> <button type="button" class="ghost icon-btn svelte-1j8piq"> </button> <button type="button" class="danger icon-btn svelte-1j8piq" title="Delete">\u{1F5D1}</button></div></div> <!></article>`);
 var $$css3 = {
   hash: "svelte-1j8piq",
-  code: ".task-card.svelte-1j8piq {display:grid;gap:0.25rem;padding:0.4rem 0.5rem;border-radius:0.75rem;border:1px solid var(--border-color);background:var(--surface-1);cursor:grab;position:relative;}.task-card.drag-over.svelte-1j8piq::after,\n  .task-card.drag-over-top.svelte-1j8piq::before {content:'';position:absolute;left:0.5rem;right:0.5rem;height:2px;background:var(--interactive-accent, #7c3aed);border-radius:1px;pointer-events:none;}.task-card.drag-over.svelte-1j8piq::after {bottom:-0.3rem;}.task-card.drag-over-top.svelte-1j8piq::before {top:-0.3rem;}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.35rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.45rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.2;font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.checkbox-row.svelte-1j8piq input[type='checkbox']:where(.svelte-1j8piq) {margin-top:0.1rem;inline-size:0.95rem;block-size:0.95rem;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.right-controls.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.25rem;align-items:center;}.inline-picker-row.svelte-1j8piq {display:grid;grid-template-columns:1fr 1fr auto auto;gap:0.35rem;align-items:center;}.inline-picker-select.svelte-1j8piq,\n  .inline-picker-input.svelte-1j8piq {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.3rem 0.5rem;font-size:0.8rem;min-width:0;}.inline-picker-save.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.4rem;min-height:1.4rem;border-radius:0.45rem;background:var(--interactive-accent, #7c3aed);color:var(--text-on-accent, #fff);font-size:0.75rem;cursor:pointer;opacity:0.85;}.inline-picker-save.svelte-1j8piq:hover,\n  .inline-picker-cancel.svelte-1j8piq:hover {opacity:1;}.inline-picker-cancel.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.4rem;min-height:1.4rem;border-radius:0.45rem;background:var(--surface-2);border:1px solid var(--border-color);color:inherit;font-size:0.75rem;cursor:pointer;opacity:0.6;}.cat-badge.svelte-1j8piq {padding:0.15rem 0.5rem;border-radius:999px;font-size:0.65rem;font-weight:600;background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 18%, var(--surface-2, #2a2a3e));border:1px solid var(--border-color);color:var(--text-normal);cursor:pointer;white-space:nowrap;transition:background 120ms ease;}.cat-badge.svelte-1j8piq:hover {background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 35%, var(--surface-2, #2a2a3e));}.icon-btn.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.2rem;min-height:1.2rem;padding:0;line-height:1;font-size:0.8rem;cursor:pointer;opacity:0.6;}.icon-btn.svelte-1j8piq:hover {opacity:1;}.danger.svelte-1j8piq {color:#ff6b6b;}\n\n  @media (max-width: 600px) {.task-card.svelte-1j8piq {padding:0.35rem 0.4rem;}.checkbox-row.svelte-1j8piq {gap:0.35rem;}\n\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.icon-btn.svelte-1j8piq {min-width:1.65rem;min-height:1.65rem;}\n  }"
+  code: ".task-card.svelte-1j8piq {display:grid;gap:0.25rem;padding:0.4rem 0.5rem;border-radius:0.75rem;border:1px solid var(--border-color);background:var(--surface-1);cursor:grab;position:relative;}.task-card.drag-over.svelte-1j8piq::after,\n  .task-card.drag-over-top.svelte-1j8piq::before {content:'';position:absolute;left:0.5rem;right:0.5rem;height:2px;background:var(--interactive-accent, #7c3aed);border-radius:1px;pointer-events:none;}.task-card.drag-over.svelte-1j8piq::after {bottom:-0.3rem;}.task-card.drag-over-top.svelte-1j8piq::before {top:-0.3rem;}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.35rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.45rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.2;font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.checkbox-row.svelte-1j8piq input[type='checkbox']:where(.svelte-1j8piq) {margin-top:0.1rem;inline-size:0.95rem;block-size:0.95rem;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.right-controls.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.25rem;align-items:center;}.edit-title-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.35rem;align-items:center;min-width:0;}.edit-title-input.svelte-1j8piq {flex:1 1 auto;min-width:0;background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.25rem 0.5rem;font-size:0.9rem;font-weight:600;}.inline-picker-row.svelte-1j8piq {display:grid;grid-template-columns:1fr 1fr auto auto;gap:0.35rem;align-items:center;}.inline-picker-select.svelte-1j8piq,\n  .inline-picker-input.svelte-1j8piq {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.3rem 0.5rem;font-size:0.8rem;min-width:0;}.inline-picker-save.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.4rem;min-height:1.4rem;border-radius:0.45rem;background:var(--interactive-accent, #7c3aed);color:var(--text-on-accent, #fff);font-size:0.75rem;cursor:pointer;opacity:0.85;}.inline-picker-save.svelte-1j8piq:hover,\n  .inline-picker-cancel.svelte-1j8piq:hover {opacity:1;}.inline-picker-cancel.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.4rem;min-height:1.4rem;border-radius:0.45rem;background:var(--surface-2);border:1px solid var(--border-color);color:inherit;font-size:0.75rem;cursor:pointer;opacity:0.6;}.cat-badge.svelte-1j8piq {padding:0.15rem 0.5rem;border-radius:999px;font-size:0.65rem;font-weight:600;background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 18%, var(--surface-2, #2a2a3e));border:1px solid var(--border-color);color:var(--text-normal);cursor:pointer;white-space:nowrap;transition:background 120ms ease;}.cat-badge.svelte-1j8piq:hover {background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 35%, var(--surface-2, #2a2a3e));}.icon-btn.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.2rem;min-height:1.2rem;padding:0;line-height:1;font-size:0.8rem;cursor:pointer;opacity:0.6;}.icon-btn.svelte-1j8piq:hover {opacity:1;}.danger.svelte-1j8piq {color:#ff6b6b;}\n\n  @media (max-width: 600px) {.task-card.svelte-1j8piq {padding:0.35rem 0.4rem;}.checkbox-row.svelte-1j8piq {gap:0.35rem;}\n\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.icon-btn.svelte-1j8piq {min-width:1.65rem;min-height:1.65rem;}\n  }"
 };
 function TaskCard($$anchor, $$props) {
   push($$props, true);
@@ -6766,6 +6767,7 @@ function TaskCard($$anchor, $$props) {
   let isDragOver = prop($$props, "isDragOver", 3, false), isDragAbove = prop($$props, "isDragAbove", 3, false), showCategory = prop($$props, "showCategory", 3, false), showInlineCategoryPicker = prop($$props, "showInlineCategoryPicker", 3, false);
   const catName = user_derived(() => showCategory() ? categoryLabel($$props.task.categoryId) : "");
   let editing = state(false);
+  let editTitle = state("");
   let holdReady = state(false);
   let holdTimer = null;
   function startHold() {
@@ -6794,6 +6796,20 @@ function TaskCard($$anchor, $$props) {
     set(inlineCategoryId, $$props.task.categoryId ?? "", true);
     set(inlineSubTag, $$props.task.subTag ?? "", true);
   });
+  function startEditing() {
+    set(editTitle, $$props.task.title, true);
+    set(editing, true);
+  }
+  function cancelEditing() {
+    set(editing, false);
+  }
+  async function saveTitle() {
+    const trimmed = get(editTitle).trim();
+    if (trimmed && trimmed !== $$props.task.title) {
+      await updateTask($$props.task.id, { title: trimmed });
+    }
+    set(editing, false);
+  }
   function cancelInline() {
     set(inlineCategoryId, $$props.task.categoryId ?? "", true);
     set(inlineSubTag, $$props.task.subTag ?? "", true);
@@ -6813,66 +6829,93 @@ function TaskCard($$anchor, $$props) {
   var article = root3();
   let classes;
   var div = child(article);
-  var div_1 = child(div);
-  var input = child(div_1);
-  remove_input_defaults(input);
-  var span = sibling(input, 2);
-  var text2 = child(span, true);
-  reset(span);
-  reset(div_1);
-  var div_2 = sibling(div_1, 2);
-  var node = child(div_2);
+  var node = child(div);
   {
     var consequent = ($$anchor2) => {
-      var button = root_13();
-      var text_1 = child(button, true);
-      reset(button);
-      template_effect(() => {
-        set_attribute2(button, "title", `Go to ${get(catName) ?? ""}`);
-        set_text(text_1, get(catName));
+      var div_1 = root_13();
+      var input = child(div_1);
+      remove_input_defaults(input);
+      var button = sibling(input, 2);
+      var button_1 = sibling(button, 2);
+      reset(div_1);
+      delegated("keydown", input, (e) => {
+        e.stopPropagation();
+        if (e.key === "Enter") saveTitle();
+        if (e.key === "Escape") cancelEditing();
       });
-      delegated("click", button, () => $$props.task.categoryId && $$props.onGoToCategory?.($$props.task.categoryId));
-      append($$anchor2, button);
+      bind_value(input, () => get(editTitle), ($$value) => set(editTitle, $$value));
+      delegated("click", button, saveTitle);
+      delegated("click", button_1, cancelEditing);
+      append($$anchor2, div_1);
+    };
+    var alternate = ($$anchor2) => {
+      var div_2 = root_23();
+      var input_1 = child(div_2);
+      remove_input_defaults(input_1);
+      var span = sibling(input_1, 2);
+      var text2 = child(span, true);
+      reset(span);
+      reset(div_2);
+      template_effect(() => {
+        set_attribute2(div_2, "aria-checked", $$props.task.completed);
+        set_checked(input_1, $$props.task.completed);
+        set_text(text2, $$props.task.title);
+      });
+      delegated("click", div_2, () => toggleTaskComplete($$props.task.id));
+      delegated("keydown", div_2, (e) => {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          toggleTaskComplete($$props.task.id);
+        }
+      });
+      append($$anchor2, div_2);
     };
     if_block(node, ($$render) => {
-      if (showCategory() && get(catName) && get(catName) !== "Uncategorized") $$render(consequent);
+      if (get(editing)) $$render(consequent);
+      else $$render(alternate, false);
     });
   }
-  var node_1 = sibling(node, 2);
+  var div_3 = sibling(node, 2);
+  var node_1 = child(div_3);
   {
     var consequent_1 = ($$anchor2) => {
-      var fragment = root_23();
-      var button_1 = first_child(fragment);
-      var button_2 = sibling(button_1, 2);
-      var button_3 = sibling(button_2, 2);
-      var button_4 = sibling(button_3, 2);
-      delegated("click", button_1, () => $$props.onEnlarge?.($$props.task));
-      delegated("click", button_2, () => openTaskInObsidian($$props.task.id));
-      delegated("click", button_3, () => set(editing, true));
-      delegated("click", button_4, () => deleteTask($$props.task.id));
-      append($$anchor2, fragment);
+      var button_2 = root_33();
+      var text_1 = child(button_2, true);
+      reset(button_2);
+      template_effect(() => {
+        set_attribute2(button_2, "title", `Go to ${get(catName) ?? ""}`);
+        set_text(text_1, get(catName));
+      });
+      delegated("click", button_2, () => $$props.task.categoryId && $$props.onGoToCategory?.($$props.task.categoryId));
+      append($$anchor2, button_2);
     };
     if_block(node_1, ($$render) => {
-      if (!get(editing)) $$render(consequent_1);
+      if (showCategory() && get(catName) && get(catName) !== "Uncategorized") $$render(consequent_1);
     });
   }
-  reset(div_2);
+  var button_3 = sibling(node_1, 2);
+  var button_4 = sibling(button_3, 2);
+  var button_5 = sibling(button_4, 2);
+  var text_2 = child(button_5, true);
+  reset(button_5);
+  var button_6 = sibling(button_5, 2);
+  reset(div_3);
   reset(div);
   var node_2 = sibling(div, 2);
   {
     var consequent_2 = ($$anchor2) => {
-      var div_3 = root_33();
-      var select = child(div_3);
+      var div_4 = root_42();
+      var select = child(div_4);
       var option = child(select);
       option.value = option.__value = "";
       var node_3 = sibling(option);
       each(node_3, 17, () => [...categories].sort((a, b) => a.sortOrder - b.sortOrder), index, ($$anchor3, cat) => {
-        var option_1 = root_42();
-        var text_2 = child(option_1);
+        var option_1 = root_52();
+        var text_3 = child(option_1);
         reset(option_1);
         var option_1_value = {};
         template_effect(() => {
-          set_text(text_2, `${get(cat).emoji ? `${get(cat).emoji} ` : ""}${get(cat).name ?? ""}`);
+          set_text(text_3, `${get(cat).emoji ? `${get(cat).emoji} ` : ""}${get(cat).name ?? ""}`);
           if (option_1_value !== (option_1_value = get(cat).id)) {
             option_1.value = (option_1.__value = get(cat).id) ?? "";
           }
@@ -6880,17 +6923,17 @@ function TaskCard($$anchor, $$props) {
         append($$anchor3, option_1);
       });
       reset(select);
-      var input_1 = sibling(select, 2);
-      remove_input_defaults(input_1);
-      var button_5 = sibling(input_1, 2);
-      var button_6 = sibling(button_5, 2);
-      reset(div_3);
+      var input_2 = sibling(select, 2);
+      remove_input_defaults(input_2);
+      var button_7 = sibling(input_2, 2);
+      var button_8 = sibling(button_7, 2);
+      reset(div_4);
       bind_select_value(select, () => get(inlineCategoryId), ($$value) => set(inlineCategoryId, $$value));
-      delegated("keydown", input_1, (e) => e.stopPropagation());
-      bind_value(input_1, () => get(inlineSubTag), ($$value) => set(inlineSubTag, $$value));
-      delegated("click", button_5, saveInline);
-      delegated("click", button_6, cancelInline);
-      append($$anchor2, div_3);
+      delegated("keydown", input_2, (e) => e.stopPropagation());
+      bind_value(input_2, () => get(inlineSubTag), ($$value) => set(inlineSubTag, $$value));
+      delegated("click", button_7, saveInline);
+      delegated("click", button_8, cancelInline);
+      append($$anchor2, div_4);
     };
     if_block(node_2, ($$render) => {
       if (showInlineCategoryPicker() || get(editing)) $$render(consequent_2);
@@ -6903,9 +6946,8 @@ function TaskCard($$anchor, $$props) {
       "drag-over": isDragOver() && !isDragAbove(),
       "drag-over-top": isDragOver() && isDragAbove()
     });
-    set_attribute2(div_1, "aria-checked", $$props.task.completed);
-    set_checked(input, $$props.task.completed);
-    set_text(text2, $$props.task.title);
+    set_attribute2(button_5, "title", get(editing) ? "Cancel edit" : "Edit");
+    set_text(text_2, get(editing) ? "\u2715" : "\u270E");
   });
   delegated("pointerdown", article, startHold);
   delegated("pointerup", article, endHold);
@@ -6939,17 +6981,14 @@ function TaskCard($$anchor, $$props) {
     event2.stopPropagation();
     endHold();
   });
-  delegated("click", div_1, () => toggleTaskComplete($$props.task.id));
-  delegated("keydown", div_1, (e) => {
-    if (e.key === " " || e.key === "Enter") {
-      e.preventDefault();
-      toggleTaskComplete($$props.task.id);
-    }
-  });
+  delegated("click", button_3, () => $$props.onEnlarge?.($$props.task));
+  delegated("click", button_4, () => openTaskInObsidian($$props.task.id));
+  delegated("click", button_5, () => get(editing) ? cancelEditing() : startEditing());
+  delegated("click", button_6, () => deleteTask($$props.task.id));
   append($$anchor, article);
   pop();
 }
-delegate(["pointerdown", "pointerup", "click", "keydown"]);
+delegate(["pointerdown", "pointerup", "keydown", "click"]);
 
 // components/TaskBoard.svelte
 var root_14 = from_html(`<div class="empty-state svelte-q5ccww">No tasks here yet.</div>`);

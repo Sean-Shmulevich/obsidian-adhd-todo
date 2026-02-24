@@ -6,7 +6,8 @@
     changeTaskSubTag,
     deleteTask,
     openTaskInObsidian,
-    toggleTaskComplete
+    toggleTaskComplete,
+    updateTask
   } from '../state.svelte.ts';
   import type { Task } from '../types';
 
@@ -37,6 +38,7 @@
   const catName = $derived(showCategory ? categoryLabel(task.categoryId) : '');
 
   let editing = $state(false);
+  let editTitle = $state('');
   let holdReady = $state(false);
   let holdTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -67,6 +69,23 @@
     inlineCategoryId = task.categoryId ?? '';
     inlineSubTag = task.subTag ?? '';
   });
+
+  function startEditing() {
+    editTitle = task.title;
+    editing = true;
+  }
+
+  function cancelEditing() {
+    editing = false;
+  }
+
+  async function saveTitle() {
+    const trimmed = editTitle.trim();
+    if (trimmed && trimmed !== task.title) {
+      await updateTask(task.id, { title: trimmed });
+    }
+    editing = false;
+  }
 
   function cancelInline() {
     inlineCategoryId = task.categoryId ?? '';
@@ -127,10 +146,19 @@
   }}
 >
   <div class="row top-row">
-    <div class="checkbox-row" onclick={() => toggleTaskComplete(task.id)} onkeydown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleTaskComplete(task.id); }}} role="checkbox" aria-checked={task.completed} tabindex="0">
-      <input type="checkbox" checked={task.completed} tabindex="-1" style="pointer-events: none;" />
-      <span class="title">{task.title}</span>
-    </div>
+    {#if editing}
+      <div class="edit-title-row">
+        <input type="text" class="edit-title-input" bind:value={editTitle} maxlength="140"
+          onkeydown={(e) => { e.stopPropagation(); if (e.key === 'Enter') saveTitle(); if (e.key === 'Escape') cancelEditing(); }} />
+        <button type="button" class="inline-picker-save" title="Save" onclick={saveTitle}>&#10003;</button>
+        <button type="button" class="inline-picker-cancel" title="Cancel" onclick={cancelEditing}>&#10005;</button>
+      </div>
+    {:else}
+      <div class="checkbox-row" onclick={() => toggleTaskComplete(task.id)} onkeydown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleTaskComplete(task.id); }}} role="checkbox" aria-checked={task.completed} tabindex="0">
+        <input type="checkbox" checked={task.completed} tabindex="-1" style="pointer-events: none;" />
+        <span class="title">{task.title}</span>
+      </div>
+    {/if}
     <div class="right-controls">
       {#if showCategory && catName && catName !== 'Uncategorized'}
         <button
@@ -140,12 +168,10 @@
           onclick={() => task.categoryId && onGoToCategory?.(task.categoryId)}
         >{catName}</button>
       {/if}
-      {#if !editing}
-        <button type="button" class="ghost icon-btn" title="Enlarge" onclick={() => onEnlarge?.(task)}>⧉</button>
-        <button type="button" class="ghost icon-btn" title="Open in Obsidian" onclick={() => openTaskInObsidian(task.id)}>↗</button>
-        <button type="button" class="ghost icon-btn" title="Edit" onclick={() => (editing = true)}>✎</button>
-        <button type="button" class="danger icon-btn" title="Delete" onclick={() => deleteTask(task.id)}>🗑</button>
-      {/if}
+      <button type="button" class="ghost icon-btn" title="Enlarge" onclick={() => onEnlarge?.(task)}>⧉</button>
+      <button type="button" class="ghost icon-btn" title="Open in Obsidian" onclick={() => openTaskInObsidian(task.id)}>↗</button>
+      <button type="button" class="ghost icon-btn" title={editing ? 'Cancel edit' : 'Edit'} onclick={() => editing ? cancelEditing() : startEditing()}>{editing ? '✕' : '✎'}</button>
+      <button type="button" class="danger icon-btn" title="Delete" onclick={() => deleteTask(task.id)}>🗑</button>
     </div>
   </div>
 
@@ -242,6 +268,26 @@
     flex: 0 0 auto;
     gap: 0.25rem;
     align-items: center;
+  }
+
+  .edit-title-row {
+    display: flex;
+    flex: 1 1 auto;
+    gap: 0.35rem;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .edit-title-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: var(--surface-2);
+    border: 1px solid var(--border-color);
+    color: inherit;
+    border-radius: 0.55rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
   }
 
   .inline-picker-row {
