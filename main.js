@@ -6368,8 +6368,7 @@ function moveTask(draggedTaskId, targetTaskId) {
   if (dragIdx === -1 || targetIdx === -1) return;
   const reordered = [...visible];
   const [moved] = reordered.splice(dragIdx, 1);
-  const insertIdx = dragIdx > targetIdx ? targetIdx + 1 : targetIdx;
-  reordered.splice(insertIdx, 0, moved);
+  reordered.splice(targetIdx, 0, moved);
   for (let i = 0; i < reordered.length; i++) {
     const t = reordered[i];
     const key2 = taskSortKey(t);
@@ -6736,12 +6735,12 @@ var root_33 = from_html(`<div class="editor svelte-1j8piq"><input type="text" ma
 var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><label class="checkbox-row svelte-1j8piq"><input type="checkbox" class="svelte-1j8piq"/> <span class="title svelte-1j8piq"> </span></label> <div class="right-controls svelte-1j8piq"><!> <!></div></div> <!></article>`);
 var $$css3 = {
   hash: "svelte-1j8piq",
-  code: ".task-card.svelte-1j8piq {display:grid;gap:0.25rem;padding:0.4rem 0.5rem;border-radius:0.75rem;border:1px solid var(--border-color);background:var(--surface-1);cursor:grab;position:relative;}.task-card.drag-over.svelte-1j8piq::after {content:'';position:absolute;left:0.5rem;right:0.5rem;bottom:-0.3rem;height:2px;background:var(--interactive-accent, #7c3aed);border-radius:1px;pointer-events:none;}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.35rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.45rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.2;font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.checkbox-row.svelte-1j8piq input[type='checkbox']:where(.svelte-1j8piq) {margin-top:0.1rem;inline-size:0.95rem;block-size:0.95rem;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.right-controls.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.25rem;align-items:center;}.editor.svelte-1j8piq {display:grid;gap:0.5rem;padding-top:0.1rem;}.editor.svelte-1j8piq input:where(.svelte-1j8piq),\n  .editor.svelte-1j8piq select:where(.svelte-1j8piq),\n  .actions.svelte-1j8piq button:where(.svelte-1j8piq) {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.45rem 0.6rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.grid2.svelte-1j8piq {display:grid;gap:0.5rem;grid-template-columns:repeat(2, minmax(0, 1fr));}.cat-badge.svelte-1j8piq {padding:0.15rem 0.5rem;border-radius:999px;font-size:0.65rem;font-weight:600;background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 18%, var(--surface-2, #2a2a3e));border:1px solid var(--border-color);color:var(--text-normal);cursor:pointer;white-space:nowrap;transition:background 120ms ease;}.cat-badge.svelte-1j8piq:hover {background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 35%, var(--surface-2, #2a2a3e));}.icon-btn.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.2rem;min-height:1.2rem;padding:0;line-height:1;font-size:0.8rem;cursor:pointer;opacity:0.6;}.icon-btn.svelte-1j8piq:hover {opacity:1;}.actions.svelte-1j8piq .ghost:where(.svelte-1j8piq) {background:transparent;}.danger.svelte-1j8piq {color:#ff6b6b;}\n\n  @media (max-width: 600px) {.task-card.svelte-1j8piq {padding:0.35rem 0.4rem;}.checkbox-row.svelte-1j8piq {gap:0.35rem;}.grid2.svelte-1j8piq {grid-template-columns:1fr;}.actions.svelte-1j8piq {justify-content:flex-start;}\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.icon-btn.svelte-1j8piq {min-width:1.65rem;min-height:1.65rem;}\n  }"
+  code: ".task-card.svelte-1j8piq {display:grid;gap:0.25rem;padding:0.4rem 0.5rem;border-radius:0.75rem;border:1px solid var(--border-color);background:var(--surface-1);cursor:grab;position:relative;}.task-card.drag-over.svelte-1j8piq::after,\n  .task-card.drag-over-top.svelte-1j8piq::before {content:'';position:absolute;left:0.5rem;right:0.5rem;height:2px;background:var(--interactive-accent, #7c3aed);border-radius:1px;pointer-events:none;}.task-card.drag-over.svelte-1j8piq::after {bottom:-0.3rem;}.task-card.drag-over-top.svelte-1j8piq::before {top:-0.3rem;}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.35rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.45rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.2;font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.checkbox-row.svelte-1j8piq input[type='checkbox']:where(.svelte-1j8piq) {margin-top:0.1rem;inline-size:0.95rem;block-size:0.95rem;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.right-controls.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.25rem;align-items:center;}.editor.svelte-1j8piq {display:grid;gap:0.5rem;padding-top:0.1rem;}.editor.svelte-1j8piq input:where(.svelte-1j8piq),\n  .editor.svelte-1j8piq select:where(.svelte-1j8piq),\n  .actions.svelte-1j8piq button:where(.svelte-1j8piq) {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.45rem 0.6rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.grid2.svelte-1j8piq {display:grid;gap:0.5rem;grid-template-columns:repeat(2, minmax(0, 1fr));}.cat-badge.svelte-1j8piq {padding:0.15rem 0.5rem;border-radius:999px;font-size:0.65rem;font-weight:600;background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 18%, var(--surface-2, #2a2a3e));border:1px solid var(--border-color);color:var(--text-normal);cursor:pointer;white-space:nowrap;transition:background 120ms ease;}.cat-badge.svelte-1j8piq:hover {background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 35%, var(--surface-2, #2a2a3e));}.icon-btn.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.2rem;min-height:1.2rem;padding:0;line-height:1;font-size:0.8rem;cursor:pointer;opacity:0.6;}.icon-btn.svelte-1j8piq:hover {opacity:1;}.actions.svelte-1j8piq .ghost:where(.svelte-1j8piq) {background:transparent;}.danger.svelte-1j8piq {color:#ff6b6b;}\n\n  @media (max-width: 600px) {.task-card.svelte-1j8piq {padding:0.35rem 0.4rem;}.checkbox-row.svelte-1j8piq {gap:0.35rem;}.grid2.svelte-1j8piq {grid-template-columns:1fr;}.actions.svelte-1j8piq {justify-content:flex-start;}\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.icon-btn.svelte-1j8piq {min-width:1.65rem;min-height:1.65rem;}\n  }"
 };
 function TaskCard($$anchor, $$props) {
   push($$props, true);
   append_styles($$anchor, $$css3);
-  let isDragOver = prop($$props, "isDragOver", 3, false), showCategory = prop($$props, "showCategory", 3, false);
+  let isDragOver = prop($$props, "isDragOver", 3, false), isDragAbove = prop($$props, "isDragAbove", 3, false), showCategory = prop($$props, "showCategory", 3, false);
   const catName = user_derived(() => showCategory() ? categoryLabel($$props.task.categoryId) : "");
   let editing = state(false);
   let title = state("");
@@ -6849,7 +6848,11 @@ function TaskCard($$anchor, $$props) {
   }
   reset(article);
   template_effect(() => {
-    classes = set_class(article, 1, "task-card svelte-1j8piq", null, classes, { done: $$props.task.completed, "drag-over": isDragOver() });
+    classes = set_class(article, 1, "task-card svelte-1j8piq", null, classes, {
+      done: $$props.task.completed,
+      "drag-over": isDragOver() && !isDragAbove(),
+      "drag-over-top": isDragOver() && isDragAbove()
+    });
     set_checked(input, $$props.task.completed);
     set_text(text2, $$props.task.title);
   });
@@ -7004,6 +7007,13 @@ function TaskBoard($$anchor, $$props) {
     set(draggingTaskId, null);
     set(dragOverTaskId, null);
   }
+  function isDragAbove(taskId) {
+    if (!get(draggingTaskId) || !get(dragOverTaskId) || get(dragOverTaskId) !== taskId) return false;
+    const dragIdx = get(sortedTasks).findIndex((t) => t.id === get(draggingTaskId));
+    const targetIdx = get(sortedTasks).findIndex((t) => t.id === taskId);
+    if (dragIdx === -1 || targetIdx === -1) return false;
+    return dragIdx > targetIdx;
+  }
   function onEnlarge(task) {
     new TaskDetailModal($$props.app, task).open();
   }
@@ -7072,6 +7082,7 @@ function TaskBoard($$anchor, $$props) {
           each(div_8, 21, () => get(incompleteTasks), (task) => task.id, ($$anchor4, task) => {
             {
               let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+              let $1 = user_derived(() => isDragAbove(get(task).id));
               TaskCard($$anchor4, {
                 get task() {
                   return get(task);
@@ -7081,6 +7092,9 @@ function TaskBoard($$anchor, $$props) {
                 onDragEnter: (id) => set(dragOverTaskId, id, true),
                 get isDragOver() {
                   return get($0);
+                },
+                get isDragAbove() {
+                  return get($1);
                 },
                 showCategory: true,
                 onGoToCategory: (catId) => $$props.onSelectCategory?.(catId),
@@ -7174,6 +7188,7 @@ function TaskBoard($$anchor, $$props) {
               each(div_12, 21, () => get(openByCategory).rootTasks, (task) => task.id, ($$anchor5, task) => {
                 {
                   let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+                  let $1 = user_derived(() => isDragAbove(get(task).id));
                   TaskCard($$anchor5, {
                     get task() {
                       return get(task);
@@ -7183,6 +7198,9 @@ function TaskBoard($$anchor, $$props) {
                     onDragEnter: (id) => set(dragOverTaskId, id, true),
                     get isDragOver() {
                       return get($0);
+                    },
+                    get isDragAbove() {
+                      return get($1);
                     },
                     onEnlarge
                   });
@@ -7206,6 +7224,7 @@ function TaskBoard($$anchor, $$props) {
             each(div_14, 21, () => get(group).tasks, (task) => task.id, ($$anchor5, task) => {
               {
                 let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+                let $1 = user_derived(() => isDragAbove(get(task).id));
                 TaskCard($$anchor5, {
                   get task() {
                     return get(task);
@@ -7215,6 +7234,9 @@ function TaskBoard($$anchor, $$props) {
                   onDragEnter: (id) => set(dragOverTaskId, id, true),
                   get isDragOver() {
                     return get($0);
+                  },
+                  get isDragAbove() {
+                    return get($1);
                   },
                   onEnlarge
                 });
@@ -7236,6 +7258,7 @@ function TaskBoard($$anchor, $$props) {
               each(div_15, 21, () => get(openUntaggedCategoryTasks), (task) => task.id, ($$anchor5, task) => {
                 {
                   let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+                  let $1 = user_derived(() => isDragAbove(get(task).id));
                   TaskCard($$anchor5, {
                     get task() {
                       return get(task);
@@ -7245,6 +7268,9 @@ function TaskBoard($$anchor, $$props) {
                     onDragEnter: (id) => set(dragOverTaskId, id, true),
                     get isDragOver() {
                       return get($0);
+                    },
+                    get isDragAbove() {
+                      return get($1);
                     },
                     onEnlarge
                   });
@@ -7267,6 +7293,7 @@ function TaskBoard($$anchor, $$props) {
             each(div_17, 21, () => get(group).tasks, (task) => task.id, ($$anchor5, task) => {
               {
                 let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+                let $1 = user_derived(() => isDragAbove(get(task).id));
                 TaskCard($$anchor5, {
                   get task() {
                     return get(task);
@@ -7276,6 +7303,9 @@ function TaskBoard($$anchor, $$props) {
                   onDragEnter: (id) => set(dragOverTaskId, id, true),
                   get isDragOver() {
                     return get($0);
+                  },
+                  get isDragAbove() {
+                    return get($1);
                   },
                   onEnlarge
                 });
@@ -7293,6 +7323,7 @@ function TaskBoard($$anchor, $$props) {
           each(div_18, 21, () => get(incompleteTasks), (task) => task.id, ($$anchor4, task) => {
             {
               let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+              let $1 = user_derived(() => isDragAbove(get(task).id));
               TaskCard($$anchor4, {
                 get task() {
                   return get(task);
@@ -7302,6 +7333,9 @@ function TaskBoard($$anchor, $$props) {
                 onDragEnter: (id) => set(dragOverTaskId, id, true),
                 get isDragOver() {
                   return get($0);
+                },
+                get isDragAbove() {
+                  return get($1);
                 },
                 onEnlarge
               });
@@ -7346,6 +7380,7 @@ function TaskBoard($$anchor, $$props) {
                   each(div_20, 21, () => get(finishedByCategory).rootTasks, (task) => task.id, ($$anchor6, task) => {
                     {
                       let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+                      let $1 = user_derived(() => isDragAbove(get(task).id));
                       TaskCard($$anchor6, {
                         get task() {
                           return get(task);
@@ -7355,6 +7390,9 @@ function TaskBoard($$anchor, $$props) {
                         onDragEnter: (id) => set(dragOverTaskId, id, true),
                         get isDragOver() {
                           return get($0);
+                        },
+                        get isDragAbove() {
+                          return get($1);
                         },
                         onEnlarge
                       });
@@ -7378,6 +7416,7 @@ function TaskBoard($$anchor, $$props) {
                 each(div_22, 21, () => get(group).tasks, (task) => task.id, ($$anchor6, task) => {
                   {
                     let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+                    let $1 = user_derived(() => isDragAbove(get(task).id));
                     TaskCard($$anchor6, {
                       get task() {
                         return get(task);
@@ -7387,6 +7426,9 @@ function TaskBoard($$anchor, $$props) {
                       onDragEnter: (id) => set(dragOverTaskId, id, true),
                       get isDragOver() {
                         return get($0);
+                      },
+                      get isDragAbove() {
+                        return get($1);
                       },
                       onEnlarge
                     });
@@ -7408,6 +7450,7 @@ function TaskBoard($$anchor, $$props) {
                   each(div_23, 21, () => get(finishedUntaggedCategoryTasks), (task) => task.id, ($$anchor6, task) => {
                     {
                       let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+                      let $1 = user_derived(() => isDragAbove(get(task).id));
                       TaskCard($$anchor6, {
                         get task() {
                           return get(task);
@@ -7417,6 +7460,9 @@ function TaskBoard($$anchor, $$props) {
                         onDragEnter: (id) => set(dragOverTaskId, id, true),
                         get isDragOver() {
                           return get($0);
+                        },
+                        get isDragAbove() {
+                          return get($1);
                         },
                         onEnlarge
                       });
@@ -7439,6 +7485,7 @@ function TaskBoard($$anchor, $$props) {
                 each(div_25, 21, () => get(group).tasks, (task) => task.id, ($$anchor6, task) => {
                   {
                     let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+                    let $1 = user_derived(() => isDragAbove(get(task).id));
                     TaskCard($$anchor6, {
                       get task() {
                         return get(task);
@@ -7448,6 +7495,9 @@ function TaskBoard($$anchor, $$props) {
                       onDragEnter: (id) => set(dragOverTaskId, id, true),
                       get isDragOver() {
                         return get($0);
+                      },
+                      get isDragAbove() {
+                        return get($1);
                       },
                       onEnlarge
                     });
@@ -7465,6 +7515,7 @@ function TaskBoard($$anchor, $$props) {
               each(div_26, 21, () => get(finishedTasks), (task) => task.id, ($$anchor5, task) => {
                 {
                   let $0 = user_derived(() => get(draggingTaskId) !== null && get(dragOverTaskId) === get(task).id && get(draggingTaskId) !== get(task).id);
+                  let $1 = user_derived(() => isDragAbove(get(task).id));
                   TaskCard($$anchor5, {
                     get task() {
                       return get(task);
@@ -7474,6 +7525,9 @@ function TaskBoard($$anchor, $$props) {
                     onDragEnter: (id) => set(dragOverTaskId, id, true),
                     get isDragOver() {
                       return get($0);
+                    },
+                    get isDragAbove() {
+                      return get($1);
                     },
                     onEnlarge
                   });

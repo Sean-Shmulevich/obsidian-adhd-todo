@@ -15,6 +15,7 @@
     onDropOn,
     onDragEnter,
     isDragOver = false,
+    isDragAbove = false,
     showCategory = false,
     onGoToCategory,
     onEnlarge
@@ -24,6 +25,7 @@
     onDropOn?: (id: string) => void;
     onDragEnter?: (id: string) => void;
     isDragOver?: boolean;
+    isDragAbove?: boolean;
     showCategory?: boolean;
     onGoToCategory?: (categoryId: string) => void;
     onEnlarge?: (task: Task) => void;
@@ -49,7 +51,8 @@
 <article
   class="task-card"
   class:done={task.completed}
-  class:drag-over={isDragOver}
+  class:drag-over={isDragOver && !isDragAbove}
+  class:drag-over-top={isDragOver && isDragAbove}
   draggable="true"
   ondragstart={(event) => {
     event.dataTransfer?.setData('text/plain', task.id);
@@ -128,16 +131,24 @@
     position: relative;
   }
 
-  .task-card.drag-over::after {
+  .task-card.drag-over::after,
+  .task-card.drag-over-top::before {
     content: '';
     position: absolute;
     left: 0.5rem;
     right: 0.5rem;
-    bottom: -0.3rem;
     height: 2px;
     background: var(--interactive-accent, #7c3aed);
     border-radius: 1px;
     pointer-events: none;
+  }
+
+  .task-card.drag-over::after {
+    bottom: -0.3rem;
+  }
+
+  .task-card.drag-over-top::before {
+    top: -0.3rem;
   }
 
   .task-card.done {

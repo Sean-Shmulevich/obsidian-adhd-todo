@@ -368,12 +368,13 @@ export function moveTask(draggedTaskId: string, targetTaskId: string) {
   // Build new sort order for all visible tasks
   const reordered = [...visible];
   const [moved] = reordered.splice(dragIdx, 1);
-  // The drop indicator shows below the target card, meaning "insert after".
-  // When dragging down, the splice removal shifts targetIdx down by 1,
-  // so inserting at targetIdx already lands after the target. When dragging
-  // up, indices before dragIdx are unchanged, so we need targetIdx + 1.
-  const insertIdx = dragIdx > targetIdx ? targetIdx + 1 : targetIdx;
-  reordered.splice(insertIdx, 0, moved);
+  // After removing the dragged item, inserting at targetIdx naturally:
+  // - When dragging down (dragIdx < targetIdx): places item after the target
+  //   (because removal shifted indices down by 1)
+  // - When dragging up (dragIdx > targetIdx): places item before the target
+  //   (indices before dragIdx are unchanged)
+  // The drop indicator line matches: bottom when dragging down, top when up.
+  reordered.splice(targetIdx, 0, moved);
 
   // Persist custom sort orders keyed by sourceFile:sourceLine
   for (let i = 0; i < reordered.length; i++) {
