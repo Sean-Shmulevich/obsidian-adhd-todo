@@ -68,6 +68,12 @@
     inlineSubTag = task.subTag ?? '';
   });
 
+  function cancelInline() {
+    inlineCategoryId = task.categoryId ?? '';
+    inlineSubTag = task.subTag ?? '';
+    editing = false;
+  }
+
   async function saveInline() {
     const newCatId = inlineCategoryId || undefined;
     const newSubTag = inlineSubTag.trim().replace(/\s+/g, '-').toLowerCase() || undefined;
@@ -143,7 +149,7 @@
     </div>
   </div>
 
-  {#if showInlineCategoryPicker}
+  {#if showInlineCategoryPicker || editing}
     <div class="inline-picker-row">
       <select class="inline-picker-select" bind:value={inlineCategoryId}>
         <option value="">Category…</option>
@@ -153,19 +159,7 @@
       </select>
       <input class="inline-picker-input" type="text" bind:value={inlineSubTag} placeholder="subtag" onkeydown={(e) => e.stopPropagation()} />
       <button type="button" class="inline-picker-save" title="Save" onclick={saveInline}>&#10003;</button>
-    </div>
-  {/if}
-
-  {#if editing}
-    <div class="inline-picker-row">
-      <select class="inline-picker-select" bind:value={inlineCategoryId}>
-        <option value="">Category…</option>
-        {#each [...categories].sort((a, b) => a.sortOrder - b.sortOrder) as cat}
-          <option value={cat.id}>{cat.emoji ? `${cat.emoji} ` : ''}{cat.name}</option>
-        {/each}
-      </select>
-      <input class="inline-picker-input" type="text" bind:value={inlineSubTag} placeholder="subtag" onkeydown={(e) => e.stopPropagation()} />
-      <button type="button" class="inline-picker-save" title="Save" onclick={saveInline}>&#10003;</button>
+      <button type="button" class="inline-picker-cancel" title="Cancel" onclick={cancelInline}>&#10005;</button>
     </div>
   {/if}
 </article>
@@ -252,7 +246,7 @@
 
   .inline-picker-row {
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: 1fr 1fr auto auto;
     gap: 0.35rem;
     align-items: center;
   }
@@ -282,8 +276,24 @@
     opacity: 0.85;
   }
 
-  .inline-picker-save:hover {
+  .inline-picker-save:hover,
+  .inline-picker-cancel:hover {
     opacity: 1;
+  }
+
+  .inline-picker-cancel {
+    all: unset;
+    display: grid;
+    place-items: center;
+    min-width: 1.4rem;
+    min-height: 1.4rem;
+    border-radius: 0.45rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border-color);
+    color: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+    opacity: 0.6;
   }
 
   .cat-badge {

@@ -5799,9 +5799,11 @@ function parseTaskTitle(line, tagPrefix) {
 function displayNameFromSlug(value) {
   return value.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
+var EMPTY_SCAN = { tasks: [], categories: [], categoryGroups: [] };
 async function scanSingleFile(app, settings, file) {
   const tagPrefix = settings.tagPrefix || "#todo";
   const content = await app.vault.cachedRead(file);
+  if (!content.includes(tagPrefix)) return EMPTY_SCAN;
   const lines = content.split(/\r?\n/);
   const groupsByKey = /* @__PURE__ */ new Map();
   const categoriesByKey = /* @__PURE__ */ new Map();
@@ -5886,8 +5888,9 @@ function combineScanResults(scans) {
   const categoriesByKey = /* @__PURE__ */ new Map();
   const tasks2 = [];
   for (const scan of scans) {
+    if (scan.tasks.length === 0 && scan.categoryGroups.length === 0) continue;
     const localGroupIdToGlobalId = /* @__PURE__ */ new Map();
-    for (const group of [...scan.categoryGroups].sort((a, b) => a.sortOrder - b.sortOrder)) {
+    for (const group of scan.categoryGroups) {
       const groupKey = group.sourceGroupKey ?? group.name.toLowerCase();
       let existing = groupsByKey.get(groupKey);
       if (!existing) {
@@ -5901,7 +5904,7 @@ function combineScanResults(scans) {
       localGroupIdToGlobalId.set(group.id, existing.id);
     }
     const localCategoryIdToGlobalId = /* @__PURE__ */ new Map();
-    for (const category of [...scan.categories].sort((a, b) => a.sortOrder - b.sortOrder)) {
+    for (const category of scan.categories) {
       const categoryKey = `${category.sourceGroupKey ?? ""}/${category.sourceCategoryKey ?? category.name.toLowerCase()}`;
       let existing = categoriesByKey.get(categoryKey);
       if (!existing) {
@@ -5915,7 +5918,7 @@ function combineScanResults(scans) {
       }
       localCategoryIdToGlobalId.set(category.id, existing.id);
     }
-    for (const task of [...scan.tasks].sort((a, b) => a.sortOrder - b.sortOrder)) {
+    for (const task of scan.tasks) {
       tasks2.push({
         ...task,
         categoryId: task.categoryId ? localCategoryIdToGlobalId.get(task.categoryId) ?? task.categoryId : void 0,
@@ -6215,11 +6218,20 @@ async function performFullRefresh() {
   ui.loading = true;
   ui.errorMessage = null;
   try {
-    const files = pluginRef.app.vault.getMarkdownFiles();
+    const tagPrefix = pluginRef.settings.tagPrefix || "#todo";
+    const tagForCache = tagPrefix.replace(/^#/, "");
+    const allFiles = pluginRef.app.vault.getMarkdownFiles();
+    const files = allFiles.filter((file) => {
+      const cache = pluginRef.app.metadataCache.getFileCache(file);
+      if (!cache?.tags) return false;
+      return cache.tags.some((t) => t.tag === tagPrefix || t.tag.startsWith(`${tagPrefix}/`));
+    });
     const scans = await Promise.all(files.map((file) => scanSingleFile(pluginRef.app, pluginRef.settings, file)));
     fileScanCache.clear();
     files.forEach((file, idx) => {
-      fileScanCache.set(file.path, scans[idx]);
+      if (scans[idx].tasks.length > 0) {
+        fileScanCache.set(file.path, scans[idx]);
+      }
     });
     applyScanResult(combineScanResults(scans));
     ui.lastScanAt = /* @__PURE__ */ (/* @__PURE__ */ new Date()).toISOString();
@@ -6342,21 +6354,18 @@ function toggleGroupCollapsed(groupId) {
 async function addTask(input) {
   if (!writerRef) return;
   await writerRef.addTask(input);
-  await refreshVaultState();
 }
 async function toggleTaskComplete(taskId) {
   if (!writerRef) return;
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
   await writerRef.toggleComplete(task, !task.completed);
-  await refreshVaultState();
 }
 async function deleteTask(taskId) {
   if (!writerRef) return;
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
   await writerRef.deleteTask(task);
-  await refreshVaultState();
 }
 async function updateTask(taskId, patch) {
   if (!writerRef) return;
@@ -6368,7 +6377,6 @@ async function updateTask(taskId, patch) {
   if (typeof patch.completed === "boolean" && patch.completed !== task.completed) {
     await writerRef.toggleComplete(task, patch.completed);
   }
-  await refreshVaultState();
 }
 function moveTask(draggedTaskId, targetTaskId) {
   if (draggedTaskId === targetTaskId || !pluginRef) return;
@@ -6401,14 +6409,12 @@ async function changeTaskCategory(taskId, newCategoryId) {
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
   await writerRef.changeCategory(task, newCategoryId);
-  await refreshVaultState();
 }
 async function changeTaskSubTag(taskId, newSubTag) {
   if (!writerRef) return;
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
   await writerRef.changeSubTag(task, newSubTag);
-  await refreshVaultState();
 }
 async function openTaskInObsidian(taskId) {
   if (!pluginRef) return;
@@ -6748,13 +6754,11 @@ delegate(["keydown"]);
 var root_13 = from_html(`<button type="button" class="cat-badge svelte-1j8piq"> </button>`);
 var root_23 = from_html(`<button type="button" class="ghost icon-btn svelte-1j8piq" title="Enlarge">\u29C9</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Open in Obsidian">\u2197</button> <button type="button" class="ghost icon-btn svelte-1j8piq" title="Edit">\u270E</button> <button type="button" class="danger icon-btn svelte-1j8piq" title="Delete">\u{1F5D1}</button>`, 1);
 var root_42 = from_html(`<option> </option>`);
-var root_33 = from_html(`<div class="inline-picker-row svelte-1j8piq"><select class="inline-picker-select svelte-1j8piq"><option>Category\u2026</option><!></select> <input class="inline-picker-input svelte-1j8piq" type="text" placeholder="subtag"/> <button type="button" class="inline-picker-save svelte-1j8piq" title="Save">&#10003;</button></div>`);
-var root_6 = from_html(`<option> </option>`);
-var root_52 = from_html(`<div class="inline-picker-row svelte-1j8piq"><select class="inline-picker-select svelte-1j8piq"><option>Category\u2026</option><!></select> <input class="inline-picker-input svelte-1j8piq" type="text" placeholder="subtag"/> <button type="button" class="inline-picker-save svelte-1j8piq" title="Save">&#10003;</button></div>`);
-var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><div class="checkbox-row svelte-1j8piq" role="checkbox" tabindex="0"><input type="checkbox" tabindex="-1" style="pointer-events: none;" class="svelte-1j8piq"/> <span class="title svelte-1j8piq"> </span></div> <div class="right-controls svelte-1j8piq"><!> <!></div></div> <!> <!></article>`);
+var root_33 = from_html(`<div class="inline-picker-row svelte-1j8piq"><select class="inline-picker-select svelte-1j8piq"><option>Category\u2026</option><!></select> <input class="inline-picker-input svelte-1j8piq" type="text" placeholder="subtag"/> <button type="button" class="inline-picker-save svelte-1j8piq" title="Save">&#10003;</button> <button type="button" class="inline-picker-cancel svelte-1j8piq" title="Cancel">&#10005;</button></div>`);
+var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><div class="checkbox-row svelte-1j8piq" role="checkbox" tabindex="0"><input type="checkbox" tabindex="-1" style="pointer-events: none;" class="svelte-1j8piq"/> <span class="title svelte-1j8piq"> </span></div> <div class="right-controls svelte-1j8piq"><!> <!></div></div> <!></article>`);
 var $$css3 = {
   hash: "svelte-1j8piq",
-  code: ".task-card.svelte-1j8piq {display:grid;gap:0.25rem;padding:0.4rem 0.5rem;border-radius:0.75rem;border:1px solid var(--border-color);background:var(--surface-1);cursor:grab;position:relative;}.task-card.drag-over.svelte-1j8piq::after,\n  .task-card.drag-over-top.svelte-1j8piq::before {content:'';position:absolute;left:0.5rem;right:0.5rem;height:2px;background:var(--interactive-accent, #7c3aed);border-radius:1px;pointer-events:none;}.task-card.drag-over.svelte-1j8piq::after {bottom:-0.3rem;}.task-card.drag-over-top.svelte-1j8piq::before {top:-0.3rem;}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.35rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.45rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.2;font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.checkbox-row.svelte-1j8piq input[type='checkbox']:where(.svelte-1j8piq) {margin-top:0.1rem;inline-size:0.95rem;block-size:0.95rem;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.right-controls.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.25rem;align-items:center;}.inline-picker-row.svelte-1j8piq {display:grid;grid-template-columns:1fr 1fr auto;gap:0.35rem;align-items:center;}.inline-picker-select.svelte-1j8piq,\n  .inline-picker-input.svelte-1j8piq {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.3rem 0.5rem;font-size:0.8rem;min-width:0;}.inline-picker-save.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.4rem;min-height:1.4rem;border-radius:0.45rem;background:var(--interactive-accent, #7c3aed);color:var(--text-on-accent, #fff);font-size:0.75rem;cursor:pointer;opacity:0.85;}.inline-picker-save.svelte-1j8piq:hover {opacity:1;}.cat-badge.svelte-1j8piq {padding:0.15rem 0.5rem;border-radius:999px;font-size:0.65rem;font-weight:600;background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 18%, var(--surface-2, #2a2a3e));border:1px solid var(--border-color);color:var(--text-normal);cursor:pointer;white-space:nowrap;transition:background 120ms ease;}.cat-badge.svelte-1j8piq:hover {background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 35%, var(--surface-2, #2a2a3e));}.icon-btn.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.2rem;min-height:1.2rem;padding:0;line-height:1;font-size:0.8rem;cursor:pointer;opacity:0.6;}.icon-btn.svelte-1j8piq:hover {opacity:1;}.danger.svelte-1j8piq {color:#ff6b6b;}\n\n  @media (max-width: 600px) {.task-card.svelte-1j8piq {padding:0.35rem 0.4rem;}.checkbox-row.svelte-1j8piq {gap:0.35rem;}\n\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.icon-btn.svelte-1j8piq {min-width:1.65rem;min-height:1.65rem;}\n  }"
+  code: ".task-card.svelte-1j8piq {display:grid;gap:0.25rem;padding:0.4rem 0.5rem;border-radius:0.75rem;border:1px solid var(--border-color);background:var(--surface-1);cursor:grab;position:relative;}.task-card.drag-over.svelte-1j8piq::after,\n  .task-card.drag-over-top.svelte-1j8piq::before {content:'';position:absolute;left:0.5rem;right:0.5rem;height:2px;background:var(--interactive-accent, #7c3aed);border-radius:1px;pointer-events:none;}.task-card.drag-over.svelte-1j8piq::after {bottom:-0.3rem;}.task-card.drag-over-top.svelte-1j8piq::before {top:-0.3rem;}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.35rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.45rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.2;font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.checkbox-row.svelte-1j8piq input[type='checkbox']:where(.svelte-1j8piq) {margin-top:0.1rem;inline-size:0.95rem;block-size:0.95rem;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.right-controls.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.25rem;align-items:center;}.inline-picker-row.svelte-1j8piq {display:grid;grid-template-columns:1fr 1fr auto auto;gap:0.35rem;align-items:center;}.inline-picker-select.svelte-1j8piq,\n  .inline-picker-input.svelte-1j8piq {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.3rem 0.5rem;font-size:0.8rem;min-width:0;}.inline-picker-save.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.4rem;min-height:1.4rem;border-radius:0.45rem;background:var(--interactive-accent, #7c3aed);color:var(--text-on-accent, #fff);font-size:0.75rem;cursor:pointer;opacity:0.85;}.inline-picker-save.svelte-1j8piq:hover,\n  .inline-picker-cancel.svelte-1j8piq:hover {opacity:1;}.inline-picker-cancel.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.4rem;min-height:1.4rem;border-radius:0.45rem;background:var(--surface-2);border:1px solid var(--border-color);color:inherit;font-size:0.75rem;cursor:pointer;opacity:0.6;}.cat-badge.svelte-1j8piq {padding:0.15rem 0.5rem;border-radius:999px;font-size:0.65rem;font-weight:600;background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 18%, var(--surface-2, #2a2a3e));border:1px solid var(--border-color);color:var(--text-normal);cursor:pointer;white-space:nowrap;transition:background 120ms ease;}.cat-badge.svelte-1j8piq:hover {background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 35%, var(--surface-2, #2a2a3e));}.icon-btn.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.2rem;min-height:1.2rem;padding:0;line-height:1;font-size:0.8rem;cursor:pointer;opacity:0.6;}.icon-btn.svelte-1j8piq:hover {opacity:1;}.danger.svelte-1j8piq {color:#ff6b6b;}\n\n  @media (max-width: 600px) {.task-card.svelte-1j8piq {padding:0.35rem 0.4rem;}.checkbox-row.svelte-1j8piq {gap:0.35rem;}\n\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.icon-btn.svelte-1j8piq {min-width:1.65rem;min-height:1.65rem;}\n  }"
 };
 function TaskCard($$anchor, $$props) {
   push($$props, true);
@@ -6790,6 +6794,11 @@ function TaskCard($$anchor, $$props) {
     set(inlineCategoryId, $$props.task.categoryId ?? "", true);
     set(inlineSubTag, $$props.task.subTag ?? "", true);
   });
+  function cancelInline() {
+    set(inlineCategoryId, $$props.task.categoryId ?? "", true);
+    set(inlineSubTag, $$props.task.subTag ?? "", true);
+    set(editing, false);
+  }
   async function saveInline() {
     const newCatId = get(inlineCategoryId) || void 0;
     const newSubTag = get(inlineSubTag).trim().replace(/\s+/g, "-").toLowerCase() || void 0;
@@ -6874,51 +6883,17 @@ function TaskCard($$anchor, $$props) {
       var input_1 = sibling(select, 2);
       remove_input_defaults(input_1);
       var button_5 = sibling(input_1, 2);
+      var button_6 = sibling(button_5, 2);
       reset(div_3);
       bind_select_value(select, () => get(inlineCategoryId), ($$value) => set(inlineCategoryId, $$value));
       delegated("keydown", input_1, (e) => e.stopPropagation());
       bind_value(input_1, () => get(inlineSubTag), ($$value) => set(inlineSubTag, $$value));
       delegated("click", button_5, saveInline);
+      delegated("click", button_6, cancelInline);
       append($$anchor2, div_3);
     };
     if_block(node_2, ($$render) => {
-      if (showInlineCategoryPicker()) $$render(consequent_2);
-    });
-  }
-  var node_4 = sibling(node_2, 2);
-  {
-    var consequent_3 = ($$anchor2) => {
-      var div_4 = root_52();
-      var select_1 = child(div_4);
-      var option_2 = child(select_1);
-      option_2.value = option_2.__value = "";
-      var node_5 = sibling(option_2);
-      each(node_5, 17, () => [...categories].sort((a, b) => a.sortOrder - b.sortOrder), index, ($$anchor3, cat) => {
-        var option_3 = root_6();
-        var text_3 = child(option_3);
-        reset(option_3);
-        var option_3_value = {};
-        template_effect(() => {
-          set_text(text_3, `${get(cat).emoji ? `${get(cat).emoji} ` : ""}${get(cat).name ?? ""}`);
-          if (option_3_value !== (option_3_value = get(cat).id)) {
-            option_3.value = (option_3.__value = get(cat).id) ?? "";
-          }
-        });
-        append($$anchor3, option_3);
-      });
-      reset(select_1);
-      var input_2 = sibling(select_1, 2);
-      remove_input_defaults(input_2);
-      var button_6 = sibling(input_2, 2);
-      reset(div_4);
-      bind_select_value(select_1, () => get(inlineCategoryId), ($$value) => set(inlineCategoryId, $$value));
-      delegated("keydown", input_2, (e) => e.stopPropagation());
-      bind_value(input_2, () => get(inlineSubTag), ($$value) => set(inlineSubTag, $$value));
-      delegated("click", button_6, saveInline);
-      append($$anchor2, div_4);
-    };
-    if_block(node_4, ($$render) => {
-      if (get(editing)) $$render(consequent_3);
+      if (showInlineCategoryPicker() || get(editing)) $$render(consequent_2);
     });
   }
   reset(article);
@@ -6979,7 +6954,7 @@ delegate(["pointerdown", "pointerup", "click", "keydown"]);
 // components/TaskBoard.svelte
 var root_14 = from_html(`<div class="empty-state svelte-q5ccww">No tasks here yet.</div>`);
 var root_34 = from_html(`<div class="cards svelte-q5ccww"></div>`);
-var root_62 = from_html(`<div class="empty-state compact svelte-q5ccww">No finished tasks.</div>`);
+var root_6 = from_html(`<div class="empty-state compact svelte-q5ccww">No finished tasks.</div>`);
 var root_7 = from_html(`<div class="cards svelte-q5ccww"></div>`);
 var root_24 = from_html(`<section class="task-section svelte-q5ccww"><div class="task-section-head svelte-q5ccww"><h3 class="svelte-q5ccww">Tasks</h3> <small class="svelte-q5ccww"> </small></div> <!></section> <section class="task-section finished-block svelte-q5ccww"><button type="button" class="finished-toggle svelte-q5ccww"><span> </span> <span>\u25BE</span></button> <!></section>`, 1);
 var root_11 = from_html(`<section class="subtag-group svelte-q5ccww"><div class="subtag-header svelte-q5ccww">Root / Uncategorized</div> <div class="cards svelte-q5ccww"></div></section>`);
@@ -7217,7 +7192,7 @@ function TaskBoard($$anchor, $$props) {
           var node_4 = first_child(fragment_2);
           {
             var consequent_2 = ($$anchor4) => {
-              var div_9 = root_62();
+              var div_9 = root_6();
               append($$anchor4, div_9);
             };
             var alternate = ($$anchor4) => {

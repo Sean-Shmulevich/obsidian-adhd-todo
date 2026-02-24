@@ -179,12 +179,24 @@ async function performFullRefresh() {
   ui.loading = true;
   ui.errorMessage = null;
   try {
-    const files = pluginRef.app.vault.getMarkdownFiles();
+    const tagPrefix = pluginRef.settings.tagPrefix || '#todo';
+    const tagForCache = tagPrefix.replace(/^#/, '');
+    const allFiles = pluginRef.app.vault.getMarkdownFiles();
+
+    // Pre-filter: only scan files whose metadata cache contains a matching tag
+    const files = allFiles.filter((file) => {
+      const cache = pluginRef.app.metadataCache.getFileCache(file);
+      if (!cache?.tags) return false;
+      return cache.tags.some((t) => t.tag === tagPrefix || t.tag.startsWith(`${tagPrefix}/`));
+    });
+
     const scans = await Promise.all(files.map((file) => scanSingleFile(pluginRef.app, pluginRef.settings, file)));
 
     fileScanCache.clear();
     files.forEach((file, idx) => {
-      fileScanCache.set(file.path, scans[idx]);
+      if (scans[idx].tasks.length > 0) {
+        fileScanCache.set(file.path, scans[idx]);
+      }
     });
 
     applyScanResult(combineScanResults(scans));
@@ -324,7 +336,6 @@ export function toggleGroupCollapsed(groupId: string) {
 export async function addTask(input: { title: string; categoryId?: string; subTag?: string }) {
   if (!writerRef) return;
   await writerRef.addTask(input);
-  await refreshVaultState();
 }
 
 export async function toggleTaskComplete(taskId: string) {
@@ -332,7 +343,6 @@ export async function toggleTaskComplete(taskId: string) {
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
   await writerRef.toggleComplete(task, !task.completed);
-  await refreshVaultState();
 }
 
 export async function deleteTask(taskId: string) {
@@ -340,7 +350,6 @@ export async function deleteTask(taskId: string) {
   const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
   await writerRef.deleteTask(task);
-  await refreshVaultState();
 }
 
 export async function updateTask(taskId: string, patch: Partial<Task>) {
@@ -353,7 +362,6 @@ export async function updateTask(taskId: string, patch: Partial<Task>) {
   if (typeof patch.completed === 'boolean' && patch.completed !== task.completed) {
     await writerRef.toggleComplete(task, patch.completed);
   }
-  await refreshVaultState();
 }
 
 /** Reorder: move draggedTaskId to the position of targetTaskId within the current visible list */
@@ -404,7 +412,6 @@ export async function changeTaskCategory(taskId: string, newCategoryId: string |
   const task = tasks.find(t => t.id === taskId);
   if (!task) return;
   await writerRef.changeCategory(task, newCategoryId);
-  await refreshVaultState();
 }
 
 /** Move a task to a different subtag within its category (rewrites the #todo tag in vault) */
@@ -413,7 +420,6 @@ export async function changeTaskSubTag(taskId: string, newSubTag: string | undef
   const task = tasks.find(t => t.id === taskId);
   if (!task) return;
   await writerRef.changeSubTag(task, newSubTag);
-  await refreshVaultState();
 }
 
 export async function openTaskInObsidian(taskId: string) {

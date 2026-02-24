@@ -78,9 +78,12 @@ export async function scanVaultTodos(app: App, settings: TodoSettings): Promise<
   return combineScanResults(scans);
 }
 
+const EMPTY_SCAN: ScanResult = { tasks: [], categories: [], categoryGroups: [] };
+
 export async function scanSingleFile(app: App, settings: TodoSettings, file: TFile): Promise<ScanResult> {
   const tagPrefix = settings.tagPrefix || '#todo';
   const content = await app.vault.cachedRead(file);
+  if (!content.includes(tagPrefix)) return EMPTY_SCAN;
   const lines = content.split(/\r?\n/);
 
   const groupsByKey = new Map<string, CategoryGroup>();
@@ -177,8 +180,10 @@ export function combineScanResults(scans: Iterable<ScanResult>): ScanResult {
   const tasks: Task[] = [];
 
   for (const scan of scans) {
+    if (scan.tasks.length === 0 && scan.categoryGroups.length === 0) continue;
+
     const localGroupIdToGlobalId = new Map<string, string>();
-    for (const group of [...scan.categoryGroups].sort((a, b) => a.sortOrder - b.sortOrder)) {
+    for (const group of scan.categoryGroups) {
       const groupKey = group.sourceGroupKey ?? group.name.toLowerCase();
       let existing = groupsByKey.get(groupKey);
       if (!existing) {
@@ -193,7 +198,7 @@ export function combineScanResults(scans: Iterable<ScanResult>): ScanResult {
     }
 
     const localCategoryIdToGlobalId = new Map<string, string>();
-    for (const category of [...scan.categories].sort((a, b) => a.sortOrder - b.sortOrder)) {
+    for (const category of scan.categories) {
       const categoryKey = `${category.sourceGroupKey ?? ''}/${category.sourceCategoryKey ?? category.name.toLowerCase()}`;
       let existing = categoriesByKey.get(categoryKey);
       if (!existing) {
@@ -208,7 +213,7 @@ export function combineScanResults(scans: Iterable<ScanResult>): ScanResult {
       localCategoryIdToGlobalId.set(category.id, existing.id);
     }
 
-    for (const task of [...scan.tasks].sort((a, b) => a.sortOrder - b.sortOrder)) {
+    for (const task of scan.tasks) {
       tasks.push({
         ...task,
         categoryId: task.categoryId ? (localCategoryIdToGlobalId.get(task.categoryId) ?? task.categoryId) : undefined,
