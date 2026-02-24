@@ -6750,11 +6750,11 @@ var root_23 = from_html(`<button type="button" class="ghost icon-btn svelte-1j8p
 var root_42 = from_html(`<option> </option>`);
 var root_33 = from_html(`<div class="inline-picker-row svelte-1j8piq"><select class="inline-picker-select svelte-1j8piq"><option>Category\u2026</option><!></select> <input class="inline-picker-input svelte-1j8piq" type="text" placeholder="subtag"/> <button type="button" class="inline-picker-save svelte-1j8piq" title="Save">&#10003;</button></div>`);
 var root_6 = from_html(`<option> </option>`);
-var root_52 = from_html(`<div class="editor svelte-1j8piq"><input type="text" maxlength="140" class="svelte-1j8piq"/> <div class="grid2 svelte-1j8piq"><select class="svelte-1j8piq"><option>Uncategorized</option><!></select></div> <div class="actions svelte-1j8piq"><button type="button" class="svelte-1j8piq">Save</button> <button type="button" class="ghost svelte-1j8piq">Cancel</button></div></div>`);
+var root_52 = from_html(`<div class="inline-picker-row svelte-1j8piq"><select class="inline-picker-select svelte-1j8piq"><option>Category\u2026</option><!></select> <input class="inline-picker-input svelte-1j8piq" type="text" placeholder="subtag"/> <button type="button" class="inline-picker-save svelte-1j8piq" title="Save">&#10003;</button></div>`);
 var root3 = from_html(`<article draggable="true"><div class="row top-row svelte-1j8piq"><div class="checkbox-row svelte-1j8piq" role="checkbox" tabindex="0"><input type="checkbox" tabindex="-1" style="pointer-events: none;" class="svelte-1j8piq"/> <span class="title svelte-1j8piq"> </span></div> <div class="right-controls svelte-1j8piq"><!> <!></div></div> <!> <!></article>`);
 var $$css3 = {
   hash: "svelte-1j8piq",
-  code: ".task-card.svelte-1j8piq {display:grid;gap:0.25rem;padding:0.4rem 0.5rem;border-radius:0.75rem;border:1px solid var(--border-color);background:var(--surface-1);cursor:grab;position:relative;}.task-card.drag-over.svelte-1j8piq::after,\n  .task-card.drag-over-top.svelte-1j8piq::before {content:'';position:absolute;left:0.5rem;right:0.5rem;height:2px;background:var(--interactive-accent, #7c3aed);border-radius:1px;pointer-events:none;}.task-card.drag-over.svelte-1j8piq::after {bottom:-0.3rem;}.task-card.drag-over-top.svelte-1j8piq::before {top:-0.3rem;}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.35rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.45rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.2;font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.checkbox-row.svelte-1j8piq input[type='checkbox']:where(.svelte-1j8piq) {margin-top:0.1rem;inline-size:0.95rem;block-size:0.95rem;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.right-controls.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.25rem;align-items:center;}.editor.svelte-1j8piq {display:grid;gap:0.5rem;padding-top:0.1rem;}.editor.svelte-1j8piq input:where(.svelte-1j8piq),\n  .editor.svelte-1j8piq select:where(.svelte-1j8piq),\n  .actions.svelte-1j8piq button:where(.svelte-1j8piq) {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.45rem 0.6rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.grid2.svelte-1j8piq {display:grid;gap:0.5rem;grid-template-columns:repeat(2, minmax(0, 1fr));}.inline-picker-row.svelte-1j8piq {display:grid;grid-template-columns:1fr 1fr auto;gap:0.35rem;align-items:center;}.inline-picker-select.svelte-1j8piq,\n  .inline-picker-input.svelte-1j8piq {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.3rem 0.5rem;font-size:0.8rem;min-width:0;}.inline-picker-save.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.4rem;min-height:1.4rem;border-radius:0.45rem;background:var(--interactive-accent, #7c3aed);color:var(--text-on-accent, #fff);font-size:0.75rem;cursor:pointer;opacity:0.85;}.inline-picker-save.svelte-1j8piq:hover {opacity:1;}.cat-badge.svelte-1j8piq {padding:0.15rem 0.5rem;border-radius:999px;font-size:0.65rem;font-weight:600;background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 18%, var(--surface-2, #2a2a3e));border:1px solid var(--border-color);color:var(--text-normal);cursor:pointer;white-space:nowrap;transition:background 120ms ease;}.cat-badge.svelte-1j8piq:hover {background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 35%, var(--surface-2, #2a2a3e));}.icon-btn.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.2rem;min-height:1.2rem;padding:0;line-height:1;font-size:0.8rem;cursor:pointer;opacity:0.6;}.icon-btn.svelte-1j8piq:hover {opacity:1;}.actions.svelte-1j8piq .ghost:where(.svelte-1j8piq) {background:transparent;}.danger.svelte-1j8piq {color:#ff6b6b;}\n\n  @media (max-width: 600px) {.task-card.svelte-1j8piq {padding:0.35rem 0.4rem;}.checkbox-row.svelte-1j8piq {gap:0.35rem;}.grid2.svelte-1j8piq {grid-template-columns:1fr;}.actions.svelte-1j8piq {justify-content:flex-start;}\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.icon-btn.svelte-1j8piq {min-width:1.65rem;min-height:1.65rem;}\n  }"
+  code: ".task-card.svelte-1j8piq {display:grid;gap:0.25rem;padding:0.4rem 0.5rem;border-radius:0.75rem;border:1px solid var(--border-color);background:var(--surface-1);cursor:grab;position:relative;}.task-card.drag-over.svelte-1j8piq::after,\n  .task-card.drag-over-top.svelte-1j8piq::before {content:'';position:absolute;left:0.5rem;right:0.5rem;height:2px;background:var(--interactive-accent, #7c3aed);border-radius:1px;pointer-events:none;}.task-card.drag-over.svelte-1j8piq::after {bottom:-0.3rem;}.task-card.drag-over-top.svelte-1j8piq::before {top:-0.3rem;}.task-card.done.svelte-1j8piq {opacity:0.72;}.top-row.svelte-1j8piq {display:flex;justify-content:space-between;gap:0.35rem;align-items:flex-start;min-width:0;}.checkbox-row.svelte-1j8piq {display:flex;flex:1 1 auto;gap:0.45rem;align-items:flex-start;font-weight:600;min-width:0;}.checkbox-row.svelte-1j8piq .title:where(.svelte-1j8piq) {display:block;min-width:0;line-height:1.2;font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.checkbox-row.svelte-1j8piq input[type='checkbox']:where(.svelte-1j8piq) {margin-top:0.1rem;inline-size:0.95rem;block-size:0.95rem;}.done.svelte-1j8piq .title:where(.svelte-1j8piq) {text-decoration:line-through;}.right-controls.svelte-1j8piq {display:flex;flex:0 0 auto;gap:0.25rem;align-items:center;}.inline-picker-row.svelte-1j8piq {display:grid;grid-template-columns:1fr 1fr auto;gap:0.35rem;align-items:center;}.inline-picker-select.svelte-1j8piq,\n  .inline-picker-input.svelte-1j8piq {background:var(--surface-2);border:1px solid var(--border-color);color:inherit;border-radius:0.55rem;padding:0.3rem 0.5rem;font-size:0.8rem;min-width:0;}.inline-picker-save.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.4rem;min-height:1.4rem;border-radius:0.45rem;background:var(--interactive-accent, #7c3aed);color:var(--text-on-accent, #fff);font-size:0.75rem;cursor:pointer;opacity:0.85;}.inline-picker-save.svelte-1j8piq:hover {opacity:1;}.cat-badge.svelte-1j8piq {padding:0.15rem 0.5rem;border-radius:999px;font-size:0.65rem;font-weight:600;background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 18%, var(--surface-2, #2a2a3e));border:1px solid var(--border-color);color:var(--text-normal);cursor:pointer;white-space:nowrap;transition:background 120ms ease;}.cat-badge.svelte-1j8piq:hover {background:color-mix(in srgb, var(--interactive-accent, #7c3aed) 35%, var(--surface-2, #2a2a3e));}.icon-btn.svelte-1j8piq {all:unset;display:grid;place-items:center;min-width:1.2rem;min-height:1.2rem;padding:0;line-height:1;font-size:0.8rem;cursor:pointer;opacity:0.6;}.icon-btn.svelte-1j8piq:hover {opacity:1;}.danger.svelte-1j8piq {color:#ff6b6b;}\n\n  @media (max-width: 600px) {.task-card.svelte-1j8piq {padding:0.35rem 0.4rem;}.checkbox-row.svelte-1j8piq {gap:0.35rem;}\n\n  }\n\n  @media (max-width: 400px) {.top-row.svelte-1j8piq {flex-wrap:wrap;}.icon-btn.svelte-1j8piq {min-width:1.65rem;min-height:1.65rem;}\n  }"
 };
 function TaskCard($$anchor, $$props) {
   push($$props, true);
@@ -6762,8 +6762,6 @@ function TaskCard($$anchor, $$props) {
   let isDragOver = prop($$props, "isDragOver", 3, false), isDragAbove = prop($$props, "isDragAbove", 3, false), showCategory = prop($$props, "showCategory", 3, false), showInlineCategoryPicker = prop($$props, "showInlineCategoryPicker", 3, false);
   const catName = user_derived(() => showCategory() ? categoryLabel($$props.task.categoryId) : "");
   let editing = state(false);
-  let title = state("");
-  let categoryId = state("");
   let holdReady = state(false);
   let holdTimer = null;
   function startHold() {
@@ -6789,8 +6787,6 @@ function TaskCard($$anchor, $$props) {
   let inlineCategoryId = state("");
   let inlineSubTag = state("");
   user_effect(() => {
-    set(title, $$props.task.title, true);
-    set(categoryId, $$props.task.categoryId ?? "", true);
     set(inlineCategoryId, $$props.task.categoryId ?? "", true);
     set(inlineSubTag, $$props.task.subTag ?? "", true);
   });
@@ -6803,13 +6799,6 @@ function TaskCard($$anchor, $$props) {
     if (newSubTag !== ($$props.task.subTag ?? void 0)) {
       await changeTaskSubTag($$props.task.id, newSubTag);
     }
-  }
-  async function save2() {
-    const newCategoryId = get(categoryId) || void 0;
-    if (newCategoryId !== $$props.task.categoryId) {
-      await changeTaskCategory($$props.task.id, newCategoryId);
-    }
-    await updateTask($$props.task.id, { title: get(title), categoryId: newCategoryId });
     set(editing, false);
   }
   var article = root3();
@@ -6900,38 +6889,32 @@ function TaskCard($$anchor, $$props) {
   {
     var consequent_3 = ($$anchor2) => {
       var div_4 = root_52();
-      var input_2 = child(div_4);
-      remove_input_defaults(input_2);
-      var div_5 = sibling(input_2, 2);
-      var select_1 = child(div_5);
+      var select_1 = child(div_4);
       var option_2 = child(select_1);
       option_2.value = option_2.__value = "";
       var node_5 = sibling(option_2);
-      each(node_5, 17, () => [...categories].sort((a, b) => a.sortOrder - b.sortOrder), index, ($$anchor3, category) => {
+      each(node_5, 17, () => [...categories].sort((a, b) => a.sortOrder - b.sortOrder), index, ($$anchor3, cat) => {
         var option_3 = root_6();
         var text_3 = child(option_3);
         reset(option_3);
         var option_3_value = {};
         template_effect(() => {
-          set_text(text_3, `${get(category).emoji ? `${get(category).emoji} ` : ""}${get(category).name ?? ""}`);
-          if (option_3_value !== (option_3_value = get(category).id)) {
-            option_3.value = (option_3.__value = get(category).id) ?? "";
+          set_text(text_3, `${get(cat).emoji ? `${get(cat).emoji} ` : ""}${get(cat).name ?? ""}`);
+          if (option_3_value !== (option_3_value = get(cat).id)) {
+            option_3.value = (option_3.__value = get(cat).id) ?? "";
           }
         });
         append($$anchor3, option_3);
       });
       reset(select_1);
-      reset(div_5);
-      var div_6 = sibling(div_5, 2);
-      var button_6 = child(div_6);
-      var button_7 = sibling(button_6, 2);
-      reset(div_6);
+      var input_2 = sibling(select_1, 2);
+      remove_input_defaults(input_2);
+      var button_6 = sibling(input_2, 2);
       reset(div_4);
+      bind_select_value(select_1, () => get(inlineCategoryId), ($$value) => set(inlineCategoryId, $$value));
       delegated("keydown", input_2, (e) => e.stopPropagation());
-      bind_value(input_2, () => get(title), ($$value) => set(title, $$value));
-      bind_select_value(select_1, () => get(categoryId), ($$value) => set(categoryId, $$value));
-      delegated("click", button_6, save2);
-      delegated("click", button_7, () => set(editing, false));
+      bind_value(input_2, () => get(inlineSubTag), ($$value) => set(inlineSubTag, $$value));
+      delegated("click", button_6, saveInline);
       append($$anchor2, div_4);
     };
     if_block(node_4, ($$render) => {

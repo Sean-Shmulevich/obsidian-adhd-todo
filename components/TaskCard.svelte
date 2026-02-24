@@ -6,8 +6,7 @@
     changeTaskSubTag,
     deleteTask,
     openTaskInObsidian,
-    toggleTaskComplete,
-    updateTask
+    toggleTaskComplete
   } from '../state.svelte.ts';
   import type { Task } from '../types';
 
@@ -38,8 +37,6 @@
   const catName = $derived(showCategory ? categoryLabel(task.categoryId) : '');
 
   let editing = $state(false);
-  let title = $state('');
-  let categoryId = $state('');
   let holdReady = $state(false);
   let holdTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -67,8 +64,6 @@
   let inlineSubTag = $state('');
 
   $effect(() => {
-    title = task.title;
-    categoryId = task.categoryId ?? '';
     inlineCategoryId = task.categoryId ?? '';
     inlineSubTag = task.subTag ?? '';
   });
@@ -82,14 +77,6 @@
     if (newSubTag !== (task.subTag ?? undefined)) {
       await changeTaskSubTag(task.id, newSubTag);
     }
-  }
-
-  async function save() {
-    const newCategoryId = categoryId || undefined;
-    if (newCategoryId !== task.categoryId) {
-      await changeTaskCategory(task.id, newCategoryId);
-    }
-    await updateTask(task.id, { title, categoryId: newCategoryId });
     editing = false;
   }
 </script>
@@ -170,20 +157,15 @@
   {/if}
 
   {#if editing}
-    <div class="editor">
-      <input type="text" bind:value={title} maxlength="140" onkeydown={(e) => e.stopPropagation()} />
-      <div class="grid2">
-        <select bind:value={categoryId}>
-          <option value="">Uncategorized</option>
-          {#each [...categories].sort((a, b) => a.sortOrder - b.sortOrder) as category}
-            <option value={category.id}>{category.emoji ? `${category.emoji} ` : ''}{category.name}</option>
-          {/each}
-        </select>
-      </div>
-      <div class="actions">
-        <button type="button" onclick={save}>Save</button>
-        <button type="button" class="ghost" onclick={() => (editing = false)}>Cancel</button>
-      </div>
+    <div class="inline-picker-row">
+      <select class="inline-picker-select" bind:value={inlineCategoryId}>
+        <option value="">Category…</option>
+        {#each [...categories].sort((a, b) => a.sortOrder - b.sortOrder) as cat}
+          <option value={cat.id}>{cat.emoji ? `${cat.emoji} ` : ''}{cat.name}</option>
+        {/each}
+      </select>
+      <input class="inline-picker-input" type="text" bind:value={inlineSubTag} placeholder="subtag" onkeydown={(e) => e.stopPropagation()} />
+      <button type="button" class="inline-picker-save" title="Save" onclick={saveInline}>&#10003;</button>
     </div>
   {/if}
 </article>
@@ -267,31 +249,6 @@
     gap: 0.25rem;
     align-items: center;
   }
-  .editor {
-    display: grid;
-    gap: 0.5rem;
-    padding-top: 0.1rem;
-  }
-
-  .editor input,
-  .editor select,
-  .actions button {
-    background: var(--surface-2);
-    border: 1px solid var(--border-color);
-    color: inherit;
-    border-radius: 0.55rem;
-    padding: 0.45rem 0.6rem;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .grid2 {
-    display: grid;
-    gap: 0.5rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 
   .inline-picker-row {
     display: grid;
@@ -363,10 +320,6 @@
     opacity: 1;
   }
 
-  .actions .ghost {
-    background: transparent;
-  }
-
   .danger {
     color: #ff6b6b;
   }
@@ -386,11 +339,6 @@
       gap: 0.35rem;
     }
 
-    .grid2 { grid-template-columns: 1fr; }
-
-    .actions {
-      justify-content: flex-start;
-    }
   }
 
   @media (max-width: 400px) {
