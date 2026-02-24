@@ -35,6 +35,7 @@
   } = $props();
 
   let draggingTaskId = $state<string | null>(null);
+  let dragOverTaskId = $state<string | null>(null);
   let finishedExpanded = $state(false);
   let categoriesPanelOpen = $state(false);
 
@@ -120,6 +121,7 @@
   function onDropOn(targetTaskId: string, targetSubTag?: string) {
     if (!draggingTaskId || draggingTaskId === targetTaskId) {
       draggingTaskId = null;
+      dragOverTaskId = null;
       return;
     }
 
@@ -130,12 +132,14 @@
       if (currentSubTag !== targetSubTag) {
         void changeTaskSubTag(draggingTaskId, targetSubTag || undefined);
         draggingTaskId = null;
+        dragOverTaskId = null;
         return;
       }
     }
 
     moveTask(draggingTaskId, targetTaskId);
     draggingTaskId = null;
+    dragOverTaskId = null;
   }
 
   function onEnlarge(task: Task) {
@@ -143,7 +147,7 @@
   }
 </script>
 
-<section class="task-board">
+<section class="task-board" class:dragging={draggingTaskId !== null} role="list" ondragend={() => { draggingTaskId = null; dragOverTaskId = null; }}>
   <header class="page-header">
     <h1>{title}</h1>
     <div class="stats-grid">
@@ -175,6 +179,7 @@
               <div class="cards">
                 {#each incompleteTasks as task (task.id)}
                   <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id)}
+                    onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id}
                     showCategory={true} onGoToCategory={(catId) => onSelectCategory?.(catId)} {onEnlarge} />
                 {/each}
               </div>
@@ -220,7 +225,8 @@
                   <div class="subtag-header">Root / Uncategorized</div>
                   <div class="cards">
                     {#each openByCategory.rootTasks as task (task.id)}
-                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                     {/each}
                   </div>
                 </section>
@@ -230,7 +236,8 @@
                   <div class="subtag-header">{group.name}</div>
                   <div class="cards">
                     {#each group.tasks as task (task.id)}
-                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                     {/each}
                   </div>
                 </section>
@@ -239,7 +246,8 @@
               {#if openUntaggedCategoryTasks.length}
                 <div class="cards">
                   {#each openUntaggedCategoryTasks as task (task.id)}
-                    <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, '')} {onEnlarge} />
+                    <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, '')}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                   {/each}
                 </div>
               {/if}
@@ -248,7 +256,8 @@
                   <div class="subtag-header">{group.subTag}</div>
                   <div class="cards">
                     {#each group.tasks as task (task.id)}
-                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, group.subTag)} {onEnlarge} />
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, group.subTag)}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                     {/each}
                   </div>
                 </section>
@@ -256,7 +265,8 @@
             {:else}
               <div class="cards">
                 {#each incompleteTasks as task (task.id)}
-                  <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
+                  <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                 {/each}
               </div>
             {/if}
@@ -282,7 +292,8 @@
                     <div class="subtag-header">Root / Uncategorized</div>
                     <div class="cards">
                       {#each finishedByCategory.rootTasks as task (task.id)}
-                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
+                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                       {/each}
                     </div>
                   </section>
@@ -292,7 +303,8 @@
                     <div class="subtag-header">{group.name}</div>
                     <div class="cards">
                       {#each group.tasks as task (task.id)}
-                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
+                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                       {/each}
                     </div>
                   </section>
@@ -301,7 +313,8 @@
                 {#if finishedUntaggedCategoryTasks.length}
                   <div class="cards">
                     {#each finishedUntaggedCategoryTasks as task (task.id)}
-                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, '')} {onEnlarge} />
+                      <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, '')}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                     {/each}
                   </div>
                 {/if}
@@ -310,7 +323,8 @@
                     <div class="subtag-header">{group.subTag}</div>
                     <div class="cards">
                       {#each group.tasks as task (task.id)}
-                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, group.subTag)} {onEnlarge} />
+                        <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} onDropOn={(id) => onDropOn(id, group.subTag)}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                       {/each}
                     </div>
                   </section>
@@ -318,7 +332,8 @@
               {:else}
                 <div class="cards">
                   {#each finishedTasks as task (task.id)}
-                    <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn} {onEnlarge} />
+                    <TaskCard {task} onDragStart={(id) => (draggingTaskId = id)} {onDropOn}
+                      onDragEnter={(id) => (dragOverTaskId = id)} isDragOver={draggingTaskId !== null && dragOverTaskId === task.id && draggingTaskId !== task.id} {onEnlarge} />
                   {/each}
                 </div>
               {/if}
@@ -373,6 +388,10 @@
   .task-board {
     display: grid;
     gap: 1rem;
+  }
+
+  :global(.task-board.dragging .task-card) {
+    cursor: crosshair;
   }
 
   .page-header {

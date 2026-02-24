@@ -13,6 +13,8 @@
     task,
     onDragStart,
     onDropOn,
+    onDragEnter,
+    isDragOver = false,
     showCategory = false,
     onGoToCategory,
     onEnlarge
@@ -20,6 +22,8 @@
     task: Task;
     onDragStart?: (id: string) => void;
     onDropOn?: (id: string) => void;
+    onDragEnter?: (id: string) => void;
+    isDragOver?: boolean;
     showCategory?: boolean;
     onGoToCategory?: (categoryId: string) => void;
     onEnlarge?: (task: Task) => void;
@@ -45,6 +49,7 @@
 <article
   class="task-card"
   class:done={task.completed}
+  class:drag-over={isDragOver}
   draggable="true"
   ondragstart={(event) => {
     event.dataTransfer?.setData('text/plain', task.id);
@@ -56,6 +61,11 @@
     event.preventDefault();
     event.stopPropagation();
     event.dataTransfer!.dropEffect = 'move';
+  }}
+  ondragenter={(event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    onDragEnter?.(task.id);
   }}
   ondrop={(event) => {
     event.preventDefault();
@@ -79,7 +89,7 @@
         >{catName}</button>
       {/if}
       {#if !editing}
-        <button type="button" class="ghost icon-btn" title="Enlarge" onclick={() => onEnlarge?.(task)}>⤢</button>
+        <button type="button" class="ghost icon-btn" title="Enlarge" onclick={() => onEnlarge?.(task)}>⧉</button>
         <button type="button" class="ghost icon-btn" title="Open in Obsidian" onclick={() => openTaskInObsidian(task.id)}>↗</button>
         <button type="button" class="ghost icon-btn" title="Edit" onclick={() => (editing = true)}>✎</button>
         <button type="button" class="danger icon-btn" title="Delete" onclick={() => deleteTask(task.id)}>🗑</button>
@@ -114,6 +124,20 @@
     border-radius: 0.75rem;
     border: 1px solid var(--border-color);
     background: var(--surface-1);
+    cursor: grab;
+    position: relative;
+  }
+
+  .task-card.drag-over::after {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: -0.3rem;
+    height: 2px;
+    background: var(--interactive-accent, #7c3aed);
+    border-radius: 1px;
+    pointer-events: none;
   }
 
   .task-card.done {
@@ -207,14 +231,20 @@
   }
 
   .icon-btn {
+    all: unset;
     display: grid;
     place-items: center;
-    min-width: 1.8rem;
-    min-height: 1.8rem;
-    padding: 0.2rem;
+    min-width: 1.2rem;
+    min-height: 1.2rem;
+    padding: 0;
     line-height: 1;
     font-size: 0.8rem;
-    border-radius: 0.45rem;
+    cursor: pointer;
+    opacity: 0.6;
+  }
+
+  .icon-btn:hover {
+    opacity: 1;
   }
 
   .actions .ghost {
@@ -222,7 +252,7 @@
   }
 
   .danger {
-    border-color: color-mix(in srgb, #ff6b6b 55%, var(--border-color));
+    color: #ff6b6b;
   }
 
   .note {
